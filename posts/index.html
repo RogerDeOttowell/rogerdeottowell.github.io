@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>My New Hugo Site</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="">
+    <meta name="generator" content="Hugo 0.147.9">
+    
+    
+    
+      <meta name="robots" content="index, follow">
+    
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.8d048772ae72ab11245a0e296d1f2a36d3e3dd376c6c867394d6cc659c68fc37.css" >
+
+
+
+
+    
+
+
+    
+      
+
+    
+
+    
+    
+      <link href="/posts/index.xml" rel="alternate" type="application/rss+xml" title="My New Hugo Site" />
+      <link href="/posts/index.xml" rel="feed" type="application/rss+xml" title="My New Hugo Site" />
+      
+    
+
+    
+      <link rel="canonical" href="https://example.org/posts/">
+    
+
+    <meta property="og:url" content="https://example.org/posts/">
+  <meta property="og:site_name" content="My New Hugo Site">
+  <meta property="og:title" content="Posts">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="website">
+
+  <meta itemprop="name" content="Posts">
+  <meta itemprop="datePublished" content="2023-10-27T10:00:00+08:00">
+  <meta itemprop="dateModified" content="2023-10-27T10:00:00+08:00">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Posts">
+
+      
+    
+	
+  </head><body class="ma0 avenir bg-near-white production">
+
+    
+
+  <header>
+    <div class="pb3-m pb6-l bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l center items-center justify-between">
+    <a href="/" class="f3 fw2 hover-white white-90 dib no-underline">
+      
+        My New Hugo Site
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+      <div class="ananke-socials"></div>
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv3 ph3 ph4-ns">
+        <h1 class="f2 f-subheadline-l fw2 light-silver mb0 lh-title">
+          Posts
+        </h1>
+        
+      </div>
+    </div>
+  </header>
+
+
+    <main class="pb7" role="main">
+      
+  <article class="pa3 pa4-ns nested-copy-line-height">
+    <section class="cf ph3 ph5-l pv3 pv4-l f4 tc-l center measure-wide lh-copy nested-links mid-gray"></section>
+    <section class="flex-ns mt5 flex-wrap justify-around">
+      
+        <div class="w-100 w-30-l mb4 relative bg-white">
+          <div class="w-100 mb4 nested-copy-line-height relative bg-white">
+  <div class="mb3 pa4 gray overflow-hidden bg-white">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="/posts/stack-overflow/" class="link black dim">
+        栈溢出（Stack Overflow）与函数调用中的栈变化
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      <h1 id="栈溢出stack-overflow">栈溢出（stack overflow）</h1>
+<h2 id="一些术语概念">一些术语/概念</h2>
+<ul>
+<li>类型安全（Type safety）
+<ul>
+<li>In computer science, type safety and type soundness are the extent to which a programming language discourages or prevents type errors.          <p align="right">————From wikipidiea<p></li>
+</ul>
+</li>
+</ul>
+<h2 id="前置知识x86架构下函数调用中的栈变化">前置知识：x86架构下函数调用中的栈变化</h2>
+<ul>
+<li>
+<p>初始：</p>
+<ul>
+<li>栈示意图：</li>
+</ul>
+<p align="center">
+  <img src="graphs/初始.png" alt="初始" width="60%">
+</p>
+</li>
+<li>
+<p>压入参数（arg1， arg2）</p>
+<ul>
+<li>指令：
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-asm" data-lang="asm"><span style="display:flex;"><span><span style="color:#a6e22e">push</span> <span style="color:#66d9ef">arg2</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">push</span> <span style="color:#66d9ef">arg1</span> <span style="color:#75715e">;注意，逆序压入参数
+</span></span></span></code></pre></div></li>
+<li>栈示意图：</li>
+</ul>
+<p align="center">
+  <img src="graphs/1.png" alt="压入参数" width="60%">
+</p>
+</li>
+<li>
+<p>调用函数</p>
+<ul>
+<li>指令
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-asm" data-lang="asm"><span style="display:flex;"><span><span style="color:#a6e22e">call</span> <span style="color:#66d9ef">fuc</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">; 等价于
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">push</span> <span style="color:#66d9ef">eip</span><span style="color:#960050;background-color:#1e0010">+</span><span style="color:#ae81ff">5</span> <span style="color:#75715e">;5为call指令的长度
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">jmp</span> <span style="color:#66d9ef">fuc</span>
+</span></span></code></pre></div></li>
+<li>栈示意图</li>
+</ul>
+<p align="center">
+  <img src="graphs/2.png" alt="调用函数" width="60%">
+</p>
+</li>
+<li>
+<p>函数序言（Prologue）</p>
+<ul>
+<li>指令：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-asm" data-lang="asm"><span style="display:flex;"><span><span style="color:#a6e22e">push</span> <span style="color:#66d9ef">ebp</span>     <span style="color:#75715e">;保存调用者的EBP
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">ebp</span>, <span style="color:#66d9ef">esp</span> <span style="color:#75715e">;设置当前函数的EBP
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">sub</span> <span style="color:#66d9ef">esp</span>, <span style="color:#ae81ff">8</span>   <span style="color:#75715e">;为局部变量分配空间（示例中分配8字节）
+</span></span></span></code></pre></div><ul>
+<li>栈示意图</li>
+</ul>
+<p align="center">
+  <img src="graphs/3.png" alt="Prologue" width="60%">
+</p>
+</li>
+<li>
+<p>访问数据</p>
+<ul>
+<li>指令：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-asm" data-lang="asm"><span style="display:flex;"><span><span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">eax</span>, [<span style="color:#66d9ef">ebp</span><span style="color:#960050;background-color:#1e0010">+</span><span style="color:#ae81ff">8</span>]  <span style="color:#75715e">;访问arg1
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">ebx</span>, [<span style="color:#66d9ef">ebp</span><span style="color:#960050;background-color:#1e0010">+</span><span style="color:#ae81ff">12</span>] <span style="color:#75715e">;访问arg2
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">ecx</span>, [<span style="color:#66d9ef">ebp-4</span>]  <span style="color:#75715e">;访问val1
+</span></span></span></code></pre></div><ul>
+<li>栈示意图</li>
+</ul>
+<p align="center">
+  <img src="graphs/3.png" alt="访问数据" width="60%">
+</p>
+</li>
+<li>
+<p>函数尾声</p>
+<ul>
+<li>指令</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-asm" data-lang="asm"><span style="display:flex;"><span><span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">esp</span>, <span style="color:#66d9ef">ebp</span> <span style="color:#75715e">;释放局部变量
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">pop</span> <span style="color:#66d9ef">ebp</span>      <span style="color:#75715e">;恢复调用者ebp
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">ret</span>          <span style="color:#75715e">;返回到调用者
+</span></span></span></code></pre></div><ul>
+<li>栈示意图(Epilogue)</li>
+</ul>
+<p align="center">
+  <img src="graphs/4.png" alt="Epilogue" width="60%">
+</p>
+    </div>
+    <a href="/posts/stack-overflow/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+  </div>
+</div>
+
+        </div>
+      
+    </section></article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white white-70 dn dib-ns pv2 ph3 no-underline" href="https://example.org/" >
+    &copy;  My New Hugo Site 2025 
+  </a>
+    <div><div class="ananke-socials"></div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>
