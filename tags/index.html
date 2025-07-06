@@ -128,7 +128,7 @@
 <ul>
 <li>类型安全（Type safety）
 <ul>
-<li>In computer science, type safety and type soundness are the extent to which a programming language discourages or prevents type errors.          <!-- raw HTML omitted -->————From wikipidiea<!-- raw HTML omitted --></li>
+<li>In computer science, type safety and type soundness are the extent to which a programming language discourages or prevents type errors.          <p align="right">————From wikipidiea<p></li>
 </ul>
 </li>
 </ul>
@@ -139,7 +139,9 @@
 <ul>
 <li>栈示意图：</li>
 </ul>
-<!-- raw HTML omitted -->
+<p align="center">
+  <img src="graphs/初始.png" alt="初始" width="60%">
+</p>
 </li>
 <li>
 <p>压入参数（arg1， arg2）</p>
@@ -150,7 +152,9 @@
 </span></span></span></code></pre></div></li>
 <li>栈示意图：</li>
 </ul>
-<!-- raw HTML omitted -->
+<p align="center">
+  <img src="graphs/1.png" alt="压入参数" width="60%">
+</p>
 </li>
 <li>
 <p>调用函数</p>
@@ -163,10 +167,54 @@
 </span></span></code></pre></div></li>
 <li>栈示意图</li>
 </ul>
-<!-- raw HTML omitted -->
+<p align="center">
+  <img src="graphs/2.png" alt="调用函数" width="60%">
+</p>
 </li>
 <li>
 <p>函数序言（Prologue）</p>
+<ul>
+<li>指令：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-asm" data-lang="asm"><span style="display:flex;"><span><span style="color:#a6e22e">push</span> <span style="color:#66d9ef">ebp</span>     <span style="color:#75715e">;保存调用者的EBP
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">ebp</span>, <span style="color:#66d9ef">esp</span> <span style="color:#75715e">;设置当前函数的EBP
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">sub</span> <span style="color:#66d9ef">esp</span>, <span style="color:#ae81ff">8</span>   <span style="color:#75715e">;为局部变量分配空间（示例中分配8字节）
+</span></span></span></code></pre></div><ul>
+<li>栈示意图</li>
+</ul>
+<p align="center">
+  <img src="graphs/3.png" alt="Prologue" width="60%">
+</p>
+</li>
+<li>
+<p>访问数据</p>
+<ul>
+<li>指令：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-asm" data-lang="asm"><span style="display:flex;"><span><span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">eax</span>, [<span style="color:#66d9ef">ebp</span><span style="color:#960050;background-color:#1e0010">+</span><span style="color:#ae81ff">8</span>]  <span style="color:#75715e">;访问arg1
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">ebx</span>, [<span style="color:#66d9ef">ebp</span><span style="color:#960050;background-color:#1e0010">+</span><span style="color:#ae81ff">12</span>] <span style="color:#75715e">;访问arg2
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">ecx</span>, [<span style="color:#66d9ef">ebp-4</span>]  <span style="color:#75715e">;访问val1
+</span></span></span></code></pre></div><ul>
+<li>栈示意图</li>
+</ul>
+<p align="center">
+  <img src="graphs/3.png" alt="访问数据" width="60%">
+</p>
+</li>
+<li>
+<p>函数尾声</p>
+<ul>
+<li>指令</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-asm" data-lang="asm"><span style="display:flex;"><span><span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">esp</span>, <span style="color:#66d9ef">ebp</span> <span style="color:#75715e">;释放局部变量
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">pop</span> <span style="color:#66d9ef">ebp</span>      <span style="color:#75715e">;恢复调用者ebp
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">ret</span>          <span style="color:#75715e">;返回到调用者
+</span></span></span></code></pre></div><ul>
+<li>栈示意图(Epilogue)</li>
+</ul>
+<p align="center">
+  <img src="graphs/4.png" alt="Epilogue" width="60%">
+</p>
     </div>
     <a href="/posts/stack-overflow/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
   </div>
@@ -194,7 +242,7 @@
 <ul>
 <li>类型安全（Type safety）
 <ul>
-<li>In computer science, type safety and type soundness are the extent to which a programming language discourages or prevents type errors.          <!-- raw HTML omitted -->————From wikipidiea<!-- raw HTML omitted --></li>
+<li>In computer science, type safety and type soundness are the extent to which a programming language discourages or prevents type errors.          <p align="right">————From wikipidiea<p></li>
 </ul>
 </li>
 </ul>
@@ -205,7 +253,9 @@
 <ul>
 <li>栈示意图：</li>
 </ul>
-<!-- raw HTML omitted -->
+<p align="center">
+  <img src="graphs/初始.png" alt="初始" width="60%">
+</p>
 </li>
 <li>
 <p>压入参数（arg1， arg2）</p>
@@ -216,7 +266,9 @@
 </span></span></span></code></pre></div></li>
 <li>栈示意图：</li>
 </ul>
-<!-- raw HTML omitted -->
+<p align="center">
+  <img src="graphs/1.png" alt="压入参数" width="60%">
+</p>
 </li>
 <li>
 <p>调用函数</p>
@@ -229,10 +281,54 @@
 </span></span></code></pre></div></li>
 <li>栈示意图</li>
 </ul>
-<!-- raw HTML omitted -->
+<p align="center">
+  <img src="graphs/2.png" alt="调用函数" width="60%">
+</p>
 </li>
 <li>
 <p>函数序言（Prologue）</p>
+<ul>
+<li>指令：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-asm" data-lang="asm"><span style="display:flex;"><span><span style="color:#a6e22e">push</span> <span style="color:#66d9ef">ebp</span>     <span style="color:#75715e">;保存调用者的EBP
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">ebp</span>, <span style="color:#66d9ef">esp</span> <span style="color:#75715e">;设置当前函数的EBP
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">sub</span> <span style="color:#66d9ef">esp</span>, <span style="color:#ae81ff">8</span>   <span style="color:#75715e">;为局部变量分配空间（示例中分配8字节）
+</span></span></span></code></pre></div><ul>
+<li>栈示意图</li>
+</ul>
+<p align="center">
+  <img src="graphs/3.png" alt="Prologue" width="60%">
+</p>
+</li>
+<li>
+<p>访问数据</p>
+<ul>
+<li>指令：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-asm" data-lang="asm"><span style="display:flex;"><span><span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">eax</span>, [<span style="color:#66d9ef">ebp</span><span style="color:#960050;background-color:#1e0010">+</span><span style="color:#ae81ff">8</span>]  <span style="color:#75715e">;访问arg1
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">ebx</span>, [<span style="color:#66d9ef">ebp</span><span style="color:#960050;background-color:#1e0010">+</span><span style="color:#ae81ff">12</span>] <span style="color:#75715e">;访问arg2
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">ecx</span>, [<span style="color:#66d9ef">ebp-4</span>]  <span style="color:#75715e">;访问val1
+</span></span></span></code></pre></div><ul>
+<li>栈示意图</li>
+</ul>
+<p align="center">
+  <img src="graphs/3.png" alt="访问数据" width="60%">
+</p>
+</li>
+<li>
+<p>函数尾声</p>
+<ul>
+<li>指令</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-asm" data-lang="asm"><span style="display:flex;"><span><span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">esp</span>, <span style="color:#66d9ef">ebp</span> <span style="color:#75715e">;释放局部变量
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">pop</span> <span style="color:#66d9ef">ebp</span>      <span style="color:#75715e">;恢复调用者ebp
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">ret</span>          <span style="color:#75715e">;返回到调用者
+</span></span></span></code></pre></div><ul>
+<li>栈示意图(Epilogue)</li>
+</ul>
+<p align="center">
+  <img src="graphs/4.png" alt="Epilogue" width="60%">
+</p>
     </div>
     <a href="/posts/stack-overflow/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
   </div>
@@ -260,7 +356,7 @@
 <ul>
 <li>类型安全（Type safety）
 <ul>
-<li>In computer science, type safety and type soundness are the extent to which a programming language discourages or prevents type errors.          <!-- raw HTML omitted -->————From wikipidiea<!-- raw HTML omitted --></li>
+<li>In computer science, type safety and type soundness are the extent to which a programming language discourages or prevents type errors.          <p align="right">————From wikipidiea<p></li>
 </ul>
 </li>
 </ul>
@@ -271,7 +367,9 @@
 <ul>
 <li>栈示意图：</li>
 </ul>
-<!-- raw HTML omitted -->
+<p align="center">
+  <img src="graphs/初始.png" alt="初始" width="60%">
+</p>
 </li>
 <li>
 <p>压入参数（arg1， arg2）</p>
@@ -282,7 +380,9 @@
 </span></span></span></code></pre></div></li>
 <li>栈示意图：</li>
 </ul>
-<!-- raw HTML omitted -->
+<p align="center">
+  <img src="graphs/1.png" alt="压入参数" width="60%">
+</p>
 </li>
 <li>
 <p>调用函数</p>
@@ -295,10 +395,54 @@
 </span></span></code></pre></div></li>
 <li>栈示意图</li>
 </ul>
-<!-- raw HTML omitted -->
+<p align="center">
+  <img src="graphs/2.png" alt="调用函数" width="60%">
+</p>
 </li>
 <li>
 <p>函数序言（Prologue）</p>
+<ul>
+<li>指令：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-asm" data-lang="asm"><span style="display:flex;"><span><span style="color:#a6e22e">push</span> <span style="color:#66d9ef">ebp</span>     <span style="color:#75715e">;保存调用者的EBP
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">ebp</span>, <span style="color:#66d9ef">esp</span> <span style="color:#75715e">;设置当前函数的EBP
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">sub</span> <span style="color:#66d9ef">esp</span>, <span style="color:#ae81ff">8</span>   <span style="color:#75715e">;为局部变量分配空间（示例中分配8字节）
+</span></span></span></code></pre></div><ul>
+<li>栈示意图</li>
+</ul>
+<p align="center">
+  <img src="graphs/3.png" alt="Prologue" width="60%">
+</p>
+</li>
+<li>
+<p>访问数据</p>
+<ul>
+<li>指令：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-asm" data-lang="asm"><span style="display:flex;"><span><span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">eax</span>, [<span style="color:#66d9ef">ebp</span><span style="color:#960050;background-color:#1e0010">+</span><span style="color:#ae81ff">8</span>]  <span style="color:#75715e">;访问arg1
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">ebx</span>, [<span style="color:#66d9ef">ebp</span><span style="color:#960050;background-color:#1e0010">+</span><span style="color:#ae81ff">12</span>] <span style="color:#75715e">;访问arg2
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">ecx</span>, [<span style="color:#66d9ef">ebp-4</span>]  <span style="color:#75715e">;访问val1
+</span></span></span></code></pre></div><ul>
+<li>栈示意图</li>
+</ul>
+<p align="center">
+  <img src="graphs/3.png" alt="访问数据" width="60%">
+</p>
+</li>
+<li>
+<p>函数尾声</p>
+<ul>
+<li>指令</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-asm" data-lang="asm"><span style="display:flex;"><span><span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">esp</span>, <span style="color:#66d9ef">ebp</span> <span style="color:#75715e">;释放局部变量
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">pop</span> <span style="color:#66d9ef">ebp</span>      <span style="color:#75715e">;恢复调用者ebp
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">ret</span>          <span style="color:#75715e">;返回到调用者
+</span></span></span></code></pre></div><ul>
+<li>栈示意图(Epilogue)</li>
+</ul>
+<p align="center">
+  <img src="graphs/4.png" alt="Epilogue" width="60%">
+</p>
     </div>
     <a href="/posts/stack-overflow/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
   </div>
