@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on My New Hugo Site</title>
-    <link>https://example.org/tags/</link>
+    <link>https://rogerdeottowell.github.io/tags/</link>
     <description>Recent content in Tags on My New Hugo Site</description>
     <generator>Hugo</generator>
-    <language>en-us</language>
+    <language>zh-cn</language>
     <lastBuildDate>Fri, 27 Oct 2023 10:00:00 +0800</lastBuildDate>
-    <atom:link href="https://example.org/tags/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://rogerdeottowell.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Assembly</title>
-      <link>https://example.org/tags/assembly/</link>
+      <link>https://rogerdeottowell.github.io/tags/assembly/</link>
       <pubDate>Fri, 27 Oct 2023 10:00:00 +0800</pubDate>
-      <guid>https://example.org/tags/assembly/</guid>
+      <guid>https://rogerdeottowell.github.io/tags/assembly/</guid>
       <description></description>
     </item>
     <item>
       <title>StackOverflow</title>
-      <link>https://example.org/tags/stackoverflow/</link>
+      <link>https://rogerdeottowell.github.io/tags/stackoverflow/</link>
       <pubDate>Fri, 27 Oct 2023 10:00:00 +0800</pubDate>
-      <guid>https://example.org/tags/stackoverflow/</guid>
+      <guid>https://rogerdeottowell.github.io/tags/stackoverflow/</guid>
       <description></description>
     </item>
     <item>
       <title>X86</title>
-      <link>https://example.org/tags/x86/</link>
+      <link>https://rogerdeottowell.github.io/tags/x86/</link>
       <pubDate>Fri, 27 Oct 2023 10:00:00 +0800</pubDate>
-      <guid>https://example.org/tags/x86/</guid>
+      <guid>https://rogerdeottowell.github.io/tags/x86/</guid>
       <description></description>
     </item>
   </channel>
