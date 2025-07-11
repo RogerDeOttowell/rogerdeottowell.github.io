@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="详细探讨栈溢出原理以及x86-32架构下函数调用中的栈帧变化。">
+<title>智能合约</title>
+
+<link rel='canonical' href='https://example.com/p/%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6/'>
+
+<link rel="stylesheet" href="/scss/style.min.cfa5b1b0e78d61c00a14173992a1f3fa3b5c1b9fa34d023de959af564e7b19dd.css"><meta property='og:title' content="智能合约">
+<meta property='og:description' content="详细探讨栈溢出原理以及x86-32架构下函数调用中的栈帧变化。">
+<meta property='og:url' content='https://example.com/p/%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='StackOverflow' /><meta property='article:tag' content='x86' /><meta property='article:tag' content='Assembly' /><meta property='article:published_time' content='2025-07-11T22:01:05&#43;08:00'/><meta property='article:modified_time' content='2025-07-11T22:01:05&#43;08:00'/>
+<meta name="twitter:title" content="智能合约">
+<meta name="twitter:description" content="详细探讨栈溢出原理以及x86-32架构下函数调用中的栈帧变化。">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_f509edb42ecc0ebd.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://example.com/" selected>English</option>
+                                
+                                    <option value="https://example.com/zh-cn/" >中文</option>
+                                
+                                    <option value="https://example.com/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Dark Mode</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#研究对象etheremu">研究对象————Etheremu</a>
+      <ol>
+        <li><a href="#etheremu基础知识">Etheremu基础知识</a>
+          <ol>
+            <li><a href="#账户">账户</a></li>
+            <li><a href="#交易">交易</a></li>
+            <li><a href="#rpc">RPC</a></li>
+            <li><a href="#转账">转账</a></li>
+            <li><a href="#燃料gas">燃料(Gas)</a></li>
+            <li><a href="#evm">EVM</a></li>
+          </ol>
+        </li>
+        <li><a href="#代币合约">代币合约</a>
+          <ol>
+            <li><a href="#erc-20代币合约">ERC-20代币合约</a></li>
+            <li><a href="#uniswap">Uniswap</a></li>
+            <li><a href="#erc-777代币合约">ERC-777代币合约</a></li>
+          </ol>
+        </li>
+        <li><a href="#etheremu安全漏洞和攻击方式">Etheremu安全漏洞和攻击方式</a>
+          <ol>
+            <li><a href="#重进入攻击">重进入攻击</a></li>
+            <li><a href="#调用与委托调用攻击">调用与委托调用攻击</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/ctf/" >
+                CTF
+            </a>
+        
+            <a href="/categories/pwn/" >
+                Pwn
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6/">智能合约</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            详细探讨栈溢出原理以及x86-32架构下函数调用中的栈帧变化。
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jul 11, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    1 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="smart-contract">Smart Contract
+</h1><h2 id="研究对象etheremu">研究对象————Etheremu
+</h2><h3 id="etheremu基础知识">Etheremu基础知识
+</h3><h4 id="账户">账户
+</h4><ul>
+<li>外部账户(EOA)
+<ul>
+<li>外部账户是由人创建的，可以存储以太币，是由公钥和私钥控制的账户。每个外部账户拥有一对公私钥，这对密钥用于签署交易，它的地址由公钥决定。外部账户不能包含以太坊虚拟机（EVM）代码。</li>
+<li>一个外部账户有以下特性：
+<ul>
+<li>拥有一定的Ether</li>
+<li>可以发送交易，由私钥控制</li>
+<li>没有相关联的代码</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>合约账户
+<ul>
+<li>合约账户是由外部账户创建的账户，包含合约代码。合约账户的地址是由合约创建时合约创建者的地址，以及该地址发出的交易共同计算得出的。</li>
+<li>一个合约账户有以下特性
+<ul>
+<li>拥有一定的Ether</li>
+<li>有关联代码，代码通过交易或其他合约发来的调用激活</li>
+<li>当合约被执行时，只能操作合约账户的特定存储</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>在Etheremu中，这两种账户统称为“状态对象”，其中外部账户存储以太币余额状态，而合约账户除了余额还有智能合约及其变量的状态。通过交易的执行，这些状态对象发生变化，而 Merkle 树用于索引和验证状态对象的更新。一个以太坊的账户包含 4 个部分
+<ul>
+<li>nonce: 已执行交易总量</li>
+<li>balance: 帐持币数量</li>
+<li>storageRoot: 存储区哈希值</li>
+<li>codeHash: 代码区哈希值</li>
+</ul>
+</li>
+<li>两个外部账户之间的交易只是一个价值转移；而外部账户和合约账户之间的交易会激活合约账户的代码，允许进行各种操作</li>
+</ul>
+<h4 id="交易">交易
+</h4><ul>
+<li>交易指的是外部账户发送到另一账户的的消息的签名数据包</li>
+<li>交易内容
+<ul>
+<li>from: 交易发送者地址</li>
+<li>to: 交易接收者地址，如果为空代表创建或调用智能合约</li>
+<li>value: 转移的以太币数量</li>
+<li>data: 数据字段，如果存在，说明是一个创建或调用智能合约的交易</li>
+<li>gaslimit: 交易允许消耗的最大gas数量</li>
+<li>gasprice: 愿意发送给gas矿工的单价</li>
+<li>nonce: 区分同一账户的不容交易的标记</li>
+<li>hash: 以上信息生成的散列值</li>
+<li>r,s,v: 签名信息</li>
+</ul>
+</li>
+<li>交易类型：
+<ul>
+<li>执行转账的交易</li>
+<li>创建智能合约的交易</li>
+<li>调用智能合约的交易</li>
+</ul>
+</li>
+</ul>
+<h4 id="rpc">RPC
+</h4><ul>
+<li>JSON-RPC是一种无状态、轻量级的远程过程调用(RPC)协议。它定义了几种数据结构及处理规则。用于实现软件应用程序与Etheremu区块链的交互</li>
+</ul>
+<h4 id="转账">转账
+</h4><ul>
+<li>操作过程：
+<ul>
+<li>生成一个交易，使用私钥签名</li>
+<li>被签名的交易被广播到P2P网络</li>
+<li>矿工将交易包含在一个块中</li>
+<li>确认资金转账</li>
+</ul>
+</li>
+</ul>
+<h4 id="燃料gas">燃料(Gas)
+</h4><ul>
+<li>需要设置Gas的原因: 处理停机问题（无限循环）</li>
+<li>Gas limit: 用户单次交易的gas上限</li>
+<li>Gas price: Gas的当前单价，在交易前由用户设置，以Wei为单位</li>
+<li>交易费用: Gas*Gas_price</li>
+<li>Gas消耗：
+<ul>
+<li>对于一般交易，消耗为21000</li>
+<li>对于智能合约，取决于消耗的资源————执行的命令和使用的存储</li>
+</ul>
+</li>
+</ul>
+<h4 id="evm">EVM
+</h4><ul>
+<li>每个Etheremu节点都包含一个虚拟机，该虚拟机被称为EVM，发挥执行智能合约代码和更改并广播全局状态的作用</li>
+<li>特性：
+<ul>
+<li>图灵完备性（存在Gas限制）</li>
+<li>无浮点数</li>
+<li>无系统时钟</li>
+</ul>
+</li>
+<li>核心设计目标:
+<ul>
+<li>确定性: 保证相同的输入必定有相同的输出</li>
+<li>隔离性: 合约在沙盒环境中运行，不直接访问主机系统</li>
+<li>可终止性: 通过Gas限制执行步骤</li>
+</ul>
+</li>
+<li>结构：
+<ul>
+<li>基于堆栈
+<ul>
+<li>注: 栈式架构特点
+<ul>
+<li>所有计算依赖操作数栈</li>
+<li>没有通用寄存器</li>
+<li>指令隐式操作栈</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>内存模型：
+<ul>
+<li>栈
+<ul>
+<li>结构
+<ul>
+<li>2字节，最深1024层</li>
+<li>易失性</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>内存
+<ul>
+<li>结构
+<ul>
+<li>按字寻址的字节数组，可动态扩展</li>
+<li>易失性</li>
+</ul>
+</li>
+<li>操作指令
+<ul>
+<li><code>mload(offset)</code>: 从内存偏移量处读32字节</li>
+<li><code>mstore(offset,value)</code>: 将32字节<code>value</code>写入偏移量<code>offset</code>处</li>
+</ul>
+</li>
+<li>Gas成本: 初始免费，扩容时按每32字节支付Gas</li>
+</ul>
+</li>
+<li>存储
+<ul>
+<li>结构
+<ul>
+<li>每个合约有独立的持久化键值存储</li>
+<li>映射规则: 2^256个键，每个键对应一个32字节的值</li>
+</ul>
+</li>
+<li>特性
+<ul>
+<li>持久化: 数据永久写入区块链状态</li>
+<li>高Gas成本: 写入消耗成千乃至上万Gas</li>
+</ul>
+</li>
+<li>操作指令
+<ul>
+<li><code>sstore(key,value)</code>: 从栈上依次弹出<code>value</code>和<code>key</code>，将<code>value</code>存入存储中<code>key</code>对应的槽位</li>
+<li><code>sload(key)</code>: 从栈顶弹出<code>key</code>，将存储中<code>key</code>对应的槽位的数据压入栈</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="代币合约">代币合约
+</h3><h4 id="erc-20代币合约">ERC-20代币合约
+</h4><ul>
+<li>ERC-20是一种通用的智能合约规范，特点是每一个代币都和其他代币完全相等。它是资产通证化的最广泛使用标准</li>
+<li>包含API方法和事件
+<ul>
+<li>totalSupply: 定义token总供应量</li>
+<li>balancdOf: 返回钱包地址包含的token余额</li>
+<li>transfer: 从总供应中转移一定数量token并发给用户</li>
+<li>transferFrom: 在用户之间传输token</li>
+<li>approve: 验证是否允许在考虑总供应量的情况下分配一定的token</li>
+<li>allowance: 检查是否有余额向另一个账户发送token</li>
+</ul>
+</li>
+</ul>
+<h4 id="uniswap">Uniswap
+</h4><ul>
+<li>Uniswap是一个完成不同代币间的交易的<strong>自动化流动协议</strong></li>
+<li>注：自动化流动协议定义
+<ul>
+<li>自动化流动性协议是一种利用预定义的数学公式（如恒定乘积公式）和部署在区块链上的智能合约，自动管理用户贡献的资产池（流动性池），并为用户提供无需许可、去中心化、自动定价和执行的代币交换服务的系统。它完全消除了对传统订单簿和专业做市商的依赖，通过算法和社区提供的流动性实现市场功能。</li>
+</ul>
+</li>
+<li>每个（或对）Uniswap智能合约管理着一个由两个ERC-20代币储备组成的流动池</li>
+<li>任何人都可以成为池的流动性提供者（LP），即存入基础代币来换取池代币</li>
+<li>在池中维持价格：套利</li>
+<li>货币对充当市商的角色，根据恒定乘积公式提供替换服务</li>
+<li>恒定乘积公式可以简单地表示为$x * y = k$，说明交易不能改变一对储备余额的乘积</li>
+<li>$k$通常被称为不变量。这个公式对规模较大的交易的执行速度比小的要慢得多</li>
+<li>在实践中Uniswap对交易收取0.30%的费用，这笔费用被存入储备中</li>
+</ul>
+<h4 id="erc-777代币合约">ERC-777代币合约
+</h4><ul>
+<li>被ERC-20类似，ERC-777也是一种可替换代币标准，交易时允许更复杂的交互</li>
+<li>它的最重要功能是接收hook</li>
+</ul>
+<h3 id="etheremu安全漏洞和攻击方式">Etheremu安全漏洞和攻击方式
+</h3><h4 id="重进入攻击">重进入攻击
+</h4><ul>
+<li>核心漏洞：“先提款后记账”</li>
+<li>具体实现：在提款函数(withdraw)中递归调用，在记录的存款变化前反复提取存款</li>
+<li>防御方式：
+<ul>
+<li>检查-效果-交互模式: 按照执行检查、改变状态变量、执行与其他合同的交互的顺序运行</li>
+<li>使用修饰符锁定（互斥锁）: 即设置一个标识符，当发生与其他合同交互时设置标识符，标识符重置1前无法再进行交互</li>
+</ul>
+</li>
+</ul>
+<h4 id="调用与委托调用攻击">调用与委托调用攻击
+</h4><h5 id="基本概念调用与委托调用">基本概念：调用与委托调用
+</h5><ul>
+<li>调用: 调用另一个智能合约中的函数</li>
+<li>委托调用: 执行来自另一个智能合约的函数，使用调用者的存储和上下文</li>
+</ul>
+<h5 id="uups通用可升级代理标准">UUPS(通用可升级代理标准)
+</h5><ul>
+<li>
+<p>架构: 代理合约拆分</p>
+<ul>
+<li>示意图</li>
+</ul>
+<p align="center">
+  <img src="/images/UUPS.png" alt="UUPSUUPS" width="75%">
+</p>
+<ul>
+<li>代理合约(<strong>Proxy</strong>)
+<ul>
+<li>永久储存所有状态变量</li>
+<li>持有逻辑合约地址</li>
+<li>通过<code>fallback</code>函数将所有调用用<code>delegatecall</code>转发给逻辑合约</li>
+</ul>
+</li>
+<li>逻辑合约(<strong>Logic</strong>)
+<ul>
+<li>包含实际业务代码</li>
+<li>无状态</li>
+<li>可被替换（升级）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="uups漏洞-未初始化">UUPS漏洞: 未初始化
+</h5><ul>
+<li>如果UUPS合同未初始化，那么攻击者可以调用<code>initialize()</code>函数，实现“攻击者成为所有者”</li>
+<li>攻击步骤
+<ul>
+<li>攻击者成为所有者</li>
+<li>部署恶意合约</li>
+<li>劫持升级过程</li>
+<li>执行恶意代码</li>
+</ul>
+</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/stackoverflow/">StackOverflow</a>
+        
+            <a href="/tags/x86/">X86</a>
+        
+            <a href="/tags/assembly/">Assembly</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/sfi%E6%8A%80%E6%9C%AF/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">SFI技术</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%A0%86%E6%BC%8F%E6%B4%9E/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">堆漏洞</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">格式化字符串</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E8%BF%94%E5%9B%9E%E5%BA%93%E6%96%87%E4%BB%B6/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">返回库文件</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E6%A0%88%E6%BA%A2%E5%87%BAstack-overflow%E4%B8%8E%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E4%B8%AD%E7%9A%84%E6%A0%88%E5%8F%98%E5%8C%96/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">栈溢出（Stack Overflow）与函数调用中的栈变化</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Example Person
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
