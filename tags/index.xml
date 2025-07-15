@@ -7,7 +7,47 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
         <copyright>Example Person</copyright>
-        <lastBuildDate>Fri, 11 Jul 2025 22:01:43 +0800</lastBuildDate><atom:link href="https://example.com/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 15 Jul 2025 09:34:00 +0800</lastBuildDate><atom:link href="https://example.com/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>CPU</title>
+        <link>https://example.com/tags/cpu/</link>
+        <pubDate>Tue, 15 Jul 2025 09:34:00 +0800</pubDate>
+        
+        <guid>https://example.com/tags/cpu/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>RISC-V</title>
+        <link>https://example.com/tags/risc-v/</link>
+        <pubDate>Tue, 15 Jul 2025 09:34:00 +0800</pubDate>
+        
+        <guid>https://example.com/tags/risc-v/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>处理器</title>
+        <link>https://example.com/tags/%E5%A4%84%E7%90%86%E5%99%A8/</link>
+        <pubDate>Tue, 15 Jul 2025 09:34:00 +0800</pubDate>
+        
+        <guid>https://example.com/tags/%E5%A4%84%E7%90%86%E5%99%A8/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>流水线</title>
+        <link>https://example.com/tags/%E6%B5%81%E6%B0%B4%E7%BA%BF/</link>
+        <pubDate>Tue, 15 Jul 2025 09:34:00 +0800</pubDate>
+        
+        <guid>https://example.com/tags/%E6%B5%81%E6%B0%B4%E7%BA%BF/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>计算机系统</title>
+        <link>https://example.com/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/</link>
+        <pubDate>Tue, 15 Jul 2025 09:34:00 +0800</pubDate>
+        
+        <guid>https://example.com/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>Assembly</title>
         <link>https://example.com/tags/assembly/</link>
         <pubDate>Fri, 11 Jul 2025 22:01:43 +0800</pubDate>

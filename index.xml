@@ -7,7 +7,240 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
         <copyright>Example Person</copyright>
-        <lastBuildDate>Fri, 11 Jul 2025 22:01:43 +0800</lastBuildDate><atom:link href="https://example.com/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 15 Jul 2025 09:34:00 +0800</lastBuildDate><atom:link href="https://example.com/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>流水线与在处理器中的应用</title>
+        <link>https://example.com/p/%E6%B5%81%E6%B0%B4%E7%BA%BF%E4%B8%8E%E5%9C%A8%E5%A4%84%E7%90%86%E5%99%A8%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/</link>
+        <pubDate>Tue, 15 Jul 2025 09:34:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E6%B5%81%E6%B0%B4%E7%BA%BF%E4%B8%8E%E5%9C%A8%E5%A4%84%E7%90%86%E5%99%A8%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/</guid>
+        <description>&lt;h1 id=&#34;流水线cpu&#34;&gt;流水线CPU
+&lt;/h1&gt;&lt;h2 id=&#34;流水线核心概念&#34;&gt;流水线核心概念
+&lt;/h2&gt;&lt;h3 id=&#34;理念&#34;&gt;理念
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;将指令执行划分为多个时间均衡的子阶段，使得多条不同指令再不同阶段并行处理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;处理方式&#34;&gt;处理方式
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;可以想象一下，假设在洗衣时，需要经过洗涤（30min）$\rightarrow$ 烘干 （40min）$\rightarrow$ 折叠（20min），现在有4人需要洗衣服务，如果全部依次处理（单周期CPU），那么耗时是6h，即处理每个人的服务需要90min（1.5h），依次执行，共计耗时6h。如果使用流水线处理，可以在执行上一个人的烘干任务时执行下一个人的洗涤任务。
+  &lt;p align=&#34;center&#34;&gt;
+      &lt;img src=&#34;https://example.com/images/pipeline_ex1.png&#34; alt=&#34;洗衣&#34; width=&#34;80%&#34;&gt;
+  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;可以看到通过通过流水线处理将总耗时缩减到了3.5h&lt;/li&gt;
+&lt;li&gt;与洗衣类似，指令执行也可以分为三个阶段IF(Instucction Fetch), ID(Instruction Decode), Ex(Execution)
+  &lt;p align=&#34;center&#34;&gt;
+      &lt;img src=&#34;https://example.com/images/pipeline2.png&#34; alt=&#34;指令构成&#34; width=&#34;70%&#34;&gt;
+  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;在串行处理中，与上面的洗衣类似，下一条指令在上一个指令的三个阶段全部结束后才开始
+  &lt;p align=&#34;center&#34;&gt;
+      &lt;img src=&#34;https://example.com/images/pipeline3.png&#34; alt=&#34;串行执行&#34; width=&#34;70%&#34;&gt;
+  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;此时的运行时间为$6Δt$ (这里为了方便演示，假设各个阶段的处理时间相同)&lt;/li&gt;
+&lt;li&gt;可以发现与洗衣类似，后一条指令并不需要等待前一条执行完毕，而是只需要对应的模块”空出来“就可以执行
+  &lt;p align=&#34;center&#34;&gt;
+      &lt;img src=&#34;https://example.com/images/pipeline4.png&#34; alt=&#34;单重叠&#34; width=&#34;50%&#34;&gt;
+  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;此时的运行时间为$5Δt$&lt;/li&gt;
+&lt;li&gt;可以发现运行时间可以被进一步缩短，即增加重叠部分
+  &lt;p align=&#34;center&#34;&gt;
+      &lt;img src=&#34;https://example.com/images/pipeline5.png&#34; alt=&#34;单重叠&#34; width=&#34;40%&#34;&gt;
+  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;此时的运行时间为$4Δt$&lt;/li&gt;
+&lt;li&gt;以上两种重叠方式分别被称为 &lt;strong&gt;单重叠(Single overlapping)&lt;/strong&gt; 和 &lt;strong&gt;双重叠(Twice overlapping)&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;重叠方式比较&#34;&gt;重叠方式比较
+&lt;/h3&gt;&lt;h4 id=&#34;单重叠&#34;&gt;单重叠
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;优点
+&lt;ul&gt;
+&lt;li&gt;相较串行运行时间缩短近$\frac{1}{3}$（对大量指令）&lt;/li&gt;
+&lt;li&gt;功能单元利用率显著提升&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;缺点
+&lt;ul&gt;
+&lt;li&gt;需要额外硬件支持&lt;/li&gt;
+&lt;li&gt;控制过程复杂化&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;双重叠&#34;&gt;双重叠
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;优点
+&lt;ul&gt;
+&lt;li&gt;相较串行运行时间缩短近$\frac{2}{3}$（对大量指令）&lt;/li&gt;
+&lt;li&gt;功能单元利用率进一步显著提升&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;缺点
+&lt;ul&gt;
+&lt;li&gt;需要大量额外硬件支持&lt;/li&gt;
+&lt;li&gt;需要物理分离的fetch, decode和execution单元&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;注-双重叠面临的问题和需要的硬件支持&#34;&gt;注： 双重叠面临的问题和需要的硬件支持
+&lt;/h5&gt;&lt;h6 id=&#34;核心问题内存访问冲突&#34;&gt;核心问题：内存访问冲突
+&lt;/h6&gt;&lt;ul&gt;
+&lt;li&gt;在双重叠中如果多条指令同时访问内存，会引发冲突
+&lt;ul&gt;
+&lt;li&gt;冲突场景：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;实践场景双重叠还原为单重叠&#34;&gt;实践场景：双重叠还原为单重叠
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;上面的讲解都是基于三个阶段耗时相等的假设的，但是在实际CPU场景中，三个阶段的运行时间并不相等，一般IF阶段耗时最少，如果IF阶段耗时很短可以忽略，那么双重叠在优化上就约等与单重叠了
+  &lt;p align=&#34;center&#34;&gt;
+      &lt;img src=&#34;https://example.com/images/pipeline6.png&#34; alt=&#34;忽略IF&#34; width=&#34;50%&#34;&gt;
+  &lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;阶段不等长重叠中的资源浪费和冲突问题&#34;&gt;阶段不等长——重叠中的资源浪费和冲突问题
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;在考虑到应用场景中各阶段不等长后，可以进一步考虑潜在的问题
+&lt;ul&gt;
+&lt;li&gt;如果ID &amp;lt; EX
+&lt;p align=&#34;center&#34;&gt;
+    &lt;img src=&#34;https://example.com/images/pipeline7.png&#34; alt=&#34;忽略IF&#34; width=&#34;70%&#34;&gt;
+&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;可以看到此时一条指令的EX阶段在时间上与下一条指令的EX阶段发生了重叠，这被称之为资源冲突&lt;/li&gt;
+&lt;li&gt;如果ID &amp;gt; EX
+ &lt;p align=&#34;center&#34;&gt;
+    &lt;img src=&#34;https://example.com/images/pipeline8.png&#34; alt=&#34;忽略IF&#34; width=&#34;50%&#34;&gt;
+&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;可以看到此时的时间轴上存在未执行指令的部分，这被称为资源浪费&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;注：为什么是这种执行方式？
+&lt;ul&gt;
+&lt;li&gt;所有流水线阶段在&lt;strong&gt;同一时钟边沿同步推进&lt;/strong&gt;，即IF始终是在每个时钟周期开始时触发的。ID &amp;gt; EX的情况下的实际过程是IF(K+1)在执行完毕后等待到ID(K)执行完毕，开启下一个时钟周期才开始执行ID(K+1)和IF(K+2)。这个现象被称为&lt;strong&gt;阻塞(Block)&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;流水线概念&#34;&gt;流水线概念
+&lt;/h3&gt;&lt;h4 id=&#34;核心解释&#34;&gt;核心解释
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;指令分解：将单条指令的执行划分成&lt;strong&gt;m个子阶段&lt;/strong&gt;，要求m&amp;gt;5。经典设计为五级流水线。m被称为&lt;strong&gt;流水线深度&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;时间均等：要求每个子阶段耗时&lt;strong&gt;严格相等&lt;/strong&gt;($Δt_{stage}$)，由全局时钟周期$T_c$统一控制。若阶段耗时不等，以&lt;strong&gt;最慢阶段&lt;/strong&gt;为基准设定($T_c$)&lt;/li&gt;
+&lt;li&gt;错位重叠：m条相邻指令在同一时间&lt;strong&gt;并行处理不同阶段&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;重叠方式参考上面的双重叠，实现全阶段并行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;特征&#34;&gt;特征
+&lt;/h3&gt;&lt;h4 id=&#34;结构特征&#34;&gt;结构特征
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;阶段划分：每阶段由专属功能单元实现（如IF/ID/EX）&lt;/li&gt;
+&lt;li&gt;时间均衡：最长阶段决定整体速度
+&lt;ul&gt;
+&lt;li&gt;这是流水线高效运行的关键，如果某个阶段时间比其他阶段长，这个阶段就会成为&lt;strong&gt;瓶颈(Bottleneck)&lt;/strong&gt;，如上面所演示的那样导致阻塞&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;流水线寄存器：缓存阶段见数据，隔离各阶段操作
+&lt;ul&gt;
+&lt;li&gt;传递数据：在时钟边沿将前一个阶段在本时钟周期内处理完成的结果捕获并储存起来&lt;/li&gt;
+&lt;li&gt;数据保持：在下一个时钟周期这个数据会被提供给下一个阶段作为输入，确保数据在正确的时间被后续阶段使用&lt;/li&gt;
+&lt;li&gt;阶段隔离：当前一个阶段在下一个时钟周期开始处理新任务时，后一个阶段使用的是寄存器中保存的、前一个阶段上一个周期的结果。没有这些寄存器，前一阶段的新输出会立即冲掉后一阶段还在处理的输入，导致数据混乱和错误。 它确保了每个阶段在一个时钟周期内可以独立地处理分配给它的那份工作（数据）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;适用场景大量重复的顺序工作&#34;&gt;适用场景：大量重复的顺序工作
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;大量：从上面的示例可以发现，在不考虑“开头”和“结尾”的情况下，当m=3时，运行时间应当是串行时间的$\frac{1}{3}$.但实际可以看到，存在开头和结尾的额外开销，这被称为&lt;strong&gt;流水线启动&lt;/strong&gt;和&lt;strong&gt;排空&lt;/strong&gt;，在稍后会涉及。同时不难发现，当处理条数更多时，运行时间更接近$\frac{1}{3}$，即-处理大量的指令时节省的时间可以稀释启动和排空开销&lt;/li&gt;
+&lt;li&gt;重复：任务的执行流程（分解成的阶段）是相似的。上面的演示中的阶段都是完全相同的，就是一种理想状态&lt;/li&gt;
+&lt;li&gt;顺序：任务见最好是顺序执行的，或相关性较低。如果任务间有较强的依赖性就容易导致阻塞&lt;/li&gt;
+&lt;li&gt;持续输入：保持流水线处于忙碌状态，避免空闲导致效率下降&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;时间参数启动时间与排空时间&#34;&gt;时间参数：启动时间与排空时间
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;启动时间/首次延迟&lt;/strong&gt;：从第一个任务进入流水线到离开的总时间&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;排空时间/排空延迟&lt;/strong&gt;：从最后一个任务进入到所有流水线任务结束的总时间&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;流水线分类&#34;&gt;流水线分类
+&lt;/h2&gt;&lt;h3 id=&#34;按功能划分&#34;&gt;按功能划分
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;单功能流水线&lt;/li&gt;
+&lt;li&gt;多功能流水线&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;按照并行性划分针对多功能流水线&#34;&gt;按照并行性划分（针对多功能流水线）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;静态流水线：多功能，但不支持混合任务。即同一时间段内智能固定配置为一种任务。切换任务需要排空当前流水线&lt;/li&gt;
+&lt;li&gt;动态流水线：支持混合任务&lt;/li&gt;
+&lt;li&gt;注：可以用咖啡机来做比喻。单功能流水线就是一台只能做美式咖啡的咖啡机。静态流水线可以做多种咖啡，但是每次切换口味需要清空管道。动态流水线可以同时制作多种咖啡。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;按照运行顺序划分&#34;&gt;按照运行顺序划分
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;顺序流水线：任务的流出和流入顺序相同，上面的演示都是顺序流水线&lt;/li&gt;
+&lt;li&gt;乱序流水线：任务的流出和流入顺序可以不同，允许先完成后面的任务&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;按硬件划分&#34;&gt;按硬件划分
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;部件级流水线/操作流水线：将处理器的算术逻辑运算部件（ALU）分段，使得各种类型的运算可以通过流水线方式执行。这是CPU内部针对单个复杂功能单元的流水化。例如，一个浮点乘法器可以被分成多个阶段（阶码处理、尾数处理、规格化等），从而让多个浮点乘法操作在内部重叠执行，提高该部件的吞吐率。&lt;/li&gt;
+&lt;li&gt;处理器级流水线/指令流水线：指令的解释和执行通过流水线实现。一条指令的执行过程被分成若干个子过程，每个子过程在一个独立的功能单元中执行。上面的演示都是指令流水线。RISC五级流水线就是一种指令流水线设计。&lt;/li&gt;
+&lt;li&gt;处理器间流水线/宏流水线：两个或更多处理器的连接，用于处理同一个数据流，每个处理器完成整个任务的一部分。常用于高性能计算或流处理系统&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;按照线性性划分&#34;&gt;按照线性性划分
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;线性流水线：各阶段串行连接，没有反馈回路。数据每个阶段中在每个段最多流过一次&lt;/li&gt;
+&lt;li&gt;非线性流水线：存在反馈回路，允许数据流回前面的阶段再次处理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;基于risc-v的流水线cpu&#34;&gt;基于RISC-V的流水线CPU
+&lt;/h2&gt;&lt;h3 id=&#34;risc-v的流水线友好设计&#34;&gt;RISC-V的流水线友好设计
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;所有指令都是32位&lt;/li&gt;
+&lt;li&gt;精简和规整的指令格式&lt;/li&gt;
+&lt;li&gt;Load/Store架构&lt;/li&gt;
+&lt;li&gt;内存操作数强制对齐&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;流水线吞吐量&#34;&gt;流水线吞吐量
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;公式定义
+$$TP = \frac{n}{T}$$
+n: 处理的指令总数（任务数量）
+T: 完成任务的总时间
+物理意义：单位时间内完成的指令数&lt;/li&gt;
+&lt;li&gt;性能上限约束
+$$TP &lt; TP_{max}$$
+含义：实际吞吐量永远低于理论极限值&lt;/li&gt;
+&lt;li&gt;实际运行时间
+$$ T = (m+n-1) \times Δt_0 \newline
+     TP = \frac{n}{T} = \frac{n}{(m+n-1) \times Δt_0}\newline
+     TP_{max} = \frac{1}{Δt_0}
+  $$
+可以发现当$n &amp;raquo; m$时，有$TP \approx TP_{max}$
+可以写成
+$$ TP = \frac{n}{n+m-1}TP_{max}$$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;应用场景下的流水线吞吐量&#34;&gt;应用场景下的流水线吞吐量
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;如之前的演示所反映的，流水线在实际可能会遇到瓶颈问题。容易想到，这一问题可以通过将时钟周期设置为最慢阶段耗时来解决，但这并不能提高效率。为了实际提高效率有其他解法&lt;/li&gt;
+&lt;li&gt;解决方案
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;细分(Subdivision)&lt;/strong&gt;：将最长的阶段拆分为多个子阶段，每段耗时$Δt$&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;资源复制(Repetition)&lt;/strong&gt;：每$Δt$可开始一个新任务。这一解决方案实质上是在S2的内部执行并行加速。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;更多性能衡量指标sp与η&#34;&gt;更多性能衡量指标——Sp与η
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Sp&lt;/strong&gt;(speed up)
+$$Sp = \frac{n \times m \times Δt_0}{(m+n-1)Δt_0} = \frac{n \times m}{m + n -1}$$
+Sp衡量的是流水线相较串行加快运行速度的程度，当$n&amp;raquo;m$，即输入数据很多时，有$Sp \approx m$，逼近上确界&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;η&lt;/strong&gt;(Efficiency)
+$$η = \frac{Sp}{m} = \frac{n}{m+n-1}$$
+η的含义是实际加速比比理论最大加速比，当$n&amp;raquo;m$，即输入数据很多时，有$Sη \approx 1$，逼近上确界&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
         <title>SFI技术</title>
         <link>https://example.com/p/sfi%E6%8A%80%E6%9C%AF/</link>
         <pubDate>Fri, 11 Jul 2025 22:01:43 +0800</pubDate>
