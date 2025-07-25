@@ -7,10 +7,10 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
         <copyright>Example Person</copyright>
-        <lastBuildDate>Tue, 15 Jul 2025 09:34:00 +0800</lastBuildDate><atom:link href="https://example.com/tags/%E5%A4%84%E7%90%86%E5%99%A8/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 25 Jul 2025 10:18:00 +0800</lastBuildDate><atom:link href="https://example.com/tags/%E5%A4%84%E7%90%86%E5%99%A8/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>流水线与在处理器中的应用</title>
         <link>https://example.com/p/%E6%B5%81%E6%B0%B4%E7%BA%BF%E4%B8%8E%E5%9C%A8%E5%A4%84%E7%90%86%E5%99%A8%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/</link>
-        <pubDate>Tue, 15 Jul 2025 09:34:00 +0800</pubDate>
+        <pubDate>Fri, 25 Jul 2025 10:18:00 +0800</pubDate>
         
         <guid>https://example.com/p/%E6%B5%81%E6%B0%B4%E7%BA%BF%E4%B8%8E%E5%9C%A8%E5%A4%84%E7%90%86%E5%99%A8%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/</guid>
         <description>&lt;h1 id=&#34;流水线cpu&#34;&gt;流水线CPU
@@ -236,8 +236,136 @@ $$Sp = \frac{n \times m \times Δt_0}{(m+n-1)Δt_0} = \frac{n \times m}{m + n -1
 Sp衡量的是流水线相较串行加快运行速度的程度，当$n&amp;raquo;m$，即输入数据很多时，有$Sp \approx m$，逼近上确界&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;η&lt;/strong&gt;(Efficiency)
 $$η = \frac{Sp}{m} = \frac{n}{m+n-1}$$
-η的含义是实际加速比比理论最大加速比，当$n&amp;raquo;m$，即输入数据很多时，有$Sη \approx 1$，逼近上确界&lt;/li&gt;
+η的含义是实际加速比比理论最大加速比，当$n&amp;raquo;m$，即输入数据很多时，有$η \approx 1$，逼近上确界&lt;/li&gt;
 &lt;/ul&gt;
+&lt;h2 id=&#34;流水线冒险&#34;&gt;流水线冒险
+&lt;/h2&gt;&lt;p&gt;在前面的演示中，已经看到了流水线中存在运行冲突的现象。事实上实践中可能发生的冲突情况较多，它们被统称为hazard（冒险）&lt;/p&gt;
+&lt;h3 id=&#34;冒险类型&#34;&gt;冒险类型
+&lt;/h3&gt;&lt;h4 id=&#34;数据冒险&#34;&gt;数据冒险
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;以上的演示都未展示具体的指令内容和访问的对象，并且默认了各条指令间是独立的。但在实践场景中，指令间可能是关联的，这将引发&lt;strong&gt;数据冒险&lt;/strong&gt;。如下：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-asm&#34; data-lang=&#34;asm&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nf&#34;&gt;add&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;x1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;x2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;x3&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nf&#34;&gt;sub&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;x4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;x1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;x5&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;可以看到第二条指令用到了第一条指令应在wb阶段写入的数据，流程图如下
+  &lt;p align=&#34;center&#34;&gt;
+      &lt;img src=&#34;https://example.com/images/pipeline9.png&#34; alt=&#34;冒险1&#34; width=&#34;75%&#34;&gt;
+  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;可以看到在第一个指令完成WB之前就执行了第二个指令的ID，这会导致第二条指令无法去到正确的x1值。这种错误被称为&lt;strong&gt;读后写&lt;/strong&gt;(RAW - Read After Write)&lt;/li&gt;
+&lt;li&gt;此外还有一种较为少见的冒险&lt;strong&gt;写后读&lt;/strong&gt;(WAR - Write After Read)。如果我们按照上面的演示思路来思考，会发现似乎是不会出现写后读问题的，这是因为写后读事实上一般出现在乱序执行的处理器中。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-asm&#34; data-lang=&#34;asm&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nf&#34;&gt;add&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;r1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;r2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;r3&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nf&#34;&gt;sub&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;r2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;r4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;r5&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;在乱序执行的处理器中，可能有R2的WB在R1的ID前完成的情况，此时指令1读取r2值时读到的是被写入的新值而不是想要写的值。这种错误就是写后读&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;结构冒险&#34;&gt;结构冒险
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;除去因为数据处理顺序的原因产生的冒险，如上面提到的，实践中可能存在不同指令的不同阶段访问相同硬件资源的问题，这也会引发冒险，被称为&lt;strong&gt;结构冒险&lt;/strong&gt;
+  &lt;p align=&#34;center&#34;&gt;
+      &lt;img src=&#34;https://example.com/images/pipeline10.png&#34; alt=&#34;冒险1&#34; width=&#34;100%&#34;&gt;
+  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;如图，存在两条指令的IF和MEM阶段重叠，同时访问内存，产生冒险&lt;/li&gt;
+&lt;li&gt;此外，同时访问只有一个写入端口的寄存器也会相似地产生结构冒险&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;控制分支冒险&#34;&gt;控制/分支冒险
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;在上面的例子中，相邻指令都是物理相邻的，即下一条指令的地址即为上一条指令+4，可以在读上一条指令时即确定下一条指令地址。但是如果上一条指令是跳转指令，那么要等到上一条指令执行完，才能解析出下一条指令的地址，这种情况下就可能发生&lt;strong&gt;控制/分支冒险&lt;/strong&gt;
+&lt;p align=&#34;center&#34;&gt;
+      &lt;img src=&#34;https://example.com/images/pipeline11.png&#34; alt=&#34;冒险1&#34; width=&#34;140%&#34;&gt;
+&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;可以看到在还不知道跳转指令的跳转地址时，后续指令已经执行了IF，这里的地址是预测性的，如果预测错误，在后续会被冲掉，这就是控制/分支冒险&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;解决冒险&#34;&gt;解决冒险
+&lt;/h3&gt;&lt;h4 id=&#34;数据冒险-1&#34;&gt;数据冒险
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;旁路
+&lt;ul&gt;
+&lt;li&gt;原理：当指令的结果在流水线中计算出来后不等待其写回寄存器，而是直接用专门的数据通路（旁路）将结果转发给需要的后续指令&lt;/li&gt;
+&lt;li&gt;缺点：不能解决所有RAW，特别是当数据来自load指令时，数据在mem阶段菜可用，如果后续指令在mem前就需要，仍然会产生停顿&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;暂停/气泡
+&lt;ul&gt;
+&lt;li&gt;原理：当旁路无法解决冒险时，流水线控制器会插入一个或多个“气泡”（即空操作），强制延迟后续指令知道数据可用&lt;/li&gt;
+&lt;li&gt;缺点：引入停顿，降低了流水线的CPI（每条指令的时钟周期），从未降低了性能&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;寄存器重命名
+&lt;ul&gt;
+&lt;li&gt;原理：主要用于解决WAR（写后读）和WAW（写后写）这两种“假”数据依赖（或称名称依赖，Name Dependencies）。处理器为逻辑寄存器分配不同的物理寄存器，这样，不同的指令即使操作同一个逻辑寄存器，也可以写入到不同的物理寄存器，从而消除冲突，允许指令乱序执行。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;结构冒险-1&#34;&gt;结构冒险
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;复制资源
+&lt;ul&gt;
+&lt;li&gt;原理：为发生冲突的硬件增加额外的副本。这是最直接和有效的解决方案&lt;/li&gt;
+&lt;li&gt;示例
+&lt;ul&gt;
+&lt;li&gt;内存端口冲突：采用哈弗架构，提供独立的指令内存和数据内存，或者在cpu内部设置独立的指令缓存和数据缓存，从而允许同时访问&lt;/li&gt;
+&lt;li&gt;功能单元冲突：如果alu是瓶颈，可以增加多个alu，以便不同的指令可以并行使用&lt;/li&gt;
+&lt;li&gt;寄存器文件端口冲突：增加寄存器文件的读写端口数量，允许在同一周期内进行更多的读写操作&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;缺点：增加了硬件成本和复杂度&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;流水线暂停
+&lt;ul&gt;
+&lt;li&gt;原理：当发生结构冒险时，暂停其中一条指令，直到所需的资源可用&lt;/li&gt;
+&lt;li&gt;缺点：引入停顿，降低性能。通常仅作为复制资源的后备方式或在复制资源代价过高时使用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;控制冒险&#34;&gt;控制冒险
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;分支预测
+&lt;ul&gt;
+&lt;li&gt;通过复杂的硬件逻辑来预测分支的走向和目标地址&lt;/li&gt;
+&lt;li&gt;分类：
+&lt;ul&gt;
+&lt;li&gt;静态预测：基于编译时的信息和简单的经验法则&lt;/li&gt;
+&lt;li&gt;动态预测：基于历史行为来预测&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;延迟分支
+&lt;ul&gt;
+&lt;li&gt;原理：在分支指令后紧接着一条或几条分支延迟槽指令&lt;/li&gt;
+&lt;li&gt;缺点：填充难度较大，在现代高性能处理器较少使用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;分支消除/条件执行&lt;/li&gt;
+&lt;li&gt;原理：对一些简单的条件操作，可以通过硬件支持，将条件分支转换为无需跳转的条件执行指令。&lt;/li&gt;
+&lt;li&gt;缺点：并非所有复杂的条件分支都能通过这种方式消除&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;流水线数据通路&#34;&gt;流水线数据通路
+&lt;/h2&gt; &lt;p align=&#34;center&#34;&gt;
+        &lt;img src=&#34;https://example.com/images/pipeline12.png&#34; alt=&#34;冒险1&#34; width=&#34;100%&#34;&gt;
+  &lt;/p&gt;
 </description>
         </item>
         
