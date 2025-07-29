@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="介绍操作系统的相关计算机组成">
+<title>操作系统</title>
+
+<link rel='canonical' href='https://example.com/p/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/'>
+
+<link rel="stylesheet" href="/scss/style.min.cfa5b1b0e78d61c00a14173992a1f3fa3b5c1b9fa34d023de959af564e7b19dd.css"><meta property='og:title' content="操作系统">
+<meta property='og:description' content="介绍操作系统的相关计算机组成">
+<meta property='og:url' content='https://example.com/p/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='计算机系统' /><meta property='article:tag' content='操作系统' /><meta property='article:published_time' content='2025-07-29T20:57:00&#43;08:00'/><meta property='article:modified_time' content='2025-07-29T20:57:00&#43;08:00'/>
+<meta name="twitter:title" content="操作系统">
+<meta name="twitter:description" content="介绍操作系统的相关计算机组成">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_f509edb42ecc0ebd.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://example.com/" selected>English</option>
+                                
+                                    <option value="https://example.com/zh-cn/" >中文</option>
+                                
+                                    <option value="https://example.com/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Dark Mode</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#基本信息介绍">基本信息介绍</a>
+      <ol>
+        <li><a href="#操作系统信息">操作系统信息</a></li>
+        <li><a href="#计算机系统的四个组成部分">计算机系统的四个组成部分</a></li>
+        <li><a href="#操作系统定义与视角">操作系统定义与视角</a>
+          <ol>
+            <li><a href="#用户视角-vs-系统视角">用户视角 vs 系统视角</a></li>
+            <li><a href="#操作系统定义">操作系统定义</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#计算机系统组成">计算机系统组成</a>
+      <ol>
+        <li><a href="#硬件组件">硬件组件</a>
+          <ol>
+            <li><a href="#基本结构">基本结构</a></li>
+            <li><a href="#设备控制器">设备控制器</a></li>
+            <li><a href="#直接内存访问dma">直接内存访问(DMA)</a></li>
+          </ol>
+        </li>
+        <li><a href="#中断与陷阱">中断与陷阱</a>
+          <ol>
+            <li><a href="#中断与陷阱讲解">中断与陷阱讲解</a></li>
+            <li><a href="#操作系统对中断的处理">操作系统对中断的处理</a></li>
+          </ol>
+        </li>
+        <li><a href="#io">I/O</a>
+          <ol>
+            <li><a href="#io基本介绍">I/O基本介绍</a></li>
+            <li><a href="#中断处理详细流程">中断处理详细流程</a></li>
+          </ol>
+        </li>
+        <li><a href="#存储结构">存储结构</a>
+          <ol>
+            <li><a href="#存储层次结构">存储层次结构</a></li>
+          </ol>
+        </li>
+        <li><a href="#缓存">缓存</a>
+          <ol>
+            <li><a href="#缓存基本概念">缓存基本概念</a></li>
+            <li><a href="#虚拟缓存-vs-物理缓存">虚拟缓存 vs 物理缓存</a></li>
+          </ol>
+        </li>
+        <li><a href="#计算机系统架构">计算机系统架构</a>
+          <ol>
+            <li><a href="#系统分类">系统分类</a></li>
+            <li><a href="#单处理器系统">单处理器系统</a></li>
+            <li><a href="#多处理器系统">多处理器系统</a></li>
+            <li><a href="#多核设计">多核设计</a></li>
+            <li><a href="#集群系统">集群系统</a></li>
+            <li><a href="#分布式系统">分布式系统</a></li>
+            <li><a href="#特殊用途系统">特殊用途系统</a></li>
+            <li><a href="#点对点计算">点对点计算</a></li>
+          </ol>
+        </li>
+        <li><a href="#操作系统操作">操作系统操作</a>
+          <ol>
+            <li><a href="#多道程序设计multiprogramming">多道程序设计(Multiprogramming)</a></li>
+            <li><a href="#多任务multitasking">多任务(Multitasking)</a></li>
+            <li><a href="#双模式操作">双模式操作</a></li>
+            <li><a href="#定时器timer">定时器(Timer)</a></li>
+          </ol>
+        </li>
+        <li><a href="#资源管理">资源管理</a>
+          <ol>
+            <li><a href="#进程管理">进程管理</a></li>
+            <li><a href="#内存管理">内存管理</a></li>
+            <li><a href="#文件系统管理">文件系统管理</a></li>
+            <li><a href="#大容量存储管理">大容量存储管理</a></li>
+            <li><a href="#io系统管理">I/O系统管理</a></li>
+          </ol>
+        </li>
+        <li><a href="#操作系统设计原则">操作系统设计原则</a>
+          <ol>
+            <li><a href="#策略与机制分离">策略与机制分离</a></li>
+            <li><a href="#虚拟化">虚拟化</a></li>
+            <li><a href="#抽象">抽象</a></li>
+          </ol>
+        </li>
+        <li><a href="#总结">总结</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/" >
+                计算机体系结构
+            </a>
+        
+            <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" >
+                操作系统
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            介绍操作系统的相关计算机组成
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jul 29, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    3 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="操作系统">操作系统
+</h1><h2 id="基本信息介绍">基本信息介绍
+</h2><h3 id="操作系统信息">操作系统信息
+</h3><ul>
+<li>在经典的五级结构划分中，计算机组成结构包含<strong>数字逻辑层</strong>、<strong>微体系结构层</strong>、<strong>指令集架构层</strong>、<strong>操作系统层</strong>、<strong>应用程序层</strong>。其中前三层属于&quot;硬件层&quot;，最后一层属于&quot;软件层&quot;。操作系统的地位就是硬件和软件之间的媒介。扮演资源分配器和控制程序的角色。</li>
+</ul>
+<h3 id="计算机系统的四个组成部分">计算机系统的四个组成部分
+</h3><ul>
+<li><strong>硬件(Hardware)</strong>：提供基本的计算资源
+<ul>
+<li>CPU、内存、I/O设备等</li>
+</ul>
+</li>
+<li><strong>操作系统(Operating System)</strong>：控制和协调硬件在用户之间的使用
+<ul>
+<li>资源分配器：管理所有资源，决定冲突请求的处理以实现高效和公平的资源共享</li>
+<li>控制程序：控制程序执行以防止错误和系统的不当使用</li>
+</ul>
+</li>
+<li><strong>应用程序(Application Programs)</strong>：使用系统资源解决计算问题
+<ul>
+<li>如文字处理器、编译器、Web浏览器等</li>
+</ul>
+</li>
+<li><strong>用户(Users)</strong>：
+<ul>
+<li>人、机器、其他计算机等</li>
+</ul>
+</li>
+</ul>
+<h3 id="操作系统定义与视角">操作系统定义与视角
+</h3><h4 id="用户视角-vs-系统视角">用户视角 vs 系统视角
+</h4><ul>
+<li><strong>用户视角</strong>：
+<ul>
+<li>用户需要便利性和易用性</li>
+<li>不太关心资源利用率</li>
+<li>共享计算机（如主机）必须让所有用户满意</li>
+<li>手持设备资源受限，优化可用性和电池寿命</li>
+</ul>
+</li>
+<li><strong>系统视角</strong>：
+<ul>
+<li>操作系统是资源分配器</li>
+<li>操作系统是控制程序</li>
+</ul>
+</li>
+</ul>
+<h4 id="操作系统定义">操作系统定义
+</h4><ul>
+<li><strong>近似定义</strong>：&ldquo;当你订购操作系统时，供应商提供的所有东西&rdquo;
+<ul>
+<li>没有普遍接受的定义</li>
+<li>供应商提供的内容可能差异很大</li>
+</ul>
+</li>
+<li><strong>内核(Kernel)</strong>：&ldquo;始终在计算机上运行的一个程序&rdquo;
+<ul>
+<li>其他都是系统程序或应用程序</li>
+</ul>
+</li>
+<li><strong>操作系统在不同上下文中可能有不同含义</strong></li>
+</ul>
+<hr>
+<h2 id="计算机系统组成">计算机系统组成
+</h2><h3 id="硬件组件">硬件组件
+</h3><h4 id="基本结构">基本结构
+</h4><ul>
+<li><strong>CPU和设备控制器</strong>通过总线连接共享内存</li>
+<li>CPU和设备<strong>并发执行</strong>，竞争内存周期</li>
+</ul>
+<h4 id="设备控制器">设备控制器
+</h4><ul>
+<li>每个设备控制器负责特定类型的设备
+<ul>
+<li>磁盘控制器、USB控制器等</li>
+</ul>
+</li>
+<li>每个设备控制器都有<strong>本地缓冲区</strong></li>
+<li><strong>I/O过程</strong>：在设备和控制器本地缓冲区之间进行</li>
+<li>CPU在主内存和控制器缓冲区之间移动数据</li>
+<li>I/O设备和CPU可以<strong>并发执行</strong></li>
+</ul>
+<h4 id="直接内存访问dma">直接内存访问(DMA)
+</h4><ul>
+<li><strong>用途</strong>：用于能够以接近内存速度传输信息的高速I/O设备
+<ul>
+<li>如以太网、硬盘、CD-ROM等</li>
+</ul>
+</li>
+<li><strong>工作流程</strong>：
+<ol>
+<li>设备驱动程序向控制器发送I/O描述符</li>
+<li>I/O描述符包含：操作类型、内存地址等</li>
+<li>控制器在其本地缓冲区和主内存之间传输数据块，无需CPU干预</li>
+<li>整个I/O请求完成时只产生一个中断</li>
+</ol>
+</li>
+</ul>
+<h3 id="中断与陷阱">中断与陷阱
+</h3><h4 id="中断与陷阱讲解">中断与陷阱讲解
+</h4><h5 id="中断interrupt">中断（Interrupt）
+</h5><ul>
+<li><strong>定义</strong>：中断是由外部硬件设备产生的异步事件，用来通知CPU某个事件已经发生</li>
+<li><strong>特点</strong>：
+<ul>
+<li>异步发生：不可预知的时间点</li>
+<li>由外部硬件触发（如键盘输入、鼠标点击、网络数据到达等）</li>
+<li>CPU可以选择性地响应或屏蔽某些中断</li>
+</ul>
+</li>
+<li><strong>类型</strong>：
+<ul>
+<li><strong>硬件中断</strong>：由硬件设备产生（如定时器中断、I/O完成中断）</li>
+<li><strong>软件中断</strong>：由软件指令产生（如系统调用）</li>
+</ul>
+</li>
+<li><strong>处理流程</strong>：
+<ol>
+<li>硬件检测到中断信号</li>
+<li>CPU完成当前指令执行</li>
+<li>保存当前程序状态（寄存器、程序计数器等）</li>
+<li>跳转到中断服务程序（ISR）</li>
+<li>执行中断处理</li>
+<li>恢复被中断程序的状态</li>
+<li>继续执行被中断的程序</li>
+</ol>
+</li>
+</ul>
+<h5 id="陷阱trap">陷阱（Trap）
+</h5><ul>
+<li><strong>定义</strong>：陷阱是由正在执行的程序内部产生的同步事件</li>
+<li><strong>特点</strong>：
+<ul>
+<li>同步发生：在特定指令执行时产生</li>
+<li>由当前执行的程序触发</li>
+<li>通常用于系统调用和异常处理</li>
+</ul>
+</li>
+<li><strong>类型</strong>：
+<ul>
+<li><strong>系统调用陷阱</strong>：用户程序请求操作系统服务</li>
+<li><strong>异常陷阱</strong>：程序执行错误（如除零错误、非法内存访问等）</li>
+<li><strong>调试陷阱</strong>：用于程序调试（如断点）</li>
+</ul>
+</li>
+<li><strong>处理流程</strong>：
+<ol>
+<li>程序执行特定指令（如系统调用指令）</li>
+<li>CPU立即响应陷阱</li>
+<li>切换到内核模式</li>
+<li>跳转到相应的陷阱处理程序</li>
+<li>执行系统服务或异常处理</li>
+<li>返回用户模式（如果适用）</li>
+<li>继续执行程序</li>
+</ol>
+</li>
+</ul>
+<h5 id="中断与陷阱的区别">中断与陷阱的区别
+</h5><ul>
+<li><strong>触发源</strong>
+<ul>
+<li>中断：外部硬件设备</li>
+<li>陷阱：程序内部指令</li>
+</ul>
+</li>
+<li><strong>时机</strong>
+<ul>
+<li>中断：异步，不可预测</li>
+<li>陷阱：同步，可预测</li>
+</ul>
+</li>
+<li><strong>用途</strong>
+<ul>
+<li>中断：处理外部事件，提高系统响应性</li>
+<li>陷阱：实现系统调用，处理程序异常</li>
+</ul>
+</li>
+<li><strong>可屏蔽性</strong>
+<ul>
+<li>中断：部分可屏蔽</li>
+<li>陷阱：通常不可屏蔽</li>
+</ul>
+</li>
+</ul>
+<h5 id="重要性">重要性
+</h5><ul>
+<li><strong>提高系统效率</strong>：避免CPU空等，实现并发处理</li>
+<li><strong>实现系统调用</strong>：用户程序与内核通信的桥梁</li>
+<li><strong>错误处理</strong>：及时处理程序运行时错误</li>
+<li><strong>实时响应</strong>：确保系统能够及时响应外部事件</li>
+</ul>
+<h4 id="操作系统对中断的处理">操作系统对中断的处理
+</h4><h5 id="中断处理机制">中断处理机制
+</h5><ul>
+<li><strong>中断向量表(Interrupt Vector Table)</strong>
+<ul>
+<li>存储中断服务程序入口地址的表格</li>
+<li>每个中断类型对应一个终端号和处理程序地址</li>
+<li>通常位于内存的固定位置</li>
+</ul>
+</li>
+<li><strong>中断优先级</strong>
+<ul>
+<li><strong>可屏蔽中断(Maskable Interrupt)</strong>：可以被CPU忽略或延迟处理</li>
+<li><strong>不可屏蔽中断(Non-Maskable Interrupt, NMI)</strong>：必须立即处理的紧急中断</li>
+<li><strong>优先级排序</strong>：高优先级中断可以打断低优先级中断的处理</li>
+</ul>
+</li>
+</ul>
+<h5 id="中断处理步骤">中断处理步骤
+</h5><ol>
+<li><strong>中断识别</strong>
+<ul>
+<li>硬件产生中断信号</li>
+<li>CUPU在每个指令周期结束时检查中断请求</li>
+<li>确定中断源和中断类型】</li>
+</ul>
+</li>
+<li><strong>现场保护</strong>
+<ul>
+<li>自动保存：CPU自动保存程序状态字</li>
+<li>手动保存：中断服务程序保存其他寄存器内容</li>
+<li>保存到内核栈或进程控制块</li>
+</ul>
+</li>
+<li><strong>中断分发</strong>
+<ul>
+<li>根据中断号查找中断向量表</li>
+<li>跳转到对应的中断服务程序(ISR)</li>
+<li>切换到内核模式（如果尚未切换）</li>
+</ul>
+</li>
+<li><strong>中断处理</strong>
+<ul>
+<li>执行具体的中断服务代码</li>
+<li>处理硬件设备的请求</li>
+</ul>
+</li>
+<li><strong>现场恢复</strong>
+<ul>
+<li>恢复之前保存的寄存器内容</li>
+<li>恢复程序状态字和程序计数器</li>
+<li>返回被中断的程序继续执行</li>
+</ul>
+</li>
+</ol>
+<h6 id="中断处理策略">中断处理策略
+</h6><ul>
+<li>
+<p><strong>立即处理（Immediate Processing）</strong></p>
+<ul>
+<li>中断发生时立即处理</li>
+<li>适用于紧急和高优先级中断</li>
+<li>可能影响系统响应时间</li>
+</ul>
+</li>
+<li>
+<p><strong>延迟处理（Deferred Processing）</strong></p>
+<ul>
+<li>将中断处理分为上半部和下半部</li>
+<li><strong>上半部</strong>：快速处理紧急部分，清除中断源</li>
+<li><strong>下半部</strong>：延后处理耗时的非紧急部分</li>
+<li>Linux中的软中断（softirq）和工作队列（workqueue）</li>
+</ul>
+</li>
+<li>
+<p><strong>中断合并（Interrupt Coalescing）</strong></p>
+<ul>
+<li>将多个相同类型的中断合并处理</li>
+<li>减少中断处理开销</li>
+<li>提高系统吞吐量</li>
+</ul>
+</li>
+</ul>
+<h6 id="中断控制器">中断控制器
+</h6><ul>
+<li>
+<p><strong>可编程中断控制器（PIC）</strong></p>
+<ul>
+<li>管理多个中断源</li>
+<li>设置中断优先级</li>
+<li>屏蔽特定中断</li>
+</ul>
+</li>
+<li>
+<p><strong>高级可编程中断控制器（APIC）</strong></p>
+<ul>
+<li>支持多处理器系统</li>
+<li>提供更灵活的中断路由</li>
+<li>支持中断重定向和负载均衡</li>
+</ul>
+</li>
+</ul>
+<h6 id="现代操作系统的优化">现代操作系统的优化
+</h6><ul>
+<li>
+<p><strong>中断线程化</strong></p>
+<ul>
+<li>将中断处理程序作为内核线程运行</li>
+<li>提高系统的实时性和可预测性</li>
+<li>便于调试和性能分析</li>
+</ul>
+</li>
+<li>
+<p><strong>中断亲和性（Interrupt Affinity）</strong></p>
+<ul>
+<li>将特定中断绑定到特定CPU核心</li>
+<li>提高缓存利用率和性能</li>
+<li>减少处理器间通信开销</li>
+</ul>
+</li>
+<li>
+<p><strong>动态中断分配</strong></p>
+<ul>
+<li>根据系统负载动态调整中断处理</li>
+<li>实现负载均衡</li>
+<li>适应不同的工作负载模式</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="io">I/O
+</h3><h4 id="io基本介绍">I/O基本介绍
+</h4><h5 id="从系统调用到设备的io过程">从系统调用到设备的I/O过程
+</h5><ul>
+<li><strong>系统调用访问</strong>：程序使用系统调用访问系统资源
+<ul>
+<li>如文件、网络等</li>
+</ul>
+</li>
+<li><strong>设备访问转换</strong>：操作系统将其转换为设备访问并发出I/O请求</li>
+<li><strong>I/O请求传输</strong>：I/O请求发送到设备驱动程序，然后到控制器
+<ul>
+<li>如读取磁盘块、发送/接收数据包等</li>
+</ul>
+</li>
+<li><strong>等待处理</strong>：
+<ul>
+<li><strong>同步I/O</strong>：OS让程序等待</li>
+<li><strong>异步I/O</strong>：OS不等待直接返回给程序</li>
+</ul>
+</li>
+<li><strong>进程切换</strong>：当请求者等待时，OS可能切换到另一个程序</li>
+<li><strong>I/O完成</strong>：I/O完成后控制器中断OS</li>
+<li><strong>处理结果</strong>：
+<ul>
+<li><strong>同步I/O</strong>：OS处理I/O然后唤醒程序</li>
+<li><strong>异步I/O</strong>：OS发送信号给程序</li>
+</ul>
+</li>
+</ul>
+<h5 id="中断驱动的io循环">中断驱动的I/O循环
+</h5><ul>
+<li>操作系统通常是<strong>中断驱动</strong>的</li>
+<li>中断传输控制到中断服务程序</li>
+<li><strong>中断向量</strong>：包含所有服务程序地址的表格</li>
+<li>在服务另一个中断时，传入的中断被禁用以防止中断丢失</li>
+<li>中断处理程序必须保存（被中断的）执行状态</li>
+</ul>
+<h4 id="中断处理详细流程">中断处理详细流程
+</h4><ol>
+<li><strong>中断识别</strong>：
+<ul>
+<li>硬件产生中断信号</li>
+<li>CPU在每个指令周期结束时检查中断请求</li>
+<li>确定中断源和中断类型</li>
+</ul>
+</li>
+<li><strong>现场保护</strong>：
+<ul>
+<li>操作系统保存CPU的执行状态</li>
+<li>保存寄存器和程序计数器(PC)</li>
+</ul>
+</li>
+<li><strong>中断分发</strong>：
+<ul>
+<li>OS确定哪个设备造成了中断</li>
+<li><strong>轮询(Polling)<strong>或</strong>向量中断系统</strong></li>
+</ul>
+</li>
+<li><strong>中断处理</strong>：
+<ul>
+<li>OS通过调用设备驱动程序处理中断</li>
+</ul>
+</li>
+<li><strong>现场恢复</strong>：
+<ul>
+<li>OS将CPU执行恢复到保存的状态</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="存储结构">存储结构
+</h3><h4 id="存储层次结构">存储层次结构
+</h4><h5 id="主存储器">主存储器
+</h5><ul>
+<li><strong>主内存</strong>：CPU能够直接访问的唯一大容量存储
+<ul>
+<li><strong>随机访问</strong>，通常是<strong>易失性</strong>的</li>
+</ul>
+</li>
+<li><strong>辅助存储</strong>：大容量非易失性存储
+<ul>
+<li><strong>磁盘</strong>是最常见的辅助存储设备(HDD)</li>
+<li>由覆盖磁性记录材料的刚性金属或玻璃盘片组成</li>
+<li>磁盘表面逻辑上分为<strong>磁道</strong>和<strong>扇区</strong></li>
+<li>磁盘控制器决定OS和设备之间的交互</li>
+</ul>
+</li>
+</ul>
+<h5 id="存储系统层次结构">存储系统层次结构
+</h5><p>存储系统可以按层次组织，考虑以下因素：</p>
+<ul>
+<li><strong>速度(Speed)</strong></li>
+<li><strong>成本(Cost)</strong></li>
+<li><strong>易失性(Volatility)</strong></li>
+</ul>
+<p><strong>存储性能层次（从快到慢）</strong>：</p>
+<ol>
+<li>CPU寄存器</li>
+<li>CPU缓存(L1/L2/L3)</li>
+<li>主内存(RAM)</li>
+<li>辅助存储(SSD/HDD)</li>
+<li>光学存储/磁带</li>
+</ol>
+<hr>
+<h3 id="缓存">缓存
+</h3><h4 id="缓存基本概念">缓存基本概念
+</h4><h5 id="缓存原理">缓存原理
+</h5><ul>
+<li><strong>缓存</strong>：将信息复制到更快存储系统中</li>
+<li><strong>主内存</strong>可以看作是辅助存储的缓存</li>
+<li><strong>CPU缓存</strong>是主内存的缓存</li>
+<li><strong>缓存是在多个级别执行的重要原理</strong>
+<ul>
+<li>硬件、操作系统、用户程序等</li>
+</ul>
+</li>
+</ul>
+<h5 id="缓存工作机制">缓存工作机制
+</h5><ul>
+<li><strong>数据复制</strong>：使用中的数据从较慢存储临时复制到较快存储</li>
+<li><strong>缓存检查</strong>：首先检查较快存储(缓存)以确定数据是否存在</li>
+<li><strong>缓存命中</strong>：如果在缓存中，直接从缓存使用数据(快速)</li>
+<li><strong>缓存未命中</strong>：如果不在缓存中，先将数据复制到缓存然后使用</li>
+<li><strong>缓存特点</strong>：缓存通常比被缓存的存储小</li>
+</ul>
+<h5 id="缓存管理">缓存管理
+</h5><ul>
+<li><strong>缓存管理</strong>是重要的设计问题
+<ul>
+<li>缓存大小</li>
+<li>替换策略</li>
+</ul>
+</li>
+<li><strong>多任务环境</strong>必须小心使用最新值，无论它存储在存储层次的哪里</li>
+<li><strong>多处理器环境</strong>必须在硬件中提供缓存一致性，确保所有CPU在其缓存中都有最新值</li>
+</ul>
+<h4 id="虚拟缓存-vs-物理缓存">虚拟缓存 vs 物理缓存
+</h4><ul>
+<li><strong>虚拟缓存</strong>：使用虚拟地址进行缓存</li>
+<li><strong>物理缓存</strong>：使用物理地址进行缓存</li>
+<li><strong>缓存一致性</strong>：多处理器必须保证缓存一致性</li>
+</ul>
+<hr>
+<h3 id="计算机系统架构">计算机系统架构
+</h3><h4 id="系统分类">系统分类
+</h4><p>根据通用处理器数量分类：</p>
+<ul>
+<li><strong>单处理器系统</strong></li>
+<li><strong>多处理器系统</strong></li>
+</ul>
+<h4 id="单处理器系统">单处理器系统
+</h4><ul>
+<li>大多数老系统只有一个通用处理器
+<ul>
+<li>如智能手机、PC、服务器、主机</li>
+</ul>
+</li>
+<li>大多数系统也有专用处理器</li>
+</ul>
+<h4 id="多处理器系统">多处理器系统
+</h4><h5 id="基本特征">基本特征
+</h5><ul>
+<li><strong>别名</strong>：并行系统、紧耦合系统</li>
+<li><strong>优势</strong>：
+<ul>
+<li><strong>增加吞吐量</strong></li>
+<li><strong>规模经济</strong></li>
+<li><strong>增加可靠性</strong>：优雅降级或容错</li>
+</ul>
+</li>
+</ul>
+<h5 id="多处理器类型">多处理器类型
+</h5><ul>
+<li><strong>非对称多处理(Asymmetric Multiprocessing)</strong></li>
+<li><strong>对称多处理(SMP, Symmetric Multiprocessing)</strong></li>
+</ul>
+<h4 id="多核设计">多核设计
+</h4><h5 id="多核-vs-超线程">多核 vs 超线程
+</h5><ul>
+<li><strong>多核</strong>：单个芯片中多个CPU核心</li>
+<li><strong>超线程</strong>：两个程序可以同时使用一个执行单元(在一个核心内)</li>
+<li><strong>性能依赖</strong>：操作系统、编译器、应用程序</li>
+</ul>
+<h5 id="numa架构">NUMA架构
+</h5><ul>
+<li><strong>非统一内存访问系统(Non-Uniform Memory Access)</strong></li>
+<li><strong>本地内存访问快速</strong>，可扩展性好</li>
+</ul>
+<h4 id="集群系统">集群系统
+</h4><ul>
+<li><strong>多个系统</strong>通过高速网络协同工作</li>
+<li>通常通过**存储区域网络(SAN)**共享存储</li>
+<li><strong>高可用性服务</strong>，可以在故障中生存</li>
+<li><strong>非对称集群</strong>：一台机器处于热备用模式</li>
+<li><strong>对称集群</strong>：多个节点运行应用程序，相互监控</li>
+<li><strong>高性能计算(HPC)</strong>：应用程序必须编写以使用并行化</li>
+</ul>
+<h4 id="分布式系统">分布式系统
+</h4><ul>
+<li><strong>独立系统集合</strong>，可能是异构的，通过网络互连</li>
+<li><strong>网络OS</strong>允许系统交换消息</li>
+<li><strong>分布式系统</strong>创建单一系统的错觉</li>
+</ul>
+<h4 id="特殊用途系统">特殊用途系统
+</h4><h5 id="实时嵌入式系统">实时嵌入式系统
+</h5><ul>
+<li>最普遍的计算机形式</li>
+<li>变化很大</li>
+<li>使用特殊用途(有限用途)实时OS</li>
+</ul>
+<h5 id="多媒体系统">多媒体系统
+</h5><ul>
+<li>数据流必须根据时间限制传送</li>
+</ul>
+<h5 id="手持系统">手持系统
+</h5><ul>
+<li>如PDA、智能手机</li>
+<li>CPU、内存和电源有限</li>
+<li>过去使用功能简化的OS</li>
+</ul>
+<h4 id="点对点计算">点对点计算
+</h4><ul>
+<li><strong>分布式系统的另一种模型</strong></li>
+<li><strong>P2P不区分客户端和服务器</strong></li>
+<li>所有节点都被视为对等体</li>
+<li>可以充当客户端、服务器或两者</li>
+<li><strong>节点必须加入P2P网络</strong>：
+<ul>
+<li>向中央查找服务注册其服务，或</li>
+<li>通过发现协议广播请求和响应服务</li>
+</ul>
+</li>
+<li><strong>示例</strong>：BitTorrent、Napster、Gnutella和区块链平台</li>
+</ul>
+<hr>
+<h3 id="操作系统操作">操作系统操作
+</h3><h4 id="多道程序设计multiprogramming">多道程序设计(Multiprogramming)
+</h4><h5 id="基本概念">基本概念
+</h5><ul>
+<li><strong>多道程序设计</strong>对于效率是必要的</li>
+<li>单个用户无法始终保持CPU和I/O设备忙碌</li>
+<li>用户的计算任务被组织为<strong>作业</strong>(代码和数据)</li>
+</ul>
+<h5 id="工作机制">工作机制
+</h5><ul>
+<li><strong>作业调度</strong>：内核调度作业，使CPU始终有事可做</li>
+<li><strong>内存管理</strong>：系统中作业的子集保存在内存中</li>
+<li><strong>作业切换</strong>：当作业必须等待(如I/O)时，内核切换到另一个作业</li>
+</ul>
+<h4 id="多任务multitasking">多任务(Multitasking)
+</h4><h5 id="时间共享概念">时间共享概念
+</h5><ul>
+<li>**时间共享(多任务)**扩展了多道程序设计</li>
+<li>OS频繁切换作业，用户可以与每个正在运行的作业交互</li>
+<li><strong>响应时间</strong>应该&lt; 1秒</li>
+</ul>
+<h5 id="特征">特征
+</h5><ul>
+<li><strong>每个用户</strong>至少有一个程序在内存中执行(<strong>进程</strong>)</li>
+<li><strong>CPU调度</strong>：如果几个作业同时准备运行</li>
+<li><strong>虚拟/物理内存</strong>：使程序员更容易</li>
+</ul>
+<h4 id="双模式操作">双模式操作
+</h4><h5 id="基本概念-1">基本概念
+</h5><ul>
+<li><strong>操作系统通常是中断驱动的</strong></li>
+<li><strong>效率</strong>，重新获得控制(定时器中断)</li>
+<li><strong>双模式操作</strong>允许OS保护自身和其他系统组件</li>
+</ul>
+<h5 id="模式类型">模式类型
+</h5><ul>
+<li><strong>用户模式</strong>和<strong>内核模式</strong>(或其他名称)</li>
+<li><strong>模式位</strong>区分CPU是在运行用户代码还是内核代码</li>
+<li><strong>特权指令</strong>：一些指令被指定为特权的，只能在内核中执行</li>
+<li><strong>系统调用</strong>：将模式改为内核，从调用返回将其重置为用户</li>
+</ul>
+<h5 id="模式间转换">模式间转换
+</h5><ul>
+<li><strong>系统调用、异常、中断</strong>导致内核/用户模式之间的转换</li>
+</ul>
+<h4 id="定时器timer">定时器(Timer)
+</h4><ul>
+<li><strong>防止无限循环</strong>或进程占用资源</li>
+<li><strong>启用定时器</strong>：设置硬件在某个时间段后中断</li>
+<li><strong>OS设置定时器</strong>：在调度进程之前设置定时器以重新获得控制</li>
+<li><strong>调度定时器</strong>：通常是周期性的(如250Hz)</li>
+<li><strong>无滴答内核</strong>：按需定时器中断(Linux)</li>
+</ul>
+<hr>
+<h3 id="资源管理">资源管理
+</h3><h4 id="进程管理">进程管理
+</h4><h5 id="进程基本概念">进程基本概念
+</h5><ul>
+<li><strong>进程</strong>是正在执行的程序
+<ul>
+<li><strong>程序</strong>是被动实体，<strong>进程</strong>是活动实体</li>
+</ul>
+</li>
+<li>系统有许多进程并发运行</li>
+</ul>
+<h5 id="从程序到进程">从程序到进程
+</h5><ul>
+<li><strong>程序</strong>：存储在磁盘上的被动代码</li>
+<li><strong>进程</strong>：程序装载到内存后的活动实体</li>
+<li><strong>进程需要资源</strong>来完成其任务：
+<ul>
+<li>CPU、内存、I/O、文件、初始化数据等</li>
+</ul>
+</li>
+<li><strong>资源回收</strong>：进程终止时，OS回收所有可重用资源</li>
+</ul>
+<h5 id="进程管理活动">进程管理活动
+</h5><ul>
+<li><strong>进程创建和终止</strong></li>
+<li><strong>进程挂起和恢复</strong></li>
+<li><strong>进程同步原语</strong></li>
+<li><strong>进程通信原语</strong></li>
+<li><strong>死锁处理</strong></li>
+</ul>
+<h5 id="从进程到线程">从进程到线程
+</h5><ul>
+<li><strong>单线程进程</strong>有一个程序计数器
+<ul>
+<li>程序计数器指定下一条要执行的指令的位置</li>
+<li>处理器按顺序执行指令，一次一条，直到完成</li>
+</ul>
+</li>
+<li><strong>多线程进程</strong>每个线程有一个程序计数器</li>
+<li><strong>线程的好处</strong>：
+<ul>
+<li>创建开销小</li>
+<li>上下文切换快</li>
+<li>共享内存空间</li>
+<li>并发执行</li>
+</ul>
+</li>
+</ul>
+<h4 id="内存管理">内存管理
+</h4><h5 id="内存管理基本概念">内存管理基本概念
+</h5><ul>
+<li><strong>内存</strong>是CPU可直接访问的主要存储</li>
+<li><strong>数据处理前后</strong>都需要保存在内存中</li>
+<li><strong>所有指令</strong>都应该在内存中才能执行</li>
+</ul>
+<h5 id="内存管理目标">内存管理目标
+</h5><ul>
+<li><strong>优化CPU利用率和响应时间</strong></li>
+<li><strong>为程序员提供虚拟内存视图</strong></li>
+</ul>
+<h5 id="内存管理活动">内存管理活动
+</h5><ul>
+<li><strong>跟踪</strong>内存的哪些部分正在被使用以及被谁使用</li>
+<li><strong>决定</strong>哪些进程和数据移入和移出内存</li>
+<li><strong>分配和释放</strong>根据需要分配和释放内存空间</li>
+</ul>
+<h4 id="文件系统管理">文件系统管理
+</h4><h5 id="文件系统基本概念">文件系统基本概念
+</h5><ul>
+<li><strong>OS提供统一的逻辑数据存储视图</strong></li>
+<li><strong>文件</strong>是抽象物理属性的逻辑存储单元</li>
+<li><strong>文件</strong>通常组织到<strong>目录</strong>中</li>
+<li><strong>访问控制</strong>决定谁可以访问文件</li>
+</ul>
+<h5 id="文件系统管理活动">文件系统管理活动
+</h5><ul>
+<li><strong>创建和删除</strong>文件和目录</li>
+<li><strong>操作原语</strong>来操作文件和目录</li>
+<li><strong>映射文件</strong>到辅助存储</li>
+<li><strong>备份文件</strong>到稳定(非易失性)存储介质</li>
+</ul>
+<h4 id="大容量存储管理">大容量存储管理
+</h4><h5 id="基本概念-2">基本概念
+</h5><ul>
+<li><strong>磁盘子系统</strong>管理大容量存储</li>
+<li><strong>磁盘用于存储</strong>：
+<ul>
+<li>不适合主内存的数据</li>
+<li>必须保存&quot;长&quot;时间的数据</li>
+</ul>
+</li>
+<li><strong>整个系统速度</strong>取决于磁盘子系统及其算法</li>
+<li><strong>某些存储不需要快速</strong>(如光存储或磁带)</li>
+</ul>
+<h5 id="大容量存储管理活动">大容量存储管理活动
+</h5><ul>
+<li><strong>空闲空间管理</strong></li>
+<li><strong>存储分配</strong></li>
+<li><strong>磁盘调度</strong></li>
+</ul>
+<h5 id="数据迁移通过存储层">数据迁移通过存储层
+</h5><ul>
+<li><strong>系统必须使用最新值</strong>，无论它存储在哪里</li>
+<li><strong>多级数据一致性</strong>：
+<ul>
+<li><strong>多处理器的缓存一致性</strong>(缓存窥探)：由硬件实现</li>
+<li>所有CPU在其缓存中都有最新值</li>
+<li><strong>多进程或多线程的同步</strong></li>
+<li><strong>分布式环境情况更复杂</strong></li>
+<li>一个数据可能存在多个副本：如何同步更改？</li>
+</ul>
+</li>
+</ul>
+<h4 id="io系统管理">I/O系统管理
+</h4><h5 id="io子系统职责">I/O子系统职责
+</h5><ul>
+<li><strong>I/O子系统</strong>向用户隐藏硬件设备的特性</li>
+<li><strong>I/O子系统负责</strong>：
+<ul>
+<li><strong>管理I/O内存</strong></li>
+<li><strong>缓冲</strong>：在数据传输时临时存储数据</li>
+<li><strong>缓存</strong>：在更快存储中存储数据部分以提高性能</li>
+<li><strong>假脱机</strong>：一个作业的输出与其他作业的输入重叠</li>
+</ul>
+</li>
+</ul>
+<h5 id="设备驱动程序接口">设备驱动程序接口
+</h5><ul>
+<li><strong>OS可能提供通用设备驱动程序接口</strong></li>
+<li><strong>优点</strong>：对程序员好：面向对象设计模式</li>
+<li><strong>缺点</strong>：从安全角度看：大量使用函数指针</li>
+</ul>
+<hr>
+<h3 id="操作系统设计原则">操作系统设计原则
+</h3><h4 id="策略与机制分离">策略与机制分离
+</h4><h5 id="基本概念-3">基本概念
+</h5><ul>
+<li><strong>机制(Mechanism)</strong>：关于系统&quot;如何&quot;的问题
+<ul>
+<li>操作系统如何执行上下文切换</li>
+</ul>
+</li>
+<li><strong>策略(Policy)</strong>：&ldquo;哪个&quot;问题
+<ul>
+<li>应该切换到哪个进程</li>
+</ul>
+</li>
+</ul>
+<h5 id="其他示例">其他示例
+</h5><ul>
+<li><strong>机制示例</strong>：
+<ul>
+<li>如何分配内存</li>
+<li>如何调度CPU</li>
+<li>如何处理中断</li>
+</ul>
+</li>
+<li><strong>策略示例</strong>：
+<ul>
+<li>哪个进程获得内存</li>
+<li>哪个进程优先运行</li>
+<li>哪个中断优先处理</li>
+</ul>
+</li>
+</ul>
+<h5 id="优势与劣势">优势与劣势
+</h5><ul>
+<li><strong>优势</strong>：
+<ul>
+<li>灵活性：可以更改策略而不改变机制</li>
+<li>模块化：清晰的分层设计</li>
+<li>可维护性：更容易理解和修改</li>
+</ul>
+</li>
+<li><strong>劣势</strong>：
+<ul>
+<li>性能开销：额外的抽象层</li>
+<li>复杂性：需要更仔细的设计</li>
+</ul>
+</li>
+</ul>
+<h4 id="虚拟化">虚拟化
+</h4><h5 id="虚拟化概念">虚拟化概念
+</h5><ul>
+<li><strong>抽象单个计算机的硬件</strong>(CPU/内存/IO等)到不同环境</li>
+<li><strong>虚拟机</strong>：提供与底层硬件相同接口的软件</li>
+<li><strong>好处</strong>：
+<ul>
+<li>资源共享</li>
+<li>隔离性</li>
+<li>可移植性</li>
+<li>易于管理</li>
+</ul>
+</li>
+</ul>
+<h5 id="虚拟化类型">虚拟化类型
+</h5><ul>
+<li><strong>完全虚拟化</strong>：完全模拟硬件</li>
+<li><strong>半虚拟化</strong>：修改客户OS以与虚拟机监控器协作</li>
+<li><strong>硬件辅助虚拟化</strong>：硬件支持虚拟化</li>
+</ul>
+<h4 id="抽象">抽象
+</h4><h5 id="抽象的重要性">抽象的重要性
+</h5><p><strong>抽象是我们在计算机科学中所做的一切的基础</strong></p>
+<p>抽象使以下成为可能：</p>
+<ul>
+<li><strong>编写大型程序</strong>：将其分为小而可理解的片段</li>
+<li><strong>使用高级语言</strong>：如C语言编写而不考虑汇编</li>
+<li><strong>汇编编程</strong>：而不考虑逻辑门</li>
+<li><strong>构建处理器</strong>：使用门而不过多考虑晶体管</li>
+</ul>
+<h5 id="抽象层次">抽象层次
+</h5><ol>
+<li><strong>应用程序层</strong>：用户程序</li>
+<li><strong>高级语言层</strong>：C/C++/Java等</li>
+<li><strong>汇编语言层</strong>：汇编指令</li>
+<li><strong>指令集架构层</strong>：机器指令</li>
+<li><strong>微架构层</strong>：CPU内部实现</li>
+<li><strong>逻辑门层</strong>：数字逻辑</li>
+<li><strong>晶体管层</strong>：物理实现</li>
+</ol>
+<hr>
+<h3 id="总结">总结
+</h3><p>操作系统作为计算机系统的核心软件，承担着以下关键职责：</p>
+<ol>
+<li><strong>资源管理</strong>：有效管理CPU、内存、存储和I/O设备</li>
+<li><strong>进程管理</strong>：创建、调度和终止进程</li>
+<li><strong>内存管理</strong>：为程序提供虚拟内存抽象</li>
+<li><strong>文件系统</strong>：提供统一的数据存储接口</li>
+<li><strong>I/O管理</strong>：协调各种输入输出设备</li>
+<li><strong>安全保护</strong>：通过双模式操作保护系统</li>
+<li><strong>中断处理</strong>：响应硬件和软件事件</li>
+<li><strong>抽象服务</strong>：为应用程序提供系统服务接口</li>
+</ol>
+<p>操作系统的设计需要在<strong>性能、安全性、可用性和可维护性</strong>之间找到平衡，同时适应不断变化的硬件技术和应用需求。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">计算机系统</a>
+        
+            <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/%E6%B5%81%E6%B0%B4%E7%BA%BF%E4%B8%8E%E5%9C%A8%E5%A4%84%E7%90%86%E5%99%A8%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">流水线与在处理器中的应用</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Example Person
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
