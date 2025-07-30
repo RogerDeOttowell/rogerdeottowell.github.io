@@ -10,7 +10,7 @@
 <meta property='og:description' content="介绍操作系统的相关计算机组成">
 <meta property='og:url' content='https://example.com/p/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/'>
 <meta property='og:site_name' content='Example Site'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='计算机系统' /><meta property='article:tag' content='操作系统' /><meta property='article:published_time' content='2025-07-29T20:57:00&#43;08:00'/><meta property='article:modified_time' content='2025-07-29T20:57:00&#43;08:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='计算机系统' /><meta property='article:tag' content='操作系统' /><meta property='article:published_time' content='2025-07-30T21:40:00&#43;08:00'/><meta property='article:modified_time' content='2025-07-30T21:40:00&#43;08:00'/>
 <meta name="twitter:title" content="操作系统">
 <meta name="twitter:description" content="介绍操作系统的相关计算机组成">
     </head>
@@ -370,7 +370,54 @@
             <li><a href="#抽象">抽象</a></li>
           </ol>
         </li>
-        <li><a href="#总结">总结</a></li>
+      </ol>
+    </li>
+    <li><a href="#操作系统框架">操作系统框架</a>
+      <ol>
+        <li><a href="#操作系统服务组成">操作系统服务组成</a></li>
+        <li><a href="#系统调用system-call">系统调用(System Call)</a>
+          <ol>
+            <li><a href="#定义">定义</a></li>
+            <li><a href="#示例">示例</a></li>
+            <li><a href="#调用">调用</a></li>
+            <li><a href="#系统调用的核心原理">系统调用的核心原理</a></li>
+            <li><a href="#系统调用传参">系统调用传参</a></li>
+            <li><a href="#系统调用列举">系统调用列举</a></li>
+            <li><a href="#应用程序接口application-programming-interface-api">应用程序接口(Application Programming Interface, API)</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#链接器linker与加载器loader">链接器(Linker)与加载器(Loader)</a>
+      <ol>
+        <li><a href="#基本概念-4">基本概念</a>
+          <ol>
+            <li><a href="#链接器">链接器</a></li>
+            <li><a href="#加载器">加载器</a></li>
+            <li><a href="#工作方式和内容">工作方式和内容</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#操作系统架构">操作系统架构</a>
+      <ol>
+        <li><a href="#已有的操作系统架构">已有的操作系统架构</a>
+          <ol>
+            <li><a href="#ms-dos">MS-DOS</a></li>
+            <li><a href="#original-unix">Original-UNIX</a></li>
+            <li><a href="#分层方法layered-approach">分层方法(Layered Approach)</a></li>
+            <li><a href="#微内核方法microkernel-approach">微内核方法(Microkernel Approach)</a></li>
+            <li><a href="#模块化方法modular-approach">模块化方法(Modular Approach)</a></li>
+            <li><a href="#混合系统架构">混合系统架构</a></li>
+          </ol>
+        </li>
+        <li><a href="#系统调用实例">系统调用实例</a>
+          <ol>
+            <li><a href="#进程管理系统调用示例">进程管理系统调用示例</a></li>
+            <li><a href="#调试相关系统调用">调试相关系统调用</a></li>
+            <li><a href="#系统调用实践要点">系统调用实践要点</a></li>
+          </ol>
+        </li>
       </ol>
     </li>
   </ol>
@@ -430,7 +477,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published">Jul 29, 2025</time>
+                <time class="article-time--published">Jul 30, 2025</time>
             </div>
         
 
@@ -445,7 +492,7 @@
 
 
                 <time class="article-time--reading">
-                    3 minute read
+                    6 minute read
                 </time>
             </div>
         
@@ -1294,19 +1341,690 @@
 <li><strong>晶体管层</strong>：物理实现</li>
 </ol>
 <hr>
-<h3 id="总结">总结
-</h3><p>操作系统作为计算机系统的核心软件，承担着以下关键职责：</p>
-<ol>
-<li><strong>资源管理</strong>：有效管理CPU、内存、存储和I/O设备</li>
-<li><strong>进程管理</strong>：创建、调度和终止进程</li>
-<li><strong>内存管理</strong>：为程序提供虚拟内存抽象</li>
-<li><strong>文件系统</strong>：提供统一的数据存储接口</li>
-<li><strong>I/O管理</strong>：协调各种输入输出设备</li>
-<li><strong>安全保护</strong>：通过双模式操作保护系统</li>
-<li><strong>中断处理</strong>：响应硬件和软件事件</li>
-<li><strong>抽象服务</strong>：为应用程序提供系统服务接口</li>
-</ol>
-<p>操作系统的设计需要在<strong>性能、安全性、可用性和可维护性</strong>之间找到平衡，同时适应不断变化的硬件技术和应用需求。</p>
+<h2 id="操作系统框架">操作系统框架
+</h2><h3 id="操作系统服务组成">操作系统服务组成
+</h3><ul>
+<li>用户可见服务
+<ul>
+<li>用户界面(UI)
+<ul>
+<li>包括：CLI(Command-Line, 命令行), GUI(Graphic User Line, 图形化用户界面), batch</li>
+</ul>
+</li>
+<li>程序运行</li>
+<li>I/O操作</li>
+<li>文件系统操作</li>
+<li>通信</li>
+<li>错误检测</li>
+</ul>
+</li>
+<li>系统可见服务
+<ul>
+<li>资源分配
+<ul>
+<li>包括：CPU调度，内存分配和管理，I/O设备分配</li>
+</ul>
+</li>
+<li>系统保护</li>
+<li>会计统计</li>
+</ul>
+</li>
+</ul>
+<h3 id="系统调用system-call">系统调用(System Call)
+</h3><h4 id="定义">定义
+</h4><ul>
+<li>系统调用指的是访问操作系统服务的编程接口</li>
+</ul>
+<h4 id="示例">示例
+</h4><ul>
+<li>Linux的复制指令
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cp in.txt out.txt
+</span></span></code></pre></td></tr></table>
+</div>
+</div>就是一个调用系统调用</li>
+</ul>
+<h4 id="调用">调用
+</h4><ul>
+<li>一般一个系统调用被与一个数字联系起来，这个数字被称为<strong>系统调用号(System Call Number)</strong>
+<ul>
+<li>例如Linux中read()可能是编号0，write()可能是编号1</li>
+</ul>
+</li>
+<li>系统调用接口表
+<ul>
+<li>系统调用接口维护着一个表格，这个表格被这些编号索引，表格中存储着对应系统调用处理函数的地址，类似于您文档中提到的中断向量表观念</li>
+</ul>
+</li>
+<li>Linux系统调用数量示例
+<ul>
+<li>Linux有大约340个系统调用，不同架构的系统调用数量略有差异。x86架构有349个系统调用，而ARM架构有345个</li>
+</ul>
+</li>
+</ul>
+<h4 id="系统调用的核心原理">系统调用的核心原理
+</h4><ul>
+<li>内核执行系统调用并返回结果</li>
+<li>用户程序无需了解系统调用细节</li>
+<li>用户只需使用API并理解其功能</li>
+<li>API隐藏操作系统接口的大部分细节</li>
+</ul>
+<h4 id="系统调用传参">系统调用传参
+</h4><h5 id="寄存器法">寄存器法
+</h5><ul>
+<li>工作原理
+<ul>
+<li>参数直接存储在CPU寄存器中</li>
+<li>系统调用时，内核直接从寄存器读取参数</li>
+</ul>
+</li>
+<li>优势
+<ul>
+<li>速度最快</li>
+<li>实现简单</li>
+<li>开销最小</li>
+</ul>
+</li>
+<li>劣势
+<ul>
+<li>参数数量首先</li>
+<li>不适合复杂调用</li>
+</ul>
+</li>
+<li>内存块法</li>
+<li>工作原理
+<ul>
+<li>参数存储在内存块（或表）中</li>
+<li>内存块的地址作为参数传递给寄存器</li>
+<li>内核通过地址访问内存块获取所有参数</li>
+</ul>
+</li>
+<li>优势
+<ul>
+<li>参数数量不受限制：内存块可以很大</li>
+<li>适合复杂数据结构：可以传递结构体、数组等</li>
+<li>组织性好：参数集中管理</li>
+</ul>
+</li>
+<li>劣势
+<ul>
+<li>需要额外内存访问</li>
+<li>实现稍复杂</li>
+</ul>
+</li>
+<li>栈法
+<ul>
+<li>工作原理
+<ul>
+<li>参数被程序推入栈中</li>
+<li>操作系统从栈中弹出参数</li>
+<li>利用栈的后进先出特性</li>
+</ul>
+</li>
+<li>优势
+<ul>
+<li>参数数量不受限制</li>
+<li>自然的调用约定</li>
+<li>易于实现</li>
+</ul>
+</li>
+<li>劣势
+<ul>
+<li>栈操作开销</li>
+<li>栈空间管理</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="linuxx86架构下execve系统调用的实现">Linux/x86架构下execve系统调用的实现
+</h5><ul>
+<li>存储系统调用信号到eax寄存器</li>
+<li>参数存储到指定寄存器</li>
+<li>执行系统调用指令</li>
+<li>完整汇编代码如下
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-asm" data-lang="asm"><span class="line"><span class="cl"><span class="nf">section</span> <span class="no">.data</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">filename</span> <span class="no">db</span> <span class="err">&#39;/</span><span class="no">bin</span><span class="err">/</span><span class="no">ls</span><span class="err">&#39;</span><span class="p">,</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">arg1</span> <span class="no">db</span> <span class="err">&#39;</span><span class="no">ls</span><span class="err">&#39;</span><span class="p">,</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">arg2</span> <span class="no">db</span> <span class="err">&#39;</span><span class="p">-</span><span class="no">l</span><span class="err">&#39;</span><span class="p">,</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">argv</span> <span class="no">dd</span> <span class="no">filename</span><span class="p">,</span> <span class="no">arg1</span><span class="p">,</span> <span class="no">arg2</span><span class="p">,</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">envp</span> <span class="no">dd</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nf">section</span> <span class="no">.text</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">global</span> <span class="no">_start</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nl">_start:</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">mov</span> <span class="no">eax</span><span class="p">,</span> <span class="mi">11</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">mov</span> <span class="no">ebx</span><span class="p">,</span> <span class="no">filename</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">mov</span> <span class="no">ecx</span><span class="p">,</span> <span class="no">argv</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">mov</span> <span class="no">edx</span><span class="p">,</span> <span class="no">envp</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nf">int</span> <span class="mi">0x80</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nf">mov</span> <span class="no">eax</span><span class="p">,</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">mov</span> <span class="no">ebx</span><span class="p">,</span> <span class="p">-</span><span class="mi">1</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">int</span> <span class="mi">0x80</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h4 id="系统调用列举">系统调用列举
+</h4><ul>
+<li>进程控制
+<ul>
+<li>Types of System Calls</li>
+<li>Process control</li>
+<li>create process, terminate process</li>
+<li>end, abort</li>
+<li>load, execute</li>
+<li>get process attributes, set process attributes</li>
+<li>wait for time</li>
+<li>wait event, signal event</li>
+<li>allocate and free memory</li>
+<li>Dump memory if error</li>
+<li>Debugger for determining bugs, single step execution</li>
+<li>Locks for managing access to shared data between processes</li>
+</ul>
+</li>
+<li>文件管理
+<ul>
+<li>create file, delete file</li>
+<li>open, close file</li>
+<li>read, write, reposition</li>
+<li>get and set file attributes</li>
+</ul>
+</li>
+<li>设备管理
+<ul>
+<li>request device, release device</li>
+<li>read, write, reposition</li>
+<li>get device attributes, set device attributes</li>
+<li>logically attach or detach devices</li>
+<li>can be combined with file management system call</li>
+</ul>
+</li>
+<li>信息维护
+<ul>
+<li>get time or date, set time or date</li>
+<li>get system data, set system data</li>
+<li>get and set process, file, or device attributes</li>
+</ul>
+</li>
+<li>通信
+<ul>
+<li>create, delete communication connection</li>
+<li>send, receive messages: message passing model to host name or process name
+<ul>
+<li>From client to server</li>
+</ul>
+</li>
+<li>Shared-memory model create and gain access to memory regions</li>
+<li>transfer status information</li>
+<li>attach and detach remote devices</li>
+</ul>
+</li>
+<li>保护
+<ul>
+<li>Control access to resources</li>
+<li>Get and set permissions</li>
+<li>Allow and deny user access</li>
+</ul>
+</li>
+</ul>
+<h4 id="应用程序接口application-programming-interface-api">应用程序接口(Application Programming Interface, API)
+</h4><h5 id="定义-1">定义：
+</h5><ul>
+<li>应用程序编程接口，是预先定义的函数/集合的集合</li>
+</ul>
+<h5 id="常用的api">常用的API
+</h5><ul>
+<li>Win32： Windows</li>
+<li>POSIX： UNIX, Linux</li>
+<li>Java: Java虚拟机</li>
+</ul>
+<h2 id="链接器linker与加载器loader">链接器(Linker)与加载器(Loader)
+</h2><h3 id="基本概念-4">基本概念
+</h3><h4 id="链接器">链接器
+</h4><ul>
+<li>功能：将目标文件转换为可执行文件</li>
+<li>作用：解决符号引用，合并代码段和数据段、</li>
+<li>时机：编译时或程序启动时</li>
+</ul>
+<h4 id="加载器">加载器
+</h4><ul>
+<li>功能：将程序转换为进程</li>
+<li>作用：将可执行文件加载到内存并启动执行</li>
+<li>时机：程序执行时</li>
+</ul>
+<h4 id="工作方式和内容">工作方式和内容
+</h4><h5 id="编译链接过程">编译链接过程
+</h5><p align="center">
+    <img src="images/os1.png" alt="编译过程" width="100%">
+</p>
+<h5 id="链接类型对比">链接类型对比
+</h5><ul>
+<li>静态链接
+<ul>
+<li>特点
+<ul>
+<li>链接时机：编译时完成所有链接</li>
+<li>文件大小：较大，包含所有依赖库</li>
+<li>运行依赖：无外部依赖，独立运行</li>
+</ul>
+</li>
+<li>优点
+<ul>
+<li>运行时无依赖</li>
+<li>加载速度快</li>
+<li>部署简单</li>
+</ul>
+</li>
+<li>缺点
+<ul>
+<li>文件体积大</li>
+<li>内存占用多</li>
+<li>库更新需要重新编译</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>动态链接
+<ul>
+<li>特点
+<ul>
+<li>链接时机：运行时动态链接</li>
+<li>文件大小：较小，只包含引用信息</li>
+<li>运行依赖：需要动态链接库(DLL/SO)</li>
+</ul>
+</li>
+<li>优点：
+<ul>
+<li>文件体积小</li>
+<li>内存共享</li>
+<li>库更新无需重新编译</li>
+<li>节省磁盘空间</li>
+</ul>
+</li>
+<li>缺点：
+<ul>
+<li>运行时有依赖</li>
+<li>加载稍慢</li>
+<li>部署复杂</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>注：延迟绑定(Lazy Binding)
+<ul>
+<li>概念
+<ul>
+<li>定义：动态链接库中的函数在第一次调用时才进行地址解析</li>
+<li>目的：减少程序启动时间，只解析实际使用的函数</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="操作系统架构">操作系统架构
+</h2><h3 id="已有的操作系统架构">已有的操作系统架构
+</h3><h4 id="ms-dos">MS-DOS
+</h4><ul>
+<li><strong>架构特点</strong>：简单的单体结构</li>
+<li><strong>特征</strong>：
+<ul>
+<li>应用程序可以直接访问硬件</li>
+<li>没有明确的用户模式和内核模式分离</li>
+<li>程序运行在单一地址空间</li>
+</ul>
+</li>
+<li><strong>优点</strong>：
+<ul>
+<li>系统开销小</li>
+<li>执行效率高</li>
+<li>实现简单</li>
+</ul>
+</li>
+<li><strong>缺点</strong>：
+<ul>
+<li>系统不稳定，一个程序崩溃可能导致整个系统崩溃</li>
+<li>安全性差</li>
+<li>不支持多任务</li>
+</ul>
+</li>
+</ul>
+<h4 id="original-unix">Original-UNIX
+</h4><ul>
+<li><strong>架构特点</strong>：经典的分层单体内核</li>
+<li><strong>特征</strong>：
+<ul>
+<li>内核和用户程序分离</li>
+<li>系统调用作为内核和用户程序的接口</li>
+<li>&ldquo;一切皆文件&quot;的设计理念</li>
+</ul>
+</li>
+<li><strong>优点</strong>：
+<ul>
+<li>简洁而强大的设计</li>
+<li>良好的可移植性</li>
+<li>多用户多任务支持</li>
+</ul>
+</li>
+<li><strong>缺点</strong>：
+<ul>
+<li>内核代码耦合度高</li>
+<li>难以扩展和维护</li>
+<li>单体内核的性能瓶颈</li>
+</ul>
+</li>
+</ul>
+<h4 id="分层方法layered-approach">分层方法(Layered Approach)
+</h4><ul>
+<li><strong>基本概念</strong>：
+<ul>
+<li>操作系统被划分为多个层次(levels)</li>
+<li>每一层都建立在较低层之上</li>
+<li>最底层(第0层)是硬件，最高层(第N层)是用户界面</li>
+<li>每一层只使用较低层的函数和服务</li>
+</ul>
+</li>
+<li><strong>THE操作系统分层示例</strong>：
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">第5层: 用户程序
+</span></span><span class="line"><span class="cl">第4层: 输入/输出管理
+</span></span><span class="line"><span class="cl">第3层: 操作员-进程通信
+</span></span><span class="line"><span class="cl">第2层: 内存管理
+</span></span><span class="line"><span class="cl">第1层: 进程调度
+</span></span><span class="line"><span class="cl">第0层: 硬件
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li><strong>优点</strong>：
+<ul>
+<li>模块化设计，便于调试和维护</li>
+<li>层次清晰，易于理解</li>
+<li>易于验证系统正确性</li>
+</ul>
+</li>
+<li><strong>缺点</strong>：
+<ul>
+<li>性能开销大(多层调用)</li>
+<li>层次划分困难</li>
+<li>严格分层限制系统灵活性</li>
+</ul>
+</li>
+</ul>
+<h4 id="微内核方法microkernel-approach">微内核方法(Microkernel Approach)
+</h4><ul>
+<li><strong>基本概念</strong>：
+<ul>
+<li>将尽可能多的功能从内核移到用户空间</li>
+<li>内核只保留最基本的功能</li>
+<li>其他系统服务作为用户级进程运行</li>
+</ul>
+</li>
+<li><strong>微内核核心功能</strong>：
+<ul>
+<li>进程间通信(IPC)</li>
+<li>基本进程管理</li>
+<li>低级内存管理</li>
+<li>基本I/O和中断管理</li>
+</ul>
+</li>
+<li><strong>用户空间服务</strong>：
+<ul>
+<li>文件系统服务器</li>
+<li>网络协议栈</li>
+<li>设备驱动程序</li>
+<li>虚拟内存管理器</li>
+</ul>
+</li>
+<li><strong>优点</strong>：
+<ul>
+<li>系统稳定性高(服务崩溃不影响内核)</li>
+<li>安全性好(服务运行在隔离的地址空间)</li>
+<li>易于扩展和维护</li>
+<li>支持分布式系统</li>
+</ul>
+</li>
+<li><strong>缺点</strong>：
+<ul>
+<li>IPC开销大，性能较低</li>
+<li>系统调用开销增加</li>
+<li>设计和实现复杂</li>
+</ul>
+</li>
+</ul>
+<h4 id="模块化方法modular-approach">模块化方法(Modular Approach)
+</h4><ul>
+<li><strong>基本概念</strong>：
+<ul>
+<li>结合单体内核和微内核的优点</li>
+<li>内核提供核心服务</li>
+<li>其他功能通过可装载模块实现</li>
+</ul>
+</li>
+<li><strong>特征</strong>：
+<ul>
+<li>模块可以动态加载和卸载</li>
+<li>模块运行在内核空间</li>
+<li>通过定义良好的接口通信</li>
+</ul>
+</li>
+<li><strong>Linux模块示例</strong>：
+<ul>
+<li>文件系统模块(ext4, ntfs)</li>
+<li>网络协议模块(TCP/IP)</li>
+<li>设备驱动模块</li>
+</ul>
+</li>
+<li><strong>优点</strong>：
+<ul>
+<li>灵活性高</li>
+<li>内存使用效率高</li>
+<li>易于维护和扩展</li>
+<li>性能好(避免用户空间切换)</li>
+</ul>
+</li>
+<li><strong>缺点</strong>：
+<ul>
+<li>模块错误可能影响整个内核</li>
+<li>接口设计需要谨慎</li>
+<li>依赖关系管理复杂</li>
+</ul>
+</li>
+</ul>
+<h4 id="混合系统架构">混合系统架构
+</h4><ul>
+<li><strong>基本概念</strong>：
+<ul>
+<li>结合多种架构方法的优点</li>
+<li>针对不同功能采用最适合的架构</li>
+</ul>
+</li>
+<li><strong>现代操作系统实例</strong>：
+<ul>
+<li><strong>Windows NT</strong>：混合微内核架构
+<ul>
+<li>内核模式：HAL、内核、执行体</li>
+<li>用户模式：子系统、应用程序</li>
+</ul>
+</li>
+<li><strong>macOS</strong>：基于Mach微内核的混合架构
+<ul>
+<li>Mach微内核 + BSD层 + I/O Kit</li>
+</ul>
+</li>
+<li><strong>Linux</strong>：模块化单体内核
+<ul>
+<li>单体内核 + 可装载模块</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="系统调用实例">系统调用实例
+</h3><h4 id="进程管理系统调用示例">进程管理系统调用示例
+</h4><h5 id="fork系统调用">fork系统调用
+</h5><ul>
+<li><strong>基本概念</strong>：创建新进程的方式</li>
+<li><strong>特殊之处</strong>：
+<ul>
+<li>新创建的进程是调用进程的完全副本</li>
+<li><strong>返回两次</strong>：在父进程和子进程中分别返回</li>
+<li>新进程拥有自己的内存地址空间</li>
+</ul>
+</li>
+<li><strong>返回值</strong>：
+<ul>
+<li>在父进程中：返回子进程的PID</li>
+<li>在子进程中：返回0</li>
+<li>出错时：返回-1</li>
+</ul>
+</li>
+</ul>
+<h5 id="fork--wait组合">fork + wait组合
+</h5><ul>
+<li><strong>wait系统调用</strong>：父进程等待子进程执行完毕</li>
+<li><strong>用途</strong>：
+<ul>
+<li>避免僵尸进程</li>
+<li>获取子进程退出状态</li>
+<li>进程同步控制</li>
+</ul>
+</li>
+<li><strong>典型使用模式</strong>：
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">pid_t</span> <span class="n">pid</span> <span class="o">=</span> <span class="nf">fork</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 子进程代码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 父进程代码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">wait</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>  <span class="c1">// 等待子进程结束
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h5 id="fork--wait--exec组合">fork + wait + exec组合
+</h5><ul>
+<li><strong>exec系统调用特点</strong>：
+<ul>
+<li>用于运行与调用程序不同的程序</li>
+<li><strong>exec永不返回</strong>(成功时)</li>
+<li>完全替换当前进程映像</li>
+</ul>
+</li>
+<li><strong>为什么分离fork和exec</strong>：
+<ul>
+<li><strong>构建UNIX shell的基础</strong></li>
+<li>允许在fork后、exec前进行特殊操作</li>
+<li>提供更大的灵活性</li>
+</ul>
+</li>
+<li><strong>Shell工作原理</strong>：
+<ul>
+<li>Shell是一个用户程序</li>
+<li>等待用户输入</li>
+<li>执行命令：fork创建子进程 → exec加载新程序 → wait等待完成</li>
+<li>分离设计使shell功能更强大</li>
+</ul>
+</li>
+</ul>
+<h4 id="调试相关系统调用">调试相关系统调用
+</h4><h5 id="ptrace系统调用">ptrace系统调用
+</h5><ul>
+<li><strong>基本概念</strong>：进程追踪系统调用</li>
+<li><strong>主要功能</strong>：
+<ul>
+<li>一个进程可以控制另一个进程的执行</li>
+<li>检查和修改被追踪进程的内存和寄存器</li>
+<li>实现断点调试功能</li>
+</ul>
+</li>
+<li><strong>应用场景</strong>：
+<ul>
+<li><strong>调试器实现</strong>：gdb、strace等工具的基础</li>
+<li>进程监控和分析</li>
+<li>安全分析工具</li>
+</ul>
+</li>
+</ul>
+<h5 id="调试器debugger工作原理">调试器(Debugger)工作原理
+</h5><ul>
+<li><strong>定义</strong>：用于测试和调试其他程序的计算机程序</li>
+<li><strong>基本操作</strong>：
+<ul>
+<li><strong>附加到进程</strong>(Attaching to a process)</li>
+<li><strong>基本控制</strong>(Basic Control)：暂停、继续、单步执行</li>
+<li><strong>设置断点</strong>(Setting a breakpoint)</li>
+<li><strong>命中断点</strong>(Hitting a breakpoint)</li>
+</ul>
+</li>
+<li><strong>ptrace在调试中的应用</strong>：
+<ul>
+<li>通过ptrace系统调用实现进程控制</li>
+<li>监控被调试程序的每个系统调用</li>
+<li>提供程序执行状态的实时查看</li>
+</ul>
+</li>
+</ul>
+<h4 id="系统调用实践要点">系统调用实践要点
+</h4><ul>
+<li><strong>进程创建模式</strong>：fork + exec是UNIX系统进程创建的标准模式</li>
+<li><strong>Shell实现</strong>：所有UNIX shell都基于fork/exec/wait三个系统调用</li>
+<li><strong>调试工具</strong>：现代调试器和追踪工具都依赖ptrace系统调用</li>
+<li><strong>手册参考</strong>：使用man page查看详细的系统调用文档和使用方法</li>
+</ul>
 
 </section>
 
