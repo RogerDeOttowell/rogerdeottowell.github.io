@@ -7,7 +7,1275 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
         <copyright>Example Person</copyright>
-        <lastBuildDate>Wed, 30 Jul 2025 21:40:00 +0800</lastBuildDate><atom:link href="https://example.com/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 01 Aug 2025 21:50:00 +0800</lastBuildDate><atom:link href="https://example.com/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>线程</title>
+        <link>https://example.com/p/%E7%BA%BF%E7%A8%8B/</link>
+        <pubDate>Fri, 01 Aug 2025 21:50:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E7%BA%BF%E7%A8%8B/</guid>
+        <description>&lt;h1 id=&#34;线程&#34;&gt;线程
+&lt;/h1&gt;&lt;h2 id=&#34;相关概念&#34;&gt;相关概念
+&lt;/h2&gt;&lt;h3 id=&#34;定义&#34;&gt;定义
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;定义：线程是独立的指令流，可以被内核调度运行&lt;/li&gt;
+&lt;li&gt;进程包含的状态和资源
+&lt;ul&gt;
+&lt;li&gt;代码、堆、数据、文件句柄（包括套接字）、进程间通信（IPC）&lt;/li&gt;
+&lt;li&gt;进程ID、进程组ID、用户ID&lt;/li&gt;
+&lt;li&gt;栈、寄存器、程序计数器（PC）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;线程与进程关系
+&lt;ul&gt;
+&lt;li&gt;线程存在于进程内部，并共享进程的资源&lt;/li&gt;
+&lt;li&gt;每个线程都有自己的核心资源（线程独有资源）
+&lt;ul&gt;
+&lt;li&gt;栈&lt;/li&gt;
+&lt;li&gt;寄存器&lt;/li&gt;
+&lt;li&gt;程序计数器&lt;/li&gt;
+&lt;li&gt;线程特定数据&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;访问共享资源需要同步&lt;/li&gt;
+&lt;li&gt;线程由内核独立调度&lt;/li&gt;
+&lt;li&gt;每个线程都有自己独立的控制流&lt;/li&gt;
+&lt;li&gt;每个线程都可以处于任何调度状态&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;线程的优势&#34;&gt;线程的优势
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;响应性：多线程交互应用程序允许程序即使在部分被阻塞或执行长时间操作时也能继续运行&lt;/li&gt;
+&lt;li&gt;资源共享：资源共享可以实现高校通信和高度协作。线程默认共享进程的资源和内存。&lt;/li&gt;
+&lt;li&gt;经济性：线程比进程更轻量级，创建和上下文切换的开销更小&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;多线程服务器架构&#34;&gt;多线程服务器架构
+&lt;/h2&gt;&lt;h3 id=&#34;架构示意图&#34;&gt;架构示意图
+&lt;/h3&gt; &lt;p align=&#34;center&#34;&gt;
+    &lt;img src=&#34;https://example.com/images/thread1.png&#34; alt=&#34;server&#34; width=&#34;75%&#34;&gt;
+&lt;/p&gt;
+* 工作方式解释：server的主进程（一般是监听进程）接受客户端的请求，然后主进程创建一个新的线程来处理请求。之后主监听进程继续监听其他的客户端请求
+&lt;h3 id=&#34;注并发与并行&#34;&gt;注：并发与并行
+&lt;/h3&gt;&lt;h4 id=&#34;定义-1&#34;&gt;定义
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;并发计算是一种计算形式，其中程序被设计为相互交互的计算进程集合，这些进程可以并行执行。并发程序（进程或线程）可以在单个处理器上通过时间片轮转的方式交错执行各自的执行步骤，也可以通过将每个计算进程分配给一组处理器来并行执行。程序作为独立执行进程的组合，这些进程相互通信。&lt;/li&gt;
+&lt;li&gt;行计算是一种计算形式，其中许多计算同时进行，基于大问题通常可以分解为较小问题的原理，然后&amp;quot;并行&amp;quot;解决这些小问题。
+编程作为（可能相关的）计算的同时执行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;对比&#34;&gt;对比
+&lt;/h4&gt;&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;维度&lt;/th&gt;
+          &lt;th&gt;并发 (Concurrency)&lt;/th&gt;
+          &lt;th&gt;并行 (Parallelism)&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;核心概念&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;同一时间段内交替执行&lt;/td&gt;
+          &lt;td&gt;同一时刻真正同时执行&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;硬件要求&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;单核CPU即可&lt;/td&gt;
+          &lt;td&gt;必须多核CPU或多台机器&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;设计思想&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;如何组织和管理任务&lt;/td&gt;
+          &lt;td&gt;如何真正同时计算&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;主要目的&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;提高响应性、资源利用率&lt;/td&gt;
+          &lt;td&gt;提高计算速度&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4 id=&#34;关键理解&#34;&gt;关键理解
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;并发关乎结构，并行关乎执行&lt;/li&gt;
+&lt;li&gt;并发提供了一种构建解决方案的方式来解决一个可能（但不一定）可并行化的问题&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;线程的实现&#34;&gt;线程的实现
+&lt;/h2&gt;&lt;h3 id=&#34;基本信息&#34;&gt;基本信息
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;线程可以在用户级别或由内核提供&lt;/li&gt;
+&lt;li&gt;用户线程在内核之上支持，无需内核支持即可管理
+&lt;ul&gt;
+&lt;li&gt;三个线程库：POSIX Pthreads、Win32线程和Java线程&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;内核线程由内核直接支持和管理
+&lt;ul&gt;
+&lt;li&gt;所有现代操作系统都支持内核线程&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;线程实现的方式&#34;&gt;线程实现的方式
+&lt;/h3&gt;&lt;h4 id=&#34;内核级线程&#34;&gt;内核级线程
+&lt;/h4&gt;&lt;h5 id=&#34;定义-2&#34;&gt;定义
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;为了使并发更经济，进程的执行方面被分离为线程。因此，操作系统现在管理线程和进程。所有线程操作都在内核中实现，操作系统调度系统中的所有线程。由操作系统管理的线程成为内核级线程。&lt;/li&gt;
+&lt;li&gt;在这种方法中，内核知道并管理线程。这种情况下不需要运行系统。内核不是在每个进程中保持线程表，而是拥有一个线程表来跟踪系统中的所有线程。此外，内核还维护传统的进程表来跟踪进程。操作系统内核提供系统调用来创建和管理线程。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;优势&#34;&gt;优势
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;因为内核完全了解所有线程，调度器可能决定给拥有大量线程的进程分配更多时间，而不是给拥有少量线程的进程。&lt;/li&gt;
+&lt;li&gt;内核级线程对于频繁阻塞的应用程序特别有效&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;劣势&#34;&gt;劣势
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;内核级线程速度慢而且效率低&lt;/li&gt;
+&lt;li&gt;存在显著的开销和内核复杂性的增加&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;用户级线程&#34;&gt;用户级线程
+&lt;/h4&gt;&lt;h5 id=&#34;定义-3&#34;&gt;定义
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;用户级显示完全由运行时系统（用户级库）管理内核对用户级线程一无所知，将它们作为单线程进程管理。用户级线程小而快，每个线程由PC、寄存器、栈和小型线程控制块表示。创建新线程、线程间切换和线程同步都通过过程调用完成，即无内核参与。用户及线程比内核级线程块100倍。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;优势-1&#34;&gt;优势
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;这种技术最明显的优势是用户级线程包可以在不支持的线程的操作系统上实现&lt;/li&gt;
+&lt;li&gt;用户级线程不需要修改操作系统&lt;/li&gt;
+&lt;li&gt;简单表示：每个线程简单地由PC、寄存器、栈和小型控制块表示，都存储在用户进程地址空间中&lt;/li&gt;
+&lt;li&gt;简单管理：这意味着创建线程和线程间同步都可以在没有内核干预的情况下完成&lt;/li&gt;
+&lt;li&gt;快速高效：线程切换比过程调用贵不了多少&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;劣势-1&#34;&gt;劣势
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;用户级线程不是完美解决方案，它们是一种权衡。由于用户级线程对操作系统不可见，它们与操作系统集成不好。结果是，操作系统可能做出糟糕决策，如调度有空闲线程的进程、阻塞启动I/O的线程所在的进程（即使该进程有其他可运行线程）、取消调度持有锁的线程所在的进程。解决者需要内核和用户级线程管理器之间的通信。&lt;/li&gt;
+&lt;li&gt;线程和操作系统内核之间缺乏协调。因此，整个进程获得一个时间片，无论进程有一个线程还是1000个线程。每个线程都要主动放弃控制权给其他线程。&lt;/li&gt;
+&lt;li&gt;用户级线程需要非阻塞调用，即多线程内核。，否则，整个进程将在内核中阻塞，即使进程中还有可运行的线程。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;多线程模型&#34;&gt;多线程模型
+&lt;/h2&gt;&lt;h3 id=&#34;含义&#34;&gt;含义：
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;用户线程和内核线程之间必须存在关系&lt;/li&gt;
+&lt;li&gt;内核线程是系统中真正的线程，所以为了使用户线程取得进展，用户程序必须让其调度器获取一个用户线程，然后再内核线程上运行它&lt;/li&gt;
+&lt;li&gt;核心：只有内核线程真正在CPU上执行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;多线程模型详解&#34;&gt;多线程模型详解
+&lt;/h3&gt;&lt;h4 id=&#34;多对一模型many-to-one&#34;&gt;多对一模型(Many-to-one)
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;多个用户级线程映射到单个内核线程&lt;/li&gt;
+&lt;li&gt;线路管理由用户空间的线程库完成&lt;/li&gt;
+&lt;li&gt;如果一个线程进程阻塞系统调用，整个进程将被阻塞&lt;/li&gt;
+&lt;li&gt;将阻塞系统调用转换为非阻塞&lt;/li&gt;
+&lt;li&gt;多个线程无法再多处理器上并行运行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;一对一模型one-to-one&#34;&gt;一对一模型(One-to-one)
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;每个用户级线程映射到一个内核线程&lt;/li&gt;
+&lt;li&gt;允许其他线程在一个线程阻塞时运行&lt;/li&gt;
+&lt;li&gt;多个线程可以在多处理器上并行运行&lt;/li&gt;
+&lt;li&gt;总计金额导致开销&lt;/li&gt;
+&lt;li&gt;大多数实现次模型的操作系统限制线程数量&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;多对多模型&#34;&gt;多对多模型
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;许多用户级线程映射到许多内核线程&lt;/li&gt;
+&lt;li&gt;解决了1:1和m:1模型的缺点&lt;/li&gt;
+&lt;li&gt;开发人员可以创建必要数量的用户线程&lt;/li&gt;
+&lt;li&gt;相应的内核线程可以在多处理器上并行运行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;两级模型&#34;&gt;两级模型
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;类似对于多对多模型，除了它允许用户线程绑定到内核线程&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;fork和exec的语义问题&#34;&gt;fork和exec的语义问题
+&lt;/h3&gt;&lt;h4 id=&#34;fork&#34;&gt;fork
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;当对单线程进程fork时，直接复制整个单线程进程&lt;/li&gt;
+&lt;li&gt;当读多线程进程fork时，可以理解为只复制调用线程或复制所有线程，在UNIX中有两个版本的fork，每种语义一个&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;exec&#34;&gt;exec
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;exec通常替换整个进程&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;fork与exec的综合使用&#34;&gt;fork与exec的综合使用
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;如果在fork后很快调用exec，使用“fork调用线程版本”，不需要复制所有线程&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;信号处理&#34;&gt;信号处理
+&lt;/h2&gt;&lt;h3 id=&#34;概念&#34;&gt;概念
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;信号在UNIX系统中用于通知进程发生了特定事件，遵循相同的模式&lt;/li&gt;
+&lt;li&gt;信号由特定事件的发生而产生&lt;/li&gt;
+&lt;li&gt;信号倍传递给进程&lt;/li&gt;
+&lt;li&gt;一旦传递，信号必须被处理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;原则&#34;&gt;原则
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;信号由两种信号处理程序之一处理：默认的或用户定义的&lt;/li&gt;
+&lt;li&gt;每个信号都有默认处理程序，内核在处理信号时运行&lt;/li&gt;
+&lt;li&gt;用户定义的信号处理程序可以覆盖默认的&lt;/li&gt;
+&lt;li&gt;对于单线程，信号传递给进程&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;多线程环境下的信号处理&#34;&gt;多线程环境下的信号处理
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;信号可以是同步的（异常）或异步的（I/O）&lt;/li&gt;
+&lt;li&gt;同步信号传递给引起信号的同一线程&lt;/li&gt;
+&lt;li&gt;一部信号可以传递给
+&lt;ul&gt;
+&lt;li&gt;信号适用的线程&lt;/li&gt;
+&lt;li&gt;进程中的每个线程&lt;/li&gt;
+&lt;li&gt;进程中的某些线程（信号掩码）&lt;/li&gt;
+&lt;li&gt;接收进程所有信号的特定线程&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;线程取消&#34;&gt;线程取消
+&lt;/h2&gt;&lt;h3 id=&#34;概念-1&#34;&gt;概念
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;线程取消：在目标线程完成之前终止它&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;取消的实现方法&#34;&gt;取消的实现方法
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;异步取消：立即终止目标线程&lt;/li&gt;
+&lt;li&gt;延迟取消：允许目标线程定期检查是否应该被取消&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;取消的实现细节&#34;&gt;取消的实现细节
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;调用线程取消请求取消，但是实际取消取决于线程状态&lt;/li&gt;
+&lt;li&gt;如果线程禁用了取消，取消保持挂起状态直到线程启用它&lt;/li&gt;
+&lt;li&gt;默认类型时延迟取消&lt;/li&gt;
+&lt;li&gt;取消只在线程到达取消点时发生
+&lt;ul&gt;
+&lt;li&gt;即pthread_testcancel()&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;然后调用清理处理程序&lt;/li&gt;
+&lt;li&gt;在Linux系统上，线程取消通过信号处理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;线程特定数据thread-specifif-data&#34;&gt;线程特定数据(Thread Specifif Data)
+&lt;/h2&gt;&lt;h3 id=&#34;线程特定数据&#34;&gt;线程特定数据
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;线程本地存储(TLS)允许每个线程拥有自己的数据副本&lt;/li&gt;
+&lt;li&gt;当你无法控制线程创建过程时很有用（即使用线程池时）&lt;/li&gt;
+&lt;li&gt;与局部变量不同&lt;/li&gt;
+&lt;li&gt;局部变量只在单个函数调用期间可见&lt;/li&gt;
+&lt;li&gt;TLS在函数调用间可见&lt;/li&gt;
+&lt;li&gt;类似于静态数据&lt;/li&gt;
+&lt;li&gt;TLS对每个线程都是唯一的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;轻量级进程与调度器激活&#34;&gt;轻量级进程与调度器激活
+&lt;/h2&gt;&lt;h3 id=&#34;轻量级进程概念&#34;&gt;轻量级进程概念
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;在计算机操作系统中，轻量级进程（LWP）是实现多任务的一种方式。在传统意义上，如Unix System V和Solaris中使用的术语，LWP在用户空间中运行在单个内核线程之上，并与同一进程内的其他LWP共享地址空间和系统资源。多个用户级线程由线程库管理，可以放置在一个或多个LWP之上——允许在用户级进行多任务处理，这可以带来一些性能优势&lt;/li&gt;
+&lt;li&gt;在一些操作系统中，内核线程和用户线程之间没有单独的LWP层。这意味着用户线程直接在内核线程之上实现。在这些情况下，术语&amp;quot;轻量级进程&amp;quot;通常指内核线程，而术语&amp;quot;线程&amp;quot;可以指用户线程。在Linux上，用户线程通过允许某些进程共享资源来实现，这有时导致这些进程被称为&amp;quot;轻量级进程&amp;quot;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;调度方式&#34;&gt;调度方式
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;轻量级进程(LWP)是多对多和两级模型中用户线程和内核线程之间的中间数据集二狗&lt;/li&gt;
+&lt;li&gt;对用户线程库来说，它看起来像虚拟处理器来调度用户线程&lt;/li&gt;
+&lt;li&gt;每个LWP都连接到一个内核线程&lt;/li&gt;
+&lt;li&gt;内核线程阻塞 -&amp;gt; LWP阻塞 -&amp;gt; 用户线程阻塞&lt;/li&gt;
+&lt;li&gt;内核调度内核线程，线程库调度用户线程&lt;/li&gt;
+&lt;li&gt;线程库可能做出次优的调度决策&lt;/li&gt;
+&lt;li&gt;解决方案：让内核通知线程库的重要的调度事件&lt;/li&gt;
+&lt;li&gt;调度器激活通过上调通知线程库&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;windos-xp线程&#34;&gt;Windos XP线程
+&lt;/h2&gt;&lt;h3 id=&#34;概念-2&#34;&gt;概念
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Windos XP实现一对一映射线程模型&lt;/li&gt;
+&lt;li&gt;每个线程包含
+&lt;ul&gt;
+&lt;li&gt;线程ID&lt;/li&gt;
+&lt;li&gt;处理器状态的寄存器集&lt;/li&gt;
+&lt;li&gt;堵路的用户栈和内核栈&lt;/li&gt;
+&lt;li&gt;私有数据存储区域&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;线程的主要数据结构包括
+&lt;ul&gt;
+&lt;li&gt;ETHREAD：执行线程块（&lt;/li&gt;
+&lt;li&gt;KTHREAD：内核线程块&lt;/li&gt;
+&lt;li&gt;TEB：线程环境块&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;linux线程&#34;&gt;Linux线程
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;linux有fork和clone两个系统调用&lt;/li&gt;
+&lt;li&gt;clone接收一组标志位，决定父进程和子进程之间的共享程度&lt;/li&gt;
+&lt;li&gt;FS/VM/SIGHAND/FILES -&amp;gt; 相当于线程创建&lt;/li&gt;
+&lt;li&gt;没有设置标志 -&amp;gt; 没有共享 -&amp;gt; 相当于fork&lt;/li&gt;
+&lt;li&gt;Linux不区分进程和线程，使用术语“任务”而不是线程&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;线程库&#34;&gt;线程库
+&lt;/h2&gt;&lt;h3 id=&#34;概念-3&#34;&gt;概念
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;线程库为程序员提供了创建和管理线程的API接口&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;两种主要实现方式&#34;&gt;两种主要实现方式
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;用户空间实现
+&lt;ul&gt;
+&lt;li&gt;完全在用户空间中实现，无需内核支持&lt;/li&gt;
+&lt;li&gt;特点：快速、轻量级，但无法利用多核&lt;/li&gt;
+&lt;li&gt;示例：早期的Green Threads&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;内核级实现
+&lt;ul&gt;
+&lt;li&gt;由操作系统支持的内核级库&lt;/li&gt;
+&lt;li&gt;特点：可以真正并行，但开销较大&lt;/li&gt;
+&lt;li&gt;示例：现代操作系统的标准实现&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;线程特性&#34;&gt;线程特性
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;线程拥有自己的身份标识，并且可以独立运行&lt;/li&gt;
+&lt;li&gt;线程共享进程内的地址空间，享受避免任何进程间通信(IPC)通道（共享内存、管道等）进行通信的好处&lt;/li&gt;
+&lt;li&gt;进程中的线程可以直接相互通信&lt;/li&gt;
+&lt;li&gt;例如独立的线程可以访问/更新全局变量&lt;/li&gt;
+&lt;li&gt;这种模型消除了内核本来需要承担的潜在IPC开销。由于线程在同一地址空间中，线程上下文切换是廉价且快速的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;pthread调度&#34;&gt;Pthread调度
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;API允许在线程创建时指定PCS或SCS调度范围&lt;/li&gt;
+&lt;li&gt;pthread_attr_set/getscope是相关的API&lt;/li&gt;
+&lt;li&gt;PTHREAD_SCOPE_PROCESS：使用PCS调度来调度线程&lt;/li&gt;
+&lt;li&gt;LWP的数量由线程库维护&lt;/li&gt;
+&lt;li&gt;PTHREAD_SCOPE_SYSTEM：使用SCS调度来调度线程&lt;/li&gt;
+&lt;li&gt;可用的调度范围可能受到操作系统的限制&lt;/li&gt;
+&lt;li&gt;例如：Linux和Mac OS X只允许PTHREAD_SCOPE_SYSTEM&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;多处理器调度&#34;&gt;多处理器调度
+&lt;/h2&gt;&lt;h3 id=&#34;多处理器架构类型&#34;&gt;多处理器架构类型
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;多处理器可能是以下任一架构
+&lt;ul&gt;
+&lt;li&gt;多核CPU&lt;/li&gt;
+&lt;li&gt;多线程核心&lt;/li&gt;
+&lt;li&gt;NUMA系统&lt;/li&gt;
+&lt;li&gt;异构多处理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;多处理器调度基础
+&lt;ul&gt;
+&lt;li&gt;当有多个CPU可用时，CPU调度变得更加复杂&lt;/li&gt;
+&lt;li&gt;假设处理器在功能上时相同的（同构的）&lt;/li&gt;
+&lt;li&gt;多处理器调度的方法&lt;/li&gt;
+&lt;li&gt;非堆成多处理：
+&lt;ul&gt;
+&lt;li&gt;只有一个处理器做调度决策、I/O处理和其他活动&lt;/li&gt;
+&lt;li&gt;其他处理器充当虚拟处理单元&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;对称多处理(SMP)：每个处理器都是自调度的
+&lt;ul&gt;
+&lt;li&gt;调度数据结构是共享的，需要同步&lt;/li&gt;
+&lt;li&gt;被通用操作系统使用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;SMP架构细节
+&lt;ul&gt;
+&lt;li&gt;对称多处理(SMP)是每个处理器都自调度的架构&lt;/li&gt;
+&lt;li&gt;所有线程可能在一个公共就绪队列中(a)&lt;/li&gt;
+&lt;li&gt;或者每个处理器可能有自己的私有线程队列(b)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;多核调度
+&lt;ul&gt;
+&lt;li&gt;单芯片中的多个CPU核心&lt;/li&gt;
+&lt;li&gt;最近的趋势是在同一物理芯片上防止多个处理器核心，更快且功耗更低&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;芯片多线程(CMT)
+&lt;ul&gt;
+&lt;li&gt;多线程核心：芯片多线程&lt;/li&gt;
+&lt;li&gt;Intel使用超线程术语（或同时多线程-SMT）：在同一核心上同时运行两个（或更多）硬件线程：内存停顿&lt;/li&gt;
+&lt;li&gt;利用内存停顿在内存检索时在另一个线程上取得进展&lt;/li&gt;
+&lt;li&gt;每个核心有&amp;gt;1个硬件线程。如果一个线程有内存停顿，切换到另一个线程！&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;CMT的两级调度
+&lt;ul&gt;
+&lt;li&gt;两级调度：
+&lt;ul&gt;
+&lt;li&gt;操作系统决定在逻辑CPU上运行哪个软件线程&lt;/li&gt;
+&lt;li&gt;每个核心如何决定在物理核心上运行哪个硬件线程。两个硬件线程不能并行运行，因为我们只有一个CPU核心&lt;/li&gt;
+&lt;li&gt;如果操作系统知道CPU资源的底层共享情况，可以做出更好的决策&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;负载均衡
+&lt;ul&gt;
+&lt;li&gt;如果是SMP，需要保持所有CPU的负载以提高效率&lt;/li&gt;
+&lt;li&gt;负载均衡试图保持工作负载均匀分布&lt;/li&gt;
+&lt;li&gt;推送迁移 - 周期性任务检查每个处理器的负载，如果发现则将任务从过载的CPU推送到其他CPU&lt;/li&gt;
+&lt;li&gt;拉取迁移 - 空闲处理器从繁忙处理器拉取等待任务&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;处理器亲和性
+&lt;ul&gt;
+&lt;li&gt;当线程在一个处理器上运行时，该处理器的缓存内容存储该线程的内存访问&lt;/li&gt;
+&lt;li&gt;我们称这为线程对处理器有亲和性（即&amp;quot;处理器亲和性&amp;quot;）&lt;/li&gt;
+&lt;li&gt;负载均衡可能影响处理器亲和性，因为线程可能从一个处理器移动到另一个处理器以平衡负载，但该线程失去了在其移出的处理器缓存中的内容&lt;/li&gt;
+&lt;li&gt;软亲和性 - 操作系统试图保持线程在同一处理器上运行，但不保证&lt;/li&gt;
+&lt;li&gt;硬亲和性 - 允许进程指定一组它可以运行的处理器&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;NUMA和CPU调度
+&lt;ul&gt;
+&lt;li&gt;如果操作系统是NUMA感知的，它将分配靠进展线程运行CPU的内存&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;实时CPU调度
+&lt;ul&gt;
+&lt;li&gt;可能出现明显的挑战&lt;/li&gt;
+&lt;li&gt;软实时系统-关键实时任务有最高优先级，但不保证任务何时被调度&lt;/li&gt;
+&lt;li&gt;硬实时系统-任务必须在其截止时间前得到服务&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;linux-2623-完全公平调度器cfs详解&#34;&gt;Linux 2.6.23+ 完全公平调度器(CFS)详解
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Linux调度器版本2.6.23+
+&lt;ul&gt;
+&lt;li&gt;完全公平调度器(CFS)&lt;/li&gt;
+&lt;li&gt;调度类&lt;/li&gt;
+&lt;li&gt;每个调度类都有特定的优先级&lt;/li&gt;
+&lt;li&gt;调度器选择最高优先级调度类中的最高优先级任务&lt;/li&gt;
+&lt;li&gt;不是基于固定时间分配的量子，而是基于CPU时间比例(nice值)&lt;/li&gt;
+&lt;li&gt;较少的nice值将获得更高比例的CPU时间&lt;/li&gt;
+&lt;li&gt;包含2个调度类，其他可以添加
+&lt;ul&gt;
+&lt;li&gt;默认调度类&lt;/li&gt;
+&lt;li&gt;实时调度类&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;CFS量子计算细节
+&lt;ul&gt;
+&lt;li&gt;量子基于nice值计算，从-20到+19&lt;/li&gt;
+&lt;li&gt;较低的值是更高的优先级&lt;/li&gt;
+&lt;li&gt;计算目标延迟 - 任务应该至少运行一次的时间间隔&lt;/li&gt;
+&lt;li&gt;如果活跃任务数量增加，目标延迟可以增加&lt;/li&gt;
+&lt;li&gt;CFS调度器在变量vruntime中维护每个任务的虚拟运行时间&lt;/li&gt;
+&lt;li&gt;与基于任务优先级的衰减因子相关联 - 较低优先级有较高的衰减率&lt;/li&gt;
+&lt;li&gt;正常默认优先级产生虚拟运行时间 = 实际运行时间&lt;/li&gt;
+&lt;li&gt;要决定下一个运行的任务，调度器选择虚拟运行时间最低的任务&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;linux调度系统补充详解&#34;&gt;Linux调度系统补充详解
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Linux实时调度
+&lt;ul&gt;
+&lt;li&gt;根据POSIX.1b标准的实时调度&lt;/li&gt;
+&lt;li&gt;实时任务具有静态优先级&lt;/li&gt;
+&lt;li&gt;实时任务加上普通任务映射到全局优先级方案&lt;/li&gt;
+&lt;li&gt;Nice值-20映射到全局优先级100&lt;/li&gt;
+&lt;li&gt;Nice值+19映射到优先级139&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Linux负载均衡与NUMA
+&lt;ul&gt;
+&lt;li&gt;Linux支持负载均衡，但也是NUMA感知的&lt;/li&gt;
+&lt;li&gt;调度域是一组可以相互平衡的CPU核心集合&lt;/li&gt;
+&lt;li&gt;域按它们共享的内容（即缓存内存）组织。目标是防止线程在域之间迁移&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;windows调度系统详解&#34;&gt;Windows调度系统详解
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Windows调度基础
+&lt;ul&gt;
+&lt;li&gt;Windows使用基于优先级的抢占式调度&lt;/li&gt;
+&lt;li&gt;最高优先级的线程下一个运行&lt;/li&gt;
+&lt;li&gt;调度器就是分发器(Dispatcher)&lt;/li&gt;
+&lt;li&gt;线程运行直到 (1)阻塞，(2)用完时间片，(3)被更高优先级线程抢占&lt;/li&gt;
+&lt;li&gt;实时线程可以抢占非实时线程&lt;/li&gt;
+&lt;li&gt;32级优先级方案：可变类是1-15，实时类是16-31&lt;/li&gt;
+&lt;li&gt;优先级0是内存管理线程&lt;/li&gt;
+&lt;li&gt;每个优先级一个队列&lt;/li&gt;
+&lt;li&gt;如果没有可运行线程，运行空闲线程&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Windows优先级类
+&lt;ul&gt;
+&lt;li&gt;不同的优先级类&lt;/li&gt;
+&lt;li&gt;一个类内的相对优先级&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>调度</title>
+        <link>https://example.com/p/%E8%B0%83%E5%BA%A6/</link>
+        <pubDate>Fri, 01 Aug 2025 21:50:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E8%B0%83%E5%BA%A6/</guid>
+        <description>&lt;h1 id=&#34;调度&#34;&gt;调度
+&lt;/h1&gt;&lt;h2 id=&#34;调度术语&#34;&gt;调度术语
+&lt;/h2&gt;&lt;h3 id=&#34;术语辨析&#34;&gt;术语辨析
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;被操作系统调度的是内核线程————而不是进程&lt;/li&gt;
+&lt;li&gt;然而，“线程调度”和“进程调度”这两个属于经常互换使用&lt;/li&gt;
+&lt;li&gt;当讨论一般概念时我们使用“进程调度”，当设计线程特定概念时使用“线程调度”&lt;/li&gt;
+&lt;li&gt;同时“在CPU上运行”实际是指在“CPU核心上运行”&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;注cpu与cpu核心&#34;&gt;注：CPU与CPU核心
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;CPU可以包含多个核心。何以把CPU比作一座办公大楼，CPU核心是一个办公室，正在执行的线程就是一个正在工作的员工&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;进程调度&#34;&gt;进程调度
+&lt;/h2&gt;&lt;h3 id=&#34;基本概念&#34;&gt;基本概念
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;进程执行由CPU执行和I/O等待的循环组成&lt;/li&gt;
+&lt;li&gt;CPU突发和I/O突发交替进行&lt;/li&gt;
+&lt;li&gt;CPU突发分布在进程间和计算机间差异很大，但遵循相似的曲线&lt;/li&gt;
+&lt;li&gt;通过多道程序设计获得最大的CPU利用率&lt;/li&gt;
+&lt;li&gt;当前进程处于I/O突发时，CPU调度器选择另一个进程&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;cpu调度器&#34;&gt;CPU调度器
+&lt;/h3&gt;&lt;h4 id=&#34;调度决策选择&#34;&gt;调度决策选择
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;CPU调度器从就绪队列中的进程中进行选择，并将CPU分配给其中一个进程&lt;/li&gt;
+&lt;li&gt;CPU调度决策可能在一下情况发生
+&lt;ul&gt;
+&lt;li&gt;进程从运行状态切换到等待状态&lt;/li&gt;
+&lt;li&gt;进程从运行状态切换到就绪状态&lt;/li&gt;
+&lt;li&gt;进程从等待状态切换到就绪状态&lt;/li&gt;
+&lt;li&gt;进程终止&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;仅在条件1和4下的调度是非抢占式的
+&lt;ul&gt;
+&lt;li&gt;一旦CPU被分配给进程，该进程会保持CPU直到终止或等待I/O&lt;/li&gt;
+&lt;li&gt;也被称为协作式调度&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;抢占式调度还会在条件2和3下调度进程
+&lt;ul&gt;
+&lt;li&gt;抢占式调度需要硬件支持，如定时器&lt;/li&gt;
+&lt;li&gt;需要同步原语&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;注协作式调度与抢占式调度&#34;&gt;注：协作式调度与抢占式调度
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;协作式调度：自觉排队
+&lt;ul&gt;
+&lt;li&gt;基本思想：没有管理员的机房，每个人用完电脑后主动让给下一个人，程序自己决定什么时候停下来并主动分享资源&lt;/li&gt;
+&lt;li&gt;什么时候让出CPU
+&lt;ul&gt;
+&lt;li&gt;程序需要读写文件时（I/O）&lt;/li&gt;
+&lt;li&gt;程序主动调用sleep休眠&lt;/li&gt;
+&lt;li&gt;程序运行完毕退出&lt;/li&gt;
+&lt;li&gt;程序主动调用yield让出&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;抢占式调度：由管理员的排队
+&lt;ul&gt;
+&lt;li&gt;核心思想：有管理员的机房，管理员用定时器控制每个人的使用时间，到了时间就必须让出&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;什么时候强制切换
+&lt;ul&gt;
+&lt;li&gt;时间片用完&lt;/li&gt;
+&lt;li&gt;有更高优先级的程序要运行&lt;/li&gt;
+&lt;li&gt;程序进行I/O操作时&lt;/li&gt;
+&lt;li&gt;程序运行完毕&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;抢占&#34;&gt;抢占
+&lt;/h3&gt;&lt;h4 id=&#34;内核抢占&#34;&gt;内核抢占
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;抢占也会影响系统内核的设计&lt;/li&gt;
+&lt;li&gt;如果在更新共享数据时被抢占，内核状态将会不一致&lt;/li&gt;
+&lt;li&gt;即当中断发生时内核正在服务系统调用&lt;/li&gt;
+&lt;li&gt;两种解决方案
+&lt;ul&gt;
+&lt;li&gt;等待系统调用完成或I/O阻塞&lt;/li&gt;
+&lt;li&gt;内核时非抢占式的，但对进程仍然是抢占式的&lt;/li&gt;
+&lt;li&gt;在更新共享数据时禁用内核抢占&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;最新的Linux内核采用这种方法
+&lt;ul&gt;
+&lt;li&gt;Linux支持SMP&lt;/li&gt;
+&lt;li&gt;共享数据受内核同步保护&lt;/li&gt;
+&lt;li&gt;在内核同步时禁用内核抢占&lt;/li&gt;
+&lt;li&gt;将非抢占式SMP内核转变为抢占式内核&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;用户抢占和内核抢占的具体时机&#34;&gt;用户抢占和内核抢占的具体时机
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;用户抢占
+&lt;ul&gt;
+&lt;li&gt;从系统调用返回用户空间时&lt;/li&gt;
+&lt;li&gt;从中断处理程序返回用户空间时&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;内核抢占
+&lt;ul&gt;
+&lt;li&gt;当中断处理程序退出，返回内核空间之前&lt;/li&gt;
+&lt;li&gt;当内核代码重新变为可抢占时&lt;/li&gt;
+&lt;li&gt;如果内核中的任务显示调用schedule()&lt;/li&gt;
+&lt;li&gt;如果内核中的任务阻塞（这会导致调用schedule）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;分派器dispatcher&#34;&gt;分派器(Dispatcher)
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;分派器模块将CPU的控制权交给由段齐调度器选中的进程&lt;/li&gt;
+&lt;li&gt;切换上下文&lt;/li&gt;
+&lt;li&gt;切换到用户模式&lt;/li&gt;
+&lt;li&gt;跳转到用户程序中的正确位置以重启该程序&lt;/li&gt;
+&lt;li&gt;分派延迟：分派其停止一个进程并启动另一个进程所需的时间&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;调度标准&#34;&gt;调度标准
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;CPU利用率：CPU忙碌的百分比&lt;/li&gt;
+&lt;li&gt;吞吐量：每个事件单位内完成执行的进程数量&lt;/li&gt;
+&lt;li&gt;周转时间：执行特定进程的事件
+&lt;ul&gt;
+&lt;li&gt;从提交时间到完成时间&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;等待时间：在就绪队列中等待的总时间&lt;/li&gt;
+&lt;li&gt;相应时间：从请求提交到产生第一个相应所需的时间
+&lt;ul&gt;
+&lt;li&gt;开始相应所需的时间&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;调度算法优化标准&#34;&gt;调度算法优化标准
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;一般来说，最大化CPU利用率和吞吐率，最小化周转时间、等待时间和响应时间&lt;/li&gt;
+&lt;li&gt;不同系统优化不同的值&lt;/li&gt;
+&lt;li&gt;在多数情况下优化平均值&lt;/li&gt;
+&lt;li&gt;在某些情况下，优化最小值或最大值
+&lt;ul&gt;
+&lt;li&gt;例如：实时系统&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;对于交互式系统，最小化响应时间的方差&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;调度算法&#34;&gt;调度算法
+&lt;/h3&gt;&lt;h4 id=&#34;先来先服务调度fcfs&#34;&gt;先来先服务调度(FCFS)
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;总结：排队买票&lt;/li&gt;
+&lt;li&gt;核心思想：谁先来谁先服务，就像银行排队一样&lt;/li&gt;
+&lt;li&gt;工作原理
+&lt;ul&gt;
+&lt;li&gt;按照进程到达的先后顺序执行&lt;/li&gt;
+&lt;li&gt;第一个到达当地的进程先执行完，在执行第二个，以此类推&lt;/li&gt;
+&lt;li&gt;一旦开始执行就不会被打断&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;优点：公平、简单、不会饥饿&lt;/li&gt;
+&lt;li&gt;缺点：短任务可能等很久（护航效应）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;最短作业优先调整sjf&#34;&gt;最短作业优先调整(SJF)
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;总结：快餐优先&lt;/li&gt;
+&lt;li&gt;核心思想：总是先做最快能完成的任务&lt;/li&gt;
+&lt;li&gt;工作原理：
+&lt;ul&gt;
+&lt;li&gt;在所有等待的进程中，选择执行时间最短的执行&lt;/li&gt;
+&lt;li&gt;可以大幅减少平均等待时间&lt;/li&gt;
+&lt;li&gt;需要事先知道每个进程要执行多长时间&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;优点：平均等待时间最短（理论最优）&lt;/li&gt;
+&lt;li&gt;缺点：长任务可能永远轮不到（饥饿问题）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;优先级调度priority&#34;&gt;优先级调度(Priority)
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;核心思想：重要的任务先做&lt;/li&gt;
+&lt;li&gt;工作原理：
+&lt;ul&gt;
+&lt;li&gt;每个进程都有一个优先级数字&lt;/li&gt;
+&lt;li&gt;总是选择优先级最高的进程执行&lt;/li&gt;
+&lt;li&gt;可以根据重要性动态调整优先级&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;老化机制：为了防止普通顾客永远等不到，可以让等待时间长的客户逐渐升级&lt;/li&gt;
+&lt;li&gt;优点：体现重要性，灵活可控&lt;/li&gt;
+&lt;li&gt;缺点：低优先级可能饥饿，需要防饥饿机制&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;时间片轮转调度round-robin&#34;&gt;时间片轮转调度(Round Robin)
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;核心思想：轮流服务&lt;/li&gt;
+&lt;li&gt;工作原理：
+&lt;ul&gt;
+&lt;li&gt;给每个进程分配相同的时间片&lt;/li&gt;
+&lt;li&gt;时间到了就强制切换到下一个进程&lt;/li&gt;
+&lt;li&gt;没完成的进程重新排队等下一轮&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;优点：响应时间好，公平，适合交互式系统&lt;/li&gt;
+&lt;li&gt;缺点：频繁切换有开销，时间片大小难选择&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;多级队列调度mlq&#34;&gt;多级队列调度(MLQ)
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;核心思想：分类服务&lt;/li&gt;
+&lt;li&gt;工作原理
+&lt;ul&gt;
+&lt;li&gt;把进程分成几个固定的类别（系统进程、前台进程、后台进程等）&lt;/li&gt;
+&lt;li&gt;每个类别有自己的队列和调度策略&lt;/li&gt;
+&lt;li&gt;高优先级队列优先服务&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;优点：不同类型用最适合的策略，系统进程优先&lt;/li&gt;
+&lt;li&gt;缺点：底层队列可能饥饿，分类可能不准确&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;多级反馈队列调度mlfq&#34;&gt;多级反馈队列调度(MLFQ)
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;核心思想：根据客户的行为表现动态调整服务等级&lt;/li&gt;
+&lt;li&gt;工作原理：
+&lt;ul&gt;
+&lt;li&gt;新进程从最高优先级队列开始&lt;/li&gt;
+&lt;li&gt;如果用完时间片还没完成，就降级到下一级队列&lt;/li&gt;
+&lt;li&gt;如果主动让出CPU（比如等待I/O），可能提升等级&lt;/li&gt;
+&lt;li&gt;等待太久的进程会自动升级（防止饥饿）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;优点：最只能，自适应，段任务响应快，长任务不饥饿&lt;/li&gt;
+&lt;li&gt;缺点：最复杂，参数调整困难，实现开销大&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;mlq详解&#34;&gt;MLQ详解
+&lt;/h4&gt;&lt;h5 id=&#34;多级队列调度&#34;&gt;多级队列调度
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;多级队列调度
+&lt;ul&gt;
+&lt;li&gt;就绪队列被分割为多个独立的队列&lt;/li&gt;
+&lt;li&gt;例如：前台（交互式）进程和后台（批处理）进程&lt;/li&gt;
+&lt;li&gt;进程被永久分配到指定的队列&lt;/li&gt;
+&lt;li&gt;每个队列都有自己的调度算法&lt;/li&gt;
+&lt;li&gt;例如：交互式进程使用RR，批处理进程使用FCFS&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;队列间调度
+&lt;ul&gt;
+&lt;li&gt;必须子啊队列之间进行调度&lt;/li&gt;
+&lt;li&gt;固定优先级调度&lt;/li&gt;
+&lt;li&gt;存在饥饿的可能性&lt;/li&gt;
+&lt;li&gt;时间片分配：每个队列获得一定数量的CPU时间，用于在其进程之间进行调度&lt;/li&gt;
+&lt;li&gt;例如：前台进程80%时间用RR，后台进程20%时间用FCFS&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;多级反馈队列
+&lt;ul&gt;
+&lt;li&gt;多级反馈队列调度使用多级队列&lt;/li&gt;
+&lt;li&gt;进程可以在不同队列之间移动&lt;/li&gt;
+&lt;li&gt;它试图推断进程的类型&lt;/li&gt;
+&lt;li&gt;老化机制可以通过这种方式实现&lt;/li&gt;
+&lt;li&gt;目标时给交互式和I/O密集型进程高优先级&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;MLFQ定义参数
+&lt;ul&gt;
+&lt;li&gt;MLFQ调度器由以下参数定义&lt;/li&gt;
+&lt;li&gt;队列数量&lt;/li&gt;
+&lt;li&gt;每个队列的调度算法&lt;/li&gt;
+&lt;li&gt;确定何时给进程分配更高优先级的方法&lt;/li&gt;
+&lt;li&gt;确定何时降级进程的方法&lt;/li&gt;
+&lt;li&gt;确定进程需要服务时进入那个队列的方法&lt;/li&gt;
+&lt;li&gt;MLFQ是最通用的CPU调度算法&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;线程调度&#34;&gt;线程调度
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;操作系统内核调度内核线程&lt;/li&gt;
+&lt;li&gt;系统竞争范围 (SCS)：系统中所有线程之间的竞争&lt;/li&gt;
+&lt;li&gt;内核不知道用户线程的存在&lt;/li&gt;
+&lt;li&gt;线程库将用户线程调度到LWP上&lt;/li&gt;
+&lt;li&gt;用于多对一和多对多线程模型&lt;/li&gt;
+&lt;li&gt;进程竞争范围 (PCS)：进程内部的调度竞争&lt;/li&gt;
+&lt;li&gt;PCS通常基于用户设置的优先级&lt;/li&gt;
+&lt;li&gt;被调度到LWP的用户线程不一定在CPU上运行&lt;/li&gt;
+&lt;li&gt;操作系统内核需要将LWP的内核线程调度到CPU上&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>进程</title>
+        <link>https://example.com/p/%E8%BF%9B%E7%A8%8B/</link>
+        <pubDate>Fri, 01 Aug 2025 21:50:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E8%BF%9B%E7%A8%8B/</guid>
+        <description>&lt;h1 id=&#34;进程&#34;&gt;进程
+&lt;/h1&gt;&lt;h2 id=&#34;进程的概念&#34;&gt;进程的概念
+&lt;/h2&gt;&lt;h3 id=&#34;进程与程序&#34;&gt;进程与程序
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;一个操作系统可以运行许多个程序，一个运行中的程序被称为&lt;strong&gt;进程(Process)&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;进程与程序的关系：
+&lt;ul&gt;
+&lt;li&gt;程序是被动和静态的，进程是主动和动态的&lt;/li&gt;
+&lt;li&gt;一个程序对应的可能有多个进程&lt;/li&gt;
+&lt;li&gt;程序可以通过GUI或命令行启动&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;进程的组成&#34;&gt;进程的组成
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;程序代码
+&lt;ul&gt;
+&lt;li&gt;内容：可执行的程序指令&lt;/li&gt;
+&lt;li&gt;特点：只读，多个相同进程可以共享同一份代码&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;运行时CPU状态
+&lt;ul&gt;
+&lt;li&gt;程序技术去(PC): 指向下一条要执行的指令地址&lt;/li&gt;
+&lt;li&gt;寄存器组：
+&lt;ul&gt;
+&lt;li&gt;通用寄存器：存储计算数据&lt;/li&gt;
+&lt;li&gt;状态寄存器：保存处理器状态标志&lt;/li&gt;
+&lt;li&gt;专用寄存器：如栈指针、基址寄存器等&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;内存区域
+&lt;ul&gt;
+&lt;li&gt;栈(Stack)&lt;/li&gt;
+&lt;li&gt;数据段(Data Section)&lt;/li&gt;
+&lt;li&gt;堆(Heap)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;进程的状态state&#34;&gt;进程的状态(State)
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;一个进程包含以下状态
+&lt;ul&gt;
+&lt;li&gt;new&lt;/li&gt;
+&lt;li&gt;running&lt;/li&gt;
+&lt;li&gt;wating/blocking&lt;/li&gt;
+&lt;li&gt;ready&lt;/li&gt;
+&lt;li&gt;terminated&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;状态转换示意图&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p align=&#34;center&#34;&gt;
+    &lt;img src=&#34;https://example.com/images/process1.png&#34; alt=&#34;State&#34; width=&#34;80%&#34;&gt;
+&lt;/p&gt;
+&lt;h3 id=&#34;进程控制块process-control-block-pcb&#34;&gt;进程控制块(Process Control Block, PCB)
+&lt;/h3&gt;&lt;h4 id=&#34;基本概念&#34;&gt;基本概念
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;PCB是操作系统管理进程的核心数据结构，每个进程都有唯一的PCB&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;pcb的四大类信息&#34;&gt;PCB的四大类信息、
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;进程标识信息
+&lt;ul&gt;
+&lt;li&gt;PID：进程唯一标识符&lt;/li&gt;
+&lt;li&gt;PPID：父进程ID&lt;/li&gt;
+&lt;li&gt;UID/GID：用户和组标识符&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;处理机状态信息
+&lt;ul&gt;
+&lt;li&gt;程序计数器(PC)：下一条指令地址&lt;/li&gt;
+&lt;li&gt;寄存器组：CPU寄存器的值&lt;/li&gt;
+&lt;li&gt;栈指针：当前栈位置&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;进程调度信息：
+&lt;ul&gt;
+&lt;li&gt;优先级：调度优先级&lt;/li&gt;
+&lt;li&gt;进程状态：运行/就绪/阻塞等&lt;/li&gt;
+&lt;li&gt;CPU时间：已使用和分配的时间&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;进程控制信息
+&lt;ul&gt;
+&lt;li&gt;内存管理：页表、内存映射&lt;/li&gt;
+&lt;li&gt;文件管理：打开的文件列表&lt;/li&gt;
+&lt;li&gt;信号处理：信号处理机制&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;pcb的关键作用&#34;&gt;PCB的关键作用
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;上下文切换
+&lt;ul&gt;
+&lt;li&gt;保存当前进程状态到PCB，然后从PCB恢复目标进程状态&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;进程管理
+&lt;ul&gt;
+&lt;li&gt;创建：分配新PCB&lt;/li&gt;
+&lt;li&gt;调度：基于PCB信息选择进程&lt;/li&gt;
+&lt;li&gt;终止：释放PCB和相关资源&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;资源跟踪
+&lt;ul&gt;
+&lt;li&gt;内存分配情况&lt;/li&gt;
+&lt;li&gt;打开的文件&lt;/li&gt;
+&lt;li&gt;拥有的设备&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;pcb在linux中的实现-task_struct&#34;&gt;PCB在linux中的实现: task_struct
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;Linux使用task_struct结构体实现PCB，包含：
+&lt;ul&gt;
+&lt;li&gt;进程状态和标识&lt;/li&gt;
+&lt;li&gt;内存管理信息(mm_struct)&lt;/li&gt;
+&lt;li&gt;文件系统信息(files_struct)&lt;/li&gt;
+&lt;li&gt;父子进程关系&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;PCB在系统中的组织
+&lt;ul&gt;
+&lt;li&gt;进程链表：所有进程形成链表&lt;/li&gt;
+&lt;li&gt;哈希表：通过PID快速查找&lt;/li&gt;
+&lt;li&gt;运行队列：就绪进程的调度队列&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;线程thread&#34;&gt;线程(Thread)
+&lt;/h3&gt;&lt;h2 id=&#34;进程调度&#34;&gt;进程调度
+&lt;/h2&gt;&lt;h3 id=&#34;调度&#34;&gt;调度
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;CPU调度器会选择接下来要运行的进程并分配内存。这个操作一般是非常快的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;调度队列&#34;&gt;调度队列
+&lt;/h3&gt;&lt;h4 id=&#34;定义&#34;&gt;定义
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;操作系统内核用来组织和管理不同状态进程的数据结构，是实现搞笑进程调度的基础。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;三种主要调度队列&#34;&gt;三种主要调度队列
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;作业队列(Job Queue)
+&lt;ul&gt;
+&lt;li&gt;范围：系统中的所有进程&lt;/li&gt;
+&lt;li&gt;用途：全局管理和统计&lt;/li&gt;
+&lt;li&gt;对应命令：ps aux&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;就绪队列(Ready Queue)
+&lt;ul&gt;
+&lt;li&gt;范围：准备执行的进程&lt;/li&gt;
+&lt;li&gt;特点：按优先级组织，支持快速选择&lt;/li&gt;
+&lt;li&gt;实现：多级队列 + 位图索引&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;设备队列(Device Queue)
+&lt;ul&gt;
+&lt;li&gt;范围：等待I/O的进程&lt;/li&gt;
+&lt;li&gt;分类：磁盘、网络、键盘等不同设备&lt;/li&gt;
+&lt;li&gt;状态：TASK_INTERRUPTIBLE/UNINTERRUPTIBLE&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;上下文切换context-switch&#34;&gt;上下文切换(Context Switch)
+&lt;/h3&gt;&lt;h4 id=&#34;定义-1&#34;&gt;定义
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;内核切换到另一个进程去执行，保存就进程的状态并加载新进程的已保存状态&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;开销&#34;&gt;开销
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;上下文切换是开销，CPU在切换时不做任何有用的工作。操作系统和PCB越复杂，上下文切换时间越长，时间取决于硬件支持。某些硬件为每个CPU提供多组寄存器，可以同时加载多个上下文&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;进程创建&#34;&gt;进程创建
+&lt;/h3&gt;&lt;h4 id=&#34;概念&#34;&gt;概念
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;父进程可以创建子进程，子进程可以进一步创建子进程，形成进程树。进程通过进程标识符(PID)来识别和管理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;design-choices&#34;&gt;Design choices
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;三种可能的资源共享级别：全部、子集、无&lt;/li&gt;
+&lt;li&gt;父进程和子进程的地址空间管理
+&lt;ul&gt;
+&lt;li&gt;子进程复制父进程地址空间(Linux)&lt;/li&gt;
+&lt;li&gt;子进程加载新程序(Windows)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;父进程和子进程的执行
+&lt;ul&gt;
+&lt;li&gt;父进程和子进程并发执行&lt;/li&gt;
+&lt;li&gt;父进程等待子进程终止&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;用于进程创建的系统调用&#34;&gt;用于进程创建的系统调用
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;fork: 创建一个新的进程副本，结束时会返回&lt;/li&gt;
+&lt;li&gt;exec: 使用一个新的进程的地址覆盖当前进程地址，加载了新程序，不会返回原程序&lt;/li&gt;
+&lt;li&gt;wait: 阻塞直到子进程结束&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;进程终止&#34;&gt;进程终止
+&lt;/h3&gt;&lt;h4 id=&#34;工作流程&#34;&gt;工作流程
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;正常终止：进程执行最后一条语句并请求内核删除它(exit)
+&lt;ul&gt;
+&lt;li&gt;操作系统将子进程的返回值传递给父进程(wait)&lt;/li&gt;
+&lt;li&gt;进程的资源被操作系统释放&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;异常终止：父进程可能终止子进程的执行(abort)
+&lt;ul&gt;
+&lt;li&gt;子进程超出了分配到的资源&lt;/li&gt;
+&lt;li&gt;分配给子进程的任务不在被需要&lt;/li&gt;
+&lt;li&gt;如果父进程退出，一些操作系统不允许子进程继续
+&lt;ul&gt;
+&lt;li&gt;所有子进程（整个子树）将被终止-这被称为&lt;strong&gt;级联终止(cascading termination)&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;注exit与_exit&#34;&gt;注：exit与_exit
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;exit为标准库函数，执行终止进程和清理&lt;/li&gt;
+&lt;li&gt;_exit为系统调用，直接请求内核终止进程，不做清理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;可能存在的错误僵尸进程与孤儿进程&#34;&gt;可能存在的错误————僵尸进程与孤儿进程
+&lt;/h4&gt;&lt;h5 id=&#34;僵尸进程&#34;&gt;僵尸进程
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;僵尸进程时已经执行完毕但父进程还没有回收其退出状态的子进程&lt;/li&gt;
+&lt;li&gt;特征
+&lt;ul&gt;
+&lt;li&gt;进程已死亡：不再执行任何代码&lt;/li&gt;
+&lt;li&gt;PCB仍存在：内核保留进程控制块&lt;/li&gt;
+&lt;li&gt;保存退出状态：等待父进程读取&lt;/li&gt;
+&lt;li&gt;不占用内存：代码段、数据段、栈都释放&lt;/li&gt;
+&lt;li&gt;占用PID槽位：PID不能被其他进程使用&lt;/li&gt;
+&lt;li&gt;ps显示为&amp;lt;defunct&amp;gt;：状态标记为Z&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;孤儿进程&#34;&gt;孤儿进程
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;孤儿进程是父进程已经退出，但子进程仍然在运行的进程&lt;/li&gt;
+&lt;li&gt;特征
+&lt;ul&gt;
+&lt;li&gt;仍在运行：进程仍然正常执行&lt;/li&gt;
+&lt;li&gt;父进程变更：PPID变为1（init进程）&lt;/li&gt;
+&lt;li&gt;正常运行：功能不受影响&lt;/li&gt;
+&lt;li&gt;自动回收：退出时由init进程回收&lt;/li&gt;
+&lt;li&gt;通常无害：不会造成资源泄漏&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;关键区别&#34;&gt;关键区别
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;僵尸进程是管理问题，有害，大量积累会耗尽系统资源，需要程序员解决&lt;/li&gt;
+&lt;li&gt;孤儿进程是自然现象，无害，系统自动解决&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;android进程&#34;&gt;Android进程
+&lt;/h3&gt;&lt;h4 id=&#34;android进程重要性层次结构&#34;&gt;Android进程重要性层次结构
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;移动操作系统经常需要终止进程来回收系统资源（如内存）。按重要性从高到低排列
+&lt;ul&gt;
+&lt;li&gt;前台进程：在屏幕上可见
+&lt;ul&gt;
+&lt;li&gt;用户正在使用微信&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;可见进程：不直接可见，但执行前台进程正在引用的活动
+&lt;ul&gt;
+&lt;li&gt;视频应用播放时弹出权限对话框&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;服务进程：如流媒体音乐
+&lt;ul&gt;
+&lt;li&gt;音乐应用后台播放&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;后台进程：执行活动，但用户不明显感知
+&lt;ul&gt;
+&lt;li&gt;用户切换应用后原应用进入后台&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;空进程：不包含任何活动&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Android将开始终止最不重要的进程&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;浏览器的多进程架构&#34;&gt;浏览器的多进程架构
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;在过去许多网页浏览器作为单一进程运行（有些仍然如此）。这会导致如果一个网站出现问题，整个浏览器都可能挂起或崩溃&lt;/li&gt;
+&lt;li&gt;Google Chrome浏览器采用多进程架构，包含3中不同类型的进程：
+&lt;ul&gt;
+&lt;li&gt;浏览器进程：管理用户界面、磁盘和网络I/O&lt;/li&gt;
+&lt;li&gt;渲染进程：渲染网页，处理HTML、Javascript。为每个打开的网页创建新的渲染进程&lt;/li&gt;
+&lt;li&gt;运行在沙箱中，限制磁盘和网络I/O,最小化安全漏洞的影响&lt;/li&gt;
+&lt;li&gt;插件进程：为每种类型的插件创建进程&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;进程间通信&#34;&gt;进程间通信
+&lt;/h3&gt;&lt;h4 id=&#34;概念-1&#34;&gt;概念
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;系统中的进程可能是独立的或协作的
+&lt;ul&gt;
+&lt;li&gt;独立进程：无法影响或被其他进程的执行所影响的进程&lt;/li&gt;
+&lt;li&gt;协作进程：可以影响或被其他进程影响的进程，包括共享数据&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;协作进程的原因：信息共享、计算加速、模块化、便利性、安全性&lt;/li&gt;
+&lt;li&gt;写作进程需要进程间通信(IPC)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;ipc模型&#34;&gt;IPC模型
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;存在两种IPC模型：
+&lt;ul&gt;
+&lt;li&gt;共享内存&lt;/li&gt;
+&lt;li&gt;消息传递&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;示意图：
+  &lt;p align=&#34;center&#34;&gt;
+      &lt;img src=&#34;https://example.com/images/process2.png&#34; alt=&#34;IPC&#34; width=&#34;70%&#34;&gt;
+  &lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;生产者-消费者问题&#34;&gt;生产者-消费者问题
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;协作进程的范例，生产者进程产生信息，被消费者进程消费&lt;/li&gt;
+&lt;li&gt;无界缓冲区：对缓冲区大小没有实际限制&lt;/li&gt;
+&lt;li&gt;有界缓冲区：假设有固定的缓冲区大小&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;消息传递&#34;&gt;消息传递
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;进程通过交换消息互相通信&lt;/li&gt;
+&lt;li&gt;无需依赖共享变量&lt;/li&gt;
+&lt;li&gt;消息传递提供两个操作
+&lt;ul&gt;
+&lt;li&gt;send：发送消息&lt;/li&gt;
+&lt;li&gt;receive：接受消息&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;如果P和Q希望通信，它们需要
+&lt;ul&gt;
+&lt;li&gt;在它们之间建立通信链路&lt;/li&gt;
+&lt;li&gt;例如：邮箱(间接)或基于pid(直接)&lt;/li&gt;
+&lt;li&gt;通过send/receive交换消息&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;直接与间接通信
+&lt;ul&gt;
+&lt;li&gt;直接通信
+&lt;ul&gt;
+&lt;li&gt;对称寻址: send(P, Message), receive(Q, Message)&lt;/li&gt;
+&lt;li&gt;非对称寻址: send(P, message), receive(id, Message)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;间接通信
+&lt;ul&gt;
+&lt;li&gt;send(A, Message), receive(A, Message) -邮箱A&lt;/li&gt;
+&lt;li&gt;邮箱可以由进程和操作系统实现&lt;/li&gt;
+&lt;li&gt;邮箱所有者：谁可以接收消息&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;同步机制
+&lt;ul&gt;
+&lt;li&gt;消息传递可以是阻塞的或非阻塞的&lt;/li&gt;
+&lt;li&gt;阻塞被认为是同步的
+&lt;ul&gt;
+&lt;li&gt;阻塞发送：发送者阻塞直到消息被接收&lt;/li&gt;
+&lt;li&gt;阻塞接收：接收者阻塞直到有消息可用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;非阻塞被认为是异步的
+&lt;ul&gt;
+&lt;li&gt;非阻塞发送：发送者发送消息后继续执行&lt;/li&gt;
+&lt;li&gt;非阻塞接收：接收者接收有效消息或返回空值&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;缓冲机制
+&lt;ul&gt;
+&lt;li&gt;附加到链路的消息队列&lt;/li&gt;
+&lt;li&gt;零容量：0条消息
+&lt;ul&gt;
+&lt;li&gt;发送者必须等待接收者&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;有些容量：有线长度的n条消息
+&lt;ul&gt;
+&lt;li&gt;如果链路满，发送者必须等待&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;误解容量：无限长度
+&lt;ul&gt;
+&lt;li&gt;发送者永不等待&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;posix共享内存&#34;&gt;POSIX共享内存
+&lt;/h3&gt;&lt;h4 id=&#34;概念-2&#34;&gt;概念
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;进程首先创建共享内存段&lt;/li&gt;
+&lt;li&gt;也用于打开现有的内存段&lt;/li&gt;
+&lt;li&gt;设置对象的大小&lt;/li&gt;
+&lt;li&gt;使用mmap()将文件指针内存映射到共享内存对象&lt;/li&gt;
+&lt;li&gt;对共享内存的督学通过mmap()返回的指针完成&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;管道&#34;&gt;管道
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;管道作为一个通道，允许两个本地进程通信&lt;/li&gt;
+&lt;li&gt;关键问题
+&lt;ul&gt;
+&lt;li&gt;通信是单向的还是双向的？&lt;/li&gt;
+&lt;li&gt;在双向通信的情况下，是半双工还是全双工？&lt;/li&gt;
+&lt;li&gt;进程之间是否必须存在关系（即父子关系）？&lt;/li&gt;
+&lt;li&gt;管道是否可以在网络上使用？&lt;/li&gt;
+&lt;li&gt;通常只用于本地进程&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;普通管道
+&lt;ul&gt;
+&lt;li&gt;普通管道允许生产者-消费者风格的通信&lt;/li&gt;
+&lt;li&gt;生产者写入一端&lt;/li&gt;
+&lt;li&gt;消费者从另一端读取&lt;/li&gt;
+&lt;li&gt;因此普通管道是单向的&lt;/li&gt;
+&lt;li&gt;如果需要双向通信，需要两个管道&lt;/li&gt;
+&lt;li&gt;要求通信进程之间有父子关系&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;命名管道
+&lt;ul&gt;
+&lt;li&gt;命名管道比普通管道更强大&lt;/li&gt;
+&lt;li&gt;通信是双向的&lt;/li&gt;
+&lt;li&gt;进程之间不需要父子关系&lt;/li&gt;
+&lt;li&gt;多个进程可以使用命名管道进行通信&lt;/li&gt;
+&lt;li&gt;命名管道在UNIX和Windows系统上都有提供&lt;/li&gt;
+&lt;li&gt;在Linux上，它被称为FIFO&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;客户端-用户交互&#34;&gt;客户端-用户交互
+&lt;/h3&gt;&lt;h4 id=&#34;套接字socket&#34;&gt;套接字(Socket)
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;套接字被定义为通信的端点&lt;/li&gt;
+&lt;li&gt;IP地址和端口的连接&lt;/li&gt;
+&lt;li&gt;套接字 161.25.19.8:1625 指的是主机 161.25.19.8 上的端口 1625&lt;/li&gt;
+&lt;li&gt;通信在一对套接字之间进行&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
         <title>操作系统</title>
         <link>https://example.com/p/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</link>
         <pubDate>Wed, 30 Jul 2025 21:40:00 +0800</pubDate>

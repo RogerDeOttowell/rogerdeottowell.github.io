@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="介绍线程相关原理和实现">
+<title>线程</title>
+
+<link rel='canonical' href='https://example.com/p/%E7%BA%BF%E7%A8%8B/'>
+
+<link rel="stylesheet" href="/scss/style.min.cfa5b1b0e78d61c00a14173992a1f3fa3b5c1b9fa34d023de959af564e7b19dd.css"><meta property='og:title' content="线程">
+<meta property='og:description' content="介绍线程相关原理和实现">
+<meta property='og:url' content='https://example.com/p/%E7%BA%BF%E7%A8%8B/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='计算机系统' /><meta property='article:tag' content='操作系统' /><meta property='article:published_time' content='2025-08-01T21:50:00&#43;08:00'/><meta property='article:modified_time' content='2025-08-01T21:50:00&#43;08:00'/>
+<meta name="twitter:title" content="线程">
+<meta name="twitter:description" content="介绍线程相关原理和实现">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_f509edb42ecc0ebd.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://example.com/" selected>English</option>
+                                
+                                    <option value="https://example.com/zh-cn/" >中文</option>
+                                
+                                    <option value="https://example.com/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Dark Mode</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#相关概念">相关概念</a>
+      <ol>
+        <li><a href="#定义">定义</a></li>
+        <li><a href="#线程的优势">线程的优势</a></li>
+      </ol>
+    </li>
+    <li><a href="#多线程服务器架构">多线程服务器架构</a>
+      <ol>
+        <li><a href="#架构示意图">架构示意图</a></li>
+        <li><a href="#注并发与并行">注：并发与并行</a>
+          <ol>
+            <li><a href="#定义-1">定义</a></li>
+            <li><a href="#对比">对比</a></li>
+            <li><a href="#关键理解">关键理解</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#线程的实现">线程的实现</a>
+      <ol>
+        <li><a href="#基本信息">基本信息</a></li>
+        <li><a href="#线程实现的方式">线程实现的方式</a>
+          <ol>
+            <li><a href="#内核级线程">内核级线程</a></li>
+            <li><a href="#用户级线程">用户级线程</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#多线程模型">多线程模型</a>
+      <ol>
+        <li><a href="#含义">含义：</a></li>
+        <li><a href="#多线程模型详解">多线程模型详解</a>
+          <ol>
+            <li><a href="#多对一模型many-to-one">多对一模型(Many-to-one)</a></li>
+            <li><a href="#一对一模型one-to-one">一对一模型(One-to-one)</a></li>
+            <li><a href="#多对多模型">多对多模型</a></li>
+            <li><a href="#两级模型">两级模型</a></li>
+          </ol>
+        </li>
+        <li><a href="#fork和exec的语义问题">fork和exec的语义问题</a>
+          <ol>
+            <li><a href="#fork">fork</a></li>
+            <li><a href="#exec">exec</a></li>
+            <li><a href="#fork与exec的综合使用">fork与exec的综合使用</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#信号处理">信号处理</a>
+      <ol>
+        <li><a href="#概念">概念</a></li>
+        <li><a href="#原则">原则</a></li>
+        <li><a href="#多线程环境下的信号处理">多线程环境下的信号处理</a></li>
+      </ol>
+    </li>
+    <li><a href="#线程取消">线程取消</a>
+      <ol>
+        <li><a href="#概念-1">概念</a></li>
+        <li><a href="#取消的实现方法">取消的实现方法</a></li>
+        <li><a href="#取消的实现细节">取消的实现细节</a></li>
+      </ol>
+    </li>
+    <li><a href="#线程特定数据thread-specifif-data">线程特定数据(Thread Specifif Data)</a>
+      <ol>
+        <li><a href="#线程特定数据">线程特定数据</a></li>
+      </ol>
+    </li>
+    <li><a href="#轻量级进程与调度器激活">轻量级进程与调度器激活</a>
+      <ol>
+        <li><a href="#轻量级进程概念">轻量级进程概念</a></li>
+        <li><a href="#调度方式">调度方式</a></li>
+      </ol>
+    </li>
+    <li><a href="#windos-xp线程">Windos XP线程</a>
+      <ol>
+        <li><a href="#概念-2">概念</a></li>
+      </ol>
+    </li>
+    <li><a href="#linux线程">Linux线程</a></li>
+    <li><a href="#线程库">线程库</a>
+      <ol>
+        <li><a href="#概念-3">概念</a></li>
+        <li><a href="#两种主要实现方式">两种主要实现方式</a></li>
+      </ol>
+    </li>
+    <li><a href="#线程特性">线程特性</a></li>
+    <li><a href="#pthread调度">Pthread调度</a></li>
+    <li><a href="#多处理器调度">多处理器调度</a>
+      <ol>
+        <li><a href="#多处理器架构类型">多处理器架构类型</a></li>
+        <li><a href="#linux-2623-完全公平调度器cfs详解">Linux 2.6.23+ 完全公平调度器(CFS)详解</a></li>
+        <li><a href="#linux调度系统补充详解">Linux调度系统补充详解</a></li>
+        <li><a href="#windows调度系统详解">Windows调度系统详解</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/" >
+                计算机体系结构
+            </a>
+        
+            <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" >
+                操作系统
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E7%BA%BF%E7%A8%8B/">线程</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            介绍线程相关原理和实现
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Aug 01, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    2 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="线程">线程
+</h1><h2 id="相关概念">相关概念
+</h2><h3 id="定义">定义
+</h3><ul>
+<li>定义：线程是独立的指令流，可以被内核调度运行</li>
+<li>进程包含的状态和资源
+<ul>
+<li>代码、堆、数据、文件句柄（包括套接字）、进程间通信（IPC）</li>
+<li>进程ID、进程组ID、用户ID</li>
+<li>栈、寄存器、程序计数器（PC）</li>
+</ul>
+</li>
+<li>线程与进程关系
+<ul>
+<li>线程存在于进程内部，并共享进程的资源</li>
+<li>每个线程都有自己的核心资源（线程独有资源）
+<ul>
+<li>栈</li>
+<li>寄存器</li>
+<li>程序计数器</li>
+<li>线程特定数据</li>
+</ul>
+</li>
+<li>访问共享资源需要同步</li>
+<li>线程由内核独立调度</li>
+<li>每个线程都有自己独立的控制流</li>
+<li>每个线程都可以处于任何调度状态</li>
+</ul>
+</li>
+</ul>
+<h3 id="线程的优势">线程的优势
+</h3><ul>
+<li>响应性：多线程交互应用程序允许程序即使在部分被阻塞或执行长时间操作时也能继续运行</li>
+<li>资源共享：资源共享可以实现高校通信和高度协作。线程默认共享进程的资源和内存。</li>
+<li>经济性：线程比进程更轻量级，创建和上下文切换的开销更小</li>
+</ul>
+<h2 id="多线程服务器架构">多线程服务器架构
+</h2><h3 id="架构示意图">架构示意图
+</h3> <p align="center">
+    <img src="/images/thread1.png" alt="server" width="75%">
+</p>
+* 工作方式解释：server的主进程（一般是监听进程）接受客户端的请求，然后主进程创建一个新的线程来处理请求。之后主监听进程继续监听其他的客户端请求
+<h3 id="注并发与并行">注：并发与并行
+</h3><h4 id="定义-1">定义
+</h4><ul>
+<li>并发计算是一种计算形式，其中程序被设计为相互交互的计算进程集合，这些进程可以并行执行。并发程序（进程或线程）可以在单个处理器上通过时间片轮转的方式交错执行各自的执行步骤，也可以通过将每个计算进程分配给一组处理器来并行执行。程序作为独立执行进程的组合，这些进程相互通信。</li>
+<li>行计算是一种计算形式，其中许多计算同时进行，基于大问题通常可以分解为较小问题的原理，然后&quot;并行&quot;解决这些小问题。
+编程作为（可能相关的）计算的同时执行</li>
+</ul>
+<h4 id="对比">对比
+</h4><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>维度</th>
+          <th>并发 (Concurrency)</th>
+          <th>并行 (Parallelism)</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>核心概念</strong></td>
+          <td>同一时间段内交替执行</td>
+          <td>同一时刻真正同时执行</td>
+      </tr>
+      <tr>
+          <td><strong>硬件要求</strong></td>
+          <td>单核CPU即可</td>
+          <td>必须多核CPU或多台机器</td>
+      </tr>
+      <tr>
+          <td><strong>设计思想</strong></td>
+          <td>如何组织和管理任务</td>
+          <td>如何真正同时计算</td>
+      </tr>
+      <tr>
+          <td><strong>主要目的</strong></td>
+          <td>提高响应性、资源利用率</td>
+          <td>提高计算速度</td>
+      </tr>
+  </tbody>
+</table></div>
+<h4 id="关键理解">关键理解
+</h4><ul>
+<li>并发关乎结构，并行关乎执行</li>
+<li>并发提供了一种构建解决方案的方式来解决一个可能（但不一定）可并行化的问题</li>
+</ul>
+<h2 id="线程的实现">线程的实现
+</h2><h3 id="基本信息">基本信息
+</h3><ul>
+<li>线程可以在用户级别或由内核提供</li>
+<li>用户线程在内核之上支持，无需内核支持即可管理
+<ul>
+<li>三个线程库：POSIX Pthreads、Win32线程和Java线程</li>
+</ul>
+</li>
+<li>内核线程由内核直接支持和管理
+<ul>
+<li>所有现代操作系统都支持内核线程</li>
+</ul>
+</li>
+</ul>
+<h3 id="线程实现的方式">线程实现的方式
+</h3><h4 id="内核级线程">内核级线程
+</h4><h5 id="定义-2">定义
+</h5><ul>
+<li>为了使并发更经济，进程的执行方面被分离为线程。因此，操作系统现在管理线程和进程。所有线程操作都在内核中实现，操作系统调度系统中的所有线程。由操作系统管理的线程成为内核级线程。</li>
+<li>在这种方法中，内核知道并管理线程。这种情况下不需要运行系统。内核不是在每个进程中保持线程表，而是拥有一个线程表来跟踪系统中的所有线程。此外，内核还维护传统的进程表来跟踪进程。操作系统内核提供系统调用来创建和管理线程。</li>
+</ul>
+<h5 id="优势">优势
+</h5><ul>
+<li>因为内核完全了解所有线程，调度器可能决定给拥有大量线程的进程分配更多时间，而不是给拥有少量线程的进程。</li>
+<li>内核级线程对于频繁阻塞的应用程序特别有效</li>
+</ul>
+<h5 id="劣势">劣势
+</h5><ul>
+<li>内核级线程速度慢而且效率低</li>
+<li>存在显著的开销和内核复杂性的增加</li>
+</ul>
+<h4 id="用户级线程">用户级线程
+</h4><h5 id="定义-3">定义
+</h5><ul>
+<li>用户级显示完全由运行时系统（用户级库）管理内核对用户级线程一无所知，将它们作为单线程进程管理。用户级线程小而快，每个线程由PC、寄存器、栈和小型线程控制块表示。创建新线程、线程间切换和线程同步都通过过程调用完成，即无内核参与。用户及线程比内核级线程块100倍。</li>
+</ul>
+<h5 id="优势-1">优势
+</h5><ul>
+<li>这种技术最明显的优势是用户级线程包可以在不支持的线程的操作系统上实现</li>
+<li>用户级线程不需要修改操作系统</li>
+<li>简单表示：每个线程简单地由PC、寄存器、栈和小型控制块表示，都存储在用户进程地址空间中</li>
+<li>简单管理：这意味着创建线程和线程间同步都可以在没有内核干预的情况下完成</li>
+<li>快速高效：线程切换比过程调用贵不了多少</li>
+</ul>
+<h5 id="劣势-1">劣势
+</h5><ul>
+<li>用户级线程不是完美解决方案，它们是一种权衡。由于用户级线程对操作系统不可见，它们与操作系统集成不好。结果是，操作系统可能做出糟糕决策，如调度有空闲线程的进程、阻塞启动I/O的线程所在的进程（即使该进程有其他可运行线程）、取消调度持有锁的线程所在的进程。解决者需要内核和用户级线程管理器之间的通信。</li>
+<li>线程和操作系统内核之间缺乏协调。因此，整个进程获得一个时间片，无论进程有一个线程还是1000个线程。每个线程都要主动放弃控制权给其他线程。</li>
+<li>用户级线程需要非阻塞调用，即多线程内核。，否则，整个进程将在内核中阻塞，即使进程中还有可运行的线程。</li>
+</ul>
+<h2 id="多线程模型">多线程模型
+</h2><h3 id="含义">含义：
+</h3><ul>
+<li>用户线程和内核线程之间必须存在关系</li>
+<li>内核线程是系统中真正的线程，所以为了使用户线程取得进展，用户程序必须让其调度器获取一个用户线程，然后再内核线程上运行它</li>
+<li>核心：只有内核线程真正在CPU上执行</li>
+</ul>
+<h3 id="多线程模型详解">多线程模型详解
+</h3><h4 id="多对一模型many-to-one">多对一模型(Many-to-one)
+</h4><ul>
+<li>多个用户级线程映射到单个内核线程</li>
+<li>线路管理由用户空间的线程库完成</li>
+<li>如果一个线程进程阻塞系统调用，整个进程将被阻塞</li>
+<li>将阻塞系统调用转换为非阻塞</li>
+<li>多个线程无法再多处理器上并行运行</li>
+</ul>
+<h4 id="一对一模型one-to-one">一对一模型(One-to-one)
+</h4><ul>
+<li>每个用户级线程映射到一个内核线程</li>
+<li>允许其他线程在一个线程阻塞时运行</li>
+<li>多个线程可以在多处理器上并行运行</li>
+<li>总计金额导致开销</li>
+<li>大多数实现次模型的操作系统限制线程数量</li>
+</ul>
+<h4 id="多对多模型">多对多模型
+</h4><ul>
+<li>许多用户级线程映射到许多内核线程</li>
+<li>解决了1:1和m:1模型的缺点</li>
+<li>开发人员可以创建必要数量的用户线程</li>
+<li>相应的内核线程可以在多处理器上并行运行</li>
+</ul>
+<h4 id="两级模型">两级模型
+</h4><ul>
+<li>类似对于多对多模型，除了它允许用户线程绑定到内核线程</li>
+</ul>
+<h3 id="fork和exec的语义问题">fork和exec的语义问题
+</h3><h4 id="fork">fork
+</h4><ul>
+<li>当对单线程进程fork时，直接复制整个单线程进程</li>
+<li>当读多线程进程fork时，可以理解为只复制调用线程或复制所有线程，在UNIX中有两个版本的fork，每种语义一个</li>
+</ul>
+<h4 id="exec">exec
+</h4><ul>
+<li>exec通常替换整个进程</li>
+</ul>
+<h4 id="fork与exec的综合使用">fork与exec的综合使用
+</h4><ul>
+<li>如果在fork后很快调用exec，使用“fork调用线程版本”，不需要复制所有线程</li>
+</ul>
+<h2 id="信号处理">信号处理
+</h2><h3 id="概念">概念
+</h3><ul>
+<li>信号在UNIX系统中用于通知进程发生了特定事件，遵循相同的模式</li>
+<li>信号由特定事件的发生而产生</li>
+<li>信号倍传递给进程</li>
+<li>一旦传递，信号必须被处理</li>
+</ul>
+<h3 id="原则">原则
+</h3><ul>
+<li>信号由两种信号处理程序之一处理：默认的或用户定义的</li>
+<li>每个信号都有默认处理程序，内核在处理信号时运行</li>
+<li>用户定义的信号处理程序可以覆盖默认的</li>
+<li>对于单线程，信号传递给进程</li>
+</ul>
+<h3 id="多线程环境下的信号处理">多线程环境下的信号处理
+</h3><ul>
+<li>信号可以是同步的（异常）或异步的（I/O）</li>
+<li>同步信号传递给引起信号的同一线程</li>
+<li>一部信号可以传递给
+<ul>
+<li>信号适用的线程</li>
+<li>进程中的每个线程</li>
+<li>进程中的某些线程（信号掩码）</li>
+<li>接收进程所有信号的特定线程</li>
+</ul>
+</li>
+</ul>
+<h2 id="线程取消">线程取消
+</h2><h3 id="概念-1">概念
+</h3><ul>
+<li>线程取消：在目标线程完成之前终止它</li>
+</ul>
+<h3 id="取消的实现方法">取消的实现方法
+</h3><ul>
+<li>异步取消：立即终止目标线程</li>
+<li>延迟取消：允许目标线程定期检查是否应该被取消</li>
+</ul>
+<h3 id="取消的实现细节">取消的实现细节
+</h3><ul>
+<li>调用线程取消请求取消，但是实际取消取决于线程状态</li>
+<li>如果线程禁用了取消，取消保持挂起状态直到线程启用它</li>
+<li>默认类型时延迟取消</li>
+<li>取消只在线程到达取消点时发生
+<ul>
+<li>即pthread_testcancel()</li>
+</ul>
+</li>
+<li>然后调用清理处理程序</li>
+<li>在Linux系统上，线程取消通过信号处理</li>
+</ul>
+<h2 id="线程特定数据thread-specifif-data">线程特定数据(Thread Specifif Data)
+</h2><h3 id="线程特定数据">线程特定数据
+</h3><ul>
+<li>线程本地存储(TLS)允许每个线程拥有自己的数据副本</li>
+<li>当你无法控制线程创建过程时很有用（即使用线程池时）</li>
+<li>与局部变量不同</li>
+<li>局部变量只在单个函数调用期间可见</li>
+<li>TLS在函数调用间可见</li>
+<li>类似于静态数据</li>
+<li>TLS对每个线程都是唯一的</li>
+</ul>
+<h2 id="轻量级进程与调度器激活">轻量级进程与调度器激活
+</h2><h3 id="轻量级进程概念">轻量级进程概念
+</h3><ul>
+<li>在计算机操作系统中，轻量级进程（LWP）是实现多任务的一种方式。在传统意义上，如Unix System V和Solaris中使用的术语，LWP在用户空间中运行在单个内核线程之上，并与同一进程内的其他LWP共享地址空间和系统资源。多个用户级线程由线程库管理，可以放置在一个或多个LWP之上——允许在用户级进行多任务处理，这可以带来一些性能优势</li>
+<li>在一些操作系统中，内核线程和用户线程之间没有单独的LWP层。这意味着用户线程直接在内核线程之上实现。在这些情况下，术语&quot;轻量级进程&quot;通常指内核线程，而术语&quot;线程&quot;可以指用户线程。在Linux上，用户线程通过允许某些进程共享资源来实现，这有时导致这些进程被称为&quot;轻量级进程&quot;</li>
+</ul>
+<h3 id="调度方式">调度方式
+</h3><ul>
+<li>轻量级进程(LWP)是多对多和两级模型中用户线程和内核线程之间的中间数据集二狗</li>
+<li>对用户线程库来说，它看起来像虚拟处理器来调度用户线程</li>
+<li>每个LWP都连接到一个内核线程</li>
+<li>内核线程阻塞 -&gt; LWP阻塞 -&gt; 用户线程阻塞</li>
+<li>内核调度内核线程，线程库调度用户线程</li>
+<li>线程库可能做出次优的调度决策</li>
+<li>解决方案：让内核通知线程库的重要的调度事件</li>
+<li>调度器激活通过上调通知线程库</li>
+</ul>
+<h2 id="windos-xp线程">Windos XP线程
+</h2><h3 id="概念-2">概念
+</h3><ul>
+<li>Windos XP实现一对一映射线程模型</li>
+<li>每个线程包含
+<ul>
+<li>线程ID</li>
+<li>处理器状态的寄存器集</li>
+<li>堵路的用户栈和内核栈</li>
+<li>私有数据存储区域</li>
+</ul>
+</li>
+<li>线程的主要数据结构包括
+<ul>
+<li>ETHREAD：执行线程块（</li>
+<li>KTHREAD：内核线程块</li>
+<li>TEB：线程环境块</li>
+</ul>
+</li>
+</ul>
+<h2 id="linux线程">Linux线程
+</h2><ul>
+<li>linux有fork和clone两个系统调用</li>
+<li>clone接收一组标志位，决定父进程和子进程之间的共享程度</li>
+<li>FS/VM/SIGHAND/FILES -&gt; 相当于线程创建</li>
+<li>没有设置标志 -&gt; 没有共享 -&gt; 相当于fork</li>
+<li>Linux不区分进程和线程，使用术语“任务”而不是线程</li>
+</ul>
+<h2 id="线程库">线程库
+</h2><h3 id="概念-3">概念
+</h3><ul>
+<li>线程库为程序员提供了创建和管理线程的API接口</li>
+</ul>
+<h3 id="两种主要实现方式">两种主要实现方式
+</h3><ul>
+<li>用户空间实现
+<ul>
+<li>完全在用户空间中实现，无需内核支持</li>
+<li>特点：快速、轻量级，但无法利用多核</li>
+<li>示例：早期的Green Threads</li>
+</ul>
+</li>
+<li>内核级实现
+<ul>
+<li>由操作系统支持的内核级库</li>
+<li>特点：可以真正并行，但开销较大</li>
+<li>示例：现代操作系统的标准实现</li>
+</ul>
+</li>
+</ul>
+<h2 id="线程特性">线程特性
+</h2><ul>
+<li>线程拥有自己的身份标识，并且可以独立运行</li>
+<li>线程共享进程内的地址空间，享受避免任何进程间通信(IPC)通道（共享内存、管道等）进行通信的好处</li>
+<li>进程中的线程可以直接相互通信</li>
+<li>例如独立的线程可以访问/更新全局变量</li>
+<li>这种模型消除了内核本来需要承担的潜在IPC开销。由于线程在同一地址空间中，线程上下文切换是廉价且快速的</li>
+</ul>
+<h2 id="pthread调度">Pthread调度
+</h2><ul>
+<li>API允许在线程创建时指定PCS或SCS调度范围</li>
+<li>pthread_attr_set/getscope是相关的API</li>
+<li>PTHREAD_SCOPE_PROCESS：使用PCS调度来调度线程</li>
+<li>LWP的数量由线程库维护</li>
+<li>PTHREAD_SCOPE_SYSTEM：使用SCS调度来调度线程</li>
+<li>可用的调度范围可能受到操作系统的限制</li>
+<li>例如：Linux和Mac OS X只允许PTHREAD_SCOPE_SYSTEM</li>
+</ul>
+<h2 id="多处理器调度">多处理器调度
+</h2><h3 id="多处理器架构类型">多处理器架构类型
+</h3><ul>
+<li>多处理器可能是以下任一架构
+<ul>
+<li>多核CPU</li>
+<li>多线程核心</li>
+<li>NUMA系统</li>
+<li>异构多处理</li>
+</ul>
+</li>
+<li>多处理器调度基础
+<ul>
+<li>当有多个CPU可用时，CPU调度变得更加复杂</li>
+<li>假设处理器在功能上时相同的（同构的）</li>
+<li>多处理器调度的方法</li>
+<li>非堆成多处理：
+<ul>
+<li>只有一个处理器做调度决策、I/O处理和其他活动</li>
+<li>其他处理器充当虚拟处理单元</li>
+</ul>
+</li>
+<li>对称多处理(SMP)：每个处理器都是自调度的
+<ul>
+<li>调度数据结构是共享的，需要同步</li>
+<li>被通用操作系统使用</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>SMP架构细节
+<ul>
+<li>对称多处理(SMP)是每个处理器都自调度的架构</li>
+<li>所有线程可能在一个公共就绪队列中(a)</li>
+<li>或者每个处理器可能有自己的私有线程队列(b)</li>
+</ul>
+</li>
+<li>多核调度
+<ul>
+<li>单芯片中的多个CPU核心</li>
+<li>最近的趋势是在同一物理芯片上防止多个处理器核心，更快且功耗更低</li>
+</ul>
+</li>
+<li>芯片多线程(CMT)
+<ul>
+<li>多线程核心：芯片多线程</li>
+<li>Intel使用超线程术语（或同时多线程-SMT）：在同一核心上同时运行两个（或更多）硬件线程：内存停顿</li>
+<li>利用内存停顿在内存检索时在另一个线程上取得进展</li>
+<li>每个核心有&gt;1个硬件线程。如果一个线程有内存停顿，切换到另一个线程！</li>
+</ul>
+</li>
+<li>CMT的两级调度
+<ul>
+<li>两级调度：
+<ul>
+<li>操作系统决定在逻辑CPU上运行哪个软件线程</li>
+<li>每个核心如何决定在物理核心上运行哪个硬件线程。两个硬件线程不能并行运行，因为我们只有一个CPU核心</li>
+<li>如果操作系统知道CPU资源的底层共享情况，可以做出更好的决策</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>负载均衡
+<ul>
+<li>如果是SMP，需要保持所有CPU的负载以提高效率</li>
+<li>负载均衡试图保持工作负载均匀分布</li>
+<li>推送迁移 - 周期性任务检查每个处理器的负载，如果发现则将任务从过载的CPU推送到其他CPU</li>
+<li>拉取迁移 - 空闲处理器从繁忙处理器拉取等待任务</li>
+</ul>
+</li>
+<li>处理器亲和性
+<ul>
+<li>当线程在一个处理器上运行时，该处理器的缓存内容存储该线程的内存访问</li>
+<li>我们称这为线程对处理器有亲和性（即&quot;处理器亲和性&quot;）</li>
+<li>负载均衡可能影响处理器亲和性，因为线程可能从一个处理器移动到另一个处理器以平衡负载，但该线程失去了在其移出的处理器缓存中的内容</li>
+<li>软亲和性 - 操作系统试图保持线程在同一处理器上运行，但不保证</li>
+<li>硬亲和性 - 允许进程指定一组它可以运行的处理器</li>
+</ul>
+</li>
+<li>NUMA和CPU调度
+<ul>
+<li>如果操作系统是NUMA感知的，它将分配靠进展线程运行CPU的内存</li>
+</ul>
+</li>
+<li>实时CPU调度
+<ul>
+<li>可能出现明显的挑战</li>
+<li>软实时系统-关键实时任务有最高优先级，但不保证任务何时被调度</li>
+<li>硬实时系统-任务必须在其截止时间前得到服务</li>
+</ul>
+</li>
+</ul>
+<h3 id="linux-2623-完全公平调度器cfs详解">Linux 2.6.23+ 完全公平调度器(CFS)详解
+</h3><ul>
+<li>Linux调度器版本2.6.23+
+<ul>
+<li>完全公平调度器(CFS)</li>
+<li>调度类</li>
+<li>每个调度类都有特定的优先级</li>
+<li>调度器选择最高优先级调度类中的最高优先级任务</li>
+<li>不是基于固定时间分配的量子，而是基于CPU时间比例(nice值)</li>
+<li>较少的nice值将获得更高比例的CPU时间</li>
+<li>包含2个调度类，其他可以添加
+<ul>
+<li>默认调度类</li>
+<li>实时调度类</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>CFS量子计算细节
+<ul>
+<li>量子基于nice值计算，从-20到+19</li>
+<li>较低的值是更高的优先级</li>
+<li>计算目标延迟 - 任务应该至少运行一次的时间间隔</li>
+<li>如果活跃任务数量增加，目标延迟可以增加</li>
+<li>CFS调度器在变量vruntime中维护每个任务的虚拟运行时间</li>
+<li>与基于任务优先级的衰减因子相关联 - 较低优先级有较高的衰减率</li>
+<li>正常默认优先级产生虚拟运行时间 = 实际运行时间</li>
+<li>要决定下一个运行的任务，调度器选择虚拟运行时间最低的任务</li>
+</ul>
+</li>
+</ul>
+<h3 id="linux调度系统补充详解">Linux调度系统补充详解
+</h3><ul>
+<li>Linux实时调度
+<ul>
+<li>根据POSIX.1b标准的实时调度</li>
+<li>实时任务具有静态优先级</li>
+<li>实时任务加上普通任务映射到全局优先级方案</li>
+<li>Nice值-20映射到全局优先级100</li>
+<li>Nice值+19映射到优先级139</li>
+</ul>
+</li>
+<li>Linux负载均衡与NUMA
+<ul>
+<li>Linux支持负载均衡，但也是NUMA感知的</li>
+<li>调度域是一组可以相互平衡的CPU核心集合</li>
+<li>域按它们共享的内容（即缓存内存）组织。目标是防止线程在域之间迁移</li>
+</ul>
+</li>
+</ul>
+<h3 id="windows调度系统详解">Windows调度系统详解
+</h3><ul>
+<li>Windows调度基础
+<ul>
+<li>Windows使用基于优先级的抢占式调度</li>
+<li>最高优先级的线程下一个运行</li>
+<li>调度器就是分发器(Dispatcher)</li>
+<li>线程运行直到 (1)阻塞，(2)用完时间片，(3)被更高优先级线程抢占</li>
+<li>实时线程可以抢占非实时线程</li>
+<li>32级优先级方案：可变类是1-15，实时类是16-31</li>
+<li>优先级0是内存管理线程</li>
+<li>每个优先级一个队列</li>
+<li>如果没有可运行线程，运行空闲线程</li>
+</ul>
+</li>
+<li>Windows优先级类
+<ul>
+<li>不同的优先级类</li>
+<li>一个类内的相对优先级</li>
+</ul>
+</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">计算机系统</a>
+        
+            <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/%E8%B0%83%E5%BA%A6/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">调度</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E8%BF%9B%E7%A8%8B/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">进程</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">操作系统</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E6%B5%81%E6%B0%B4%E7%BA%BF%E4%B8%8E%E5%9C%A8%E5%A4%84%E7%90%86%E5%99%A8%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">流水线与在处理器中的应用</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Example Person
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

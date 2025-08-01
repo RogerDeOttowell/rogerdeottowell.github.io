@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="介绍调度相关原理和实现">
+<title>调度</title>
+
+<link rel='canonical' href='https://example.com/p/%E8%B0%83%E5%BA%A6/'>
+
+<link rel="stylesheet" href="/scss/style.min.cfa5b1b0e78d61c00a14173992a1f3fa3b5c1b9fa34d023de959af564e7b19dd.css"><meta property='og:title' content="调度">
+<meta property='og:description' content="介绍调度相关原理和实现">
+<meta property='og:url' content='https://example.com/p/%E8%B0%83%E5%BA%A6/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='计算机系统' /><meta property='article:tag' content='操作系统' /><meta property='article:published_time' content='2025-08-01T21:50:00&#43;08:00'/><meta property='article:modified_time' content='2025-08-01T21:50:00&#43;08:00'/>
+<meta name="twitter:title" content="调度">
+<meta name="twitter:description" content="介绍调度相关原理和实现">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_f509edb42ecc0ebd.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://example.com/" selected>English</option>
+                                
+                                    <option value="https://example.com/zh-cn/" >中文</option>
+                                
+                                    <option value="https://example.com/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Dark Mode</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#调度术语">调度术语</a>
+      <ol>
+        <li><a href="#术语辨析">术语辨析</a></li>
+        <li><a href="#注cpu与cpu核心">注：CPU与CPU核心</a></li>
+      </ol>
+    </li>
+    <li><a href="#进程调度">进程调度</a>
+      <ol>
+        <li><a href="#基本概念">基本概念</a></li>
+        <li><a href="#cpu调度器">CPU调度器</a>
+          <ol>
+            <li><a href="#调度决策选择">调度决策选择</a></li>
+            <li><a href="#注协作式调度与抢占式调度">注：协作式调度与抢占式调度</a></li>
+          </ol>
+        </li>
+        <li><a href="#抢占">抢占</a>
+          <ol>
+            <li><a href="#内核抢占">内核抢占</a></li>
+            <li><a href="#用户抢占和内核抢占的具体时机">用户抢占和内核抢占的具体时机</a></li>
+          </ol>
+        </li>
+        <li><a href="#分派器dispatcher">分派器(Dispatcher)</a></li>
+        <li><a href="#调度标准">调度标准</a></li>
+        <li><a href="#调度算法优化标准">调度算法优化标准</a></li>
+        <li><a href="#调度算法">调度算法</a>
+          <ol>
+            <li><a href="#先来先服务调度fcfs">先来先服务调度(FCFS)</a></li>
+            <li><a href="#最短作业优先调整sjf">最短作业优先调整(SJF)</a></li>
+            <li><a href="#优先级调度priority">优先级调度(Priority)</a></li>
+            <li><a href="#时间片轮转调度round-robin">时间片轮转调度(Round Robin)</a></li>
+            <li><a href="#多级队列调度mlq">多级队列调度(MLQ)</a></li>
+            <li><a href="#多级反馈队列调度mlfq">多级反馈队列调度(MLFQ)</a></li>
+            <li><a href="#mlq详解">MLQ详解</a></li>
+          </ol>
+        </li>
+        <li><a href="#线程调度">线程调度</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/" >
+                计算机体系结构
+            </a>
+        
+            <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" >
+                操作系统
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E8%B0%83%E5%BA%A6/">调度</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            介绍调度相关原理和实现
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Aug 01, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    1 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="调度">调度
+</h1><h2 id="调度术语">调度术语
+</h2><h3 id="术语辨析">术语辨析
+</h3><ul>
+<li>被操作系统调度的是内核线程————而不是进程</li>
+<li>然而，“线程调度”和“进程调度”这两个属于经常互换使用</li>
+<li>当讨论一般概念时我们使用“进程调度”，当设计线程特定概念时使用“线程调度”</li>
+<li>同时“在CPU上运行”实际是指在“CPU核心上运行”</li>
+</ul>
+<h3 id="注cpu与cpu核心">注：CPU与CPU核心
+</h3><ul>
+<li>CPU可以包含多个核心。何以把CPU比作一座办公大楼，CPU核心是一个办公室，正在执行的线程就是一个正在工作的员工</li>
+</ul>
+<h2 id="进程调度">进程调度
+</h2><h3 id="基本概念">基本概念
+</h3><ul>
+<li>进程执行由CPU执行和I/O等待的循环组成</li>
+<li>CPU突发和I/O突发交替进行</li>
+<li>CPU突发分布在进程间和计算机间差异很大，但遵循相似的曲线</li>
+<li>通过多道程序设计获得最大的CPU利用率</li>
+<li>当前进程处于I/O突发时，CPU调度器选择另一个进程</li>
+</ul>
+<h3 id="cpu调度器">CPU调度器
+</h3><h4 id="调度决策选择">调度决策选择
+</h4><ul>
+<li>CPU调度器从就绪队列中的进程中进行选择，并将CPU分配给其中一个进程</li>
+<li>CPU调度决策可能在一下情况发生
+<ul>
+<li>进程从运行状态切换到等待状态</li>
+<li>进程从运行状态切换到就绪状态</li>
+<li>进程从等待状态切换到就绪状态</li>
+<li>进程终止</li>
+</ul>
+</li>
+<li>仅在条件1和4下的调度是非抢占式的
+<ul>
+<li>一旦CPU被分配给进程，该进程会保持CPU直到终止或等待I/O</li>
+<li>也被称为协作式调度</li>
+</ul>
+</li>
+<li>抢占式调度还会在条件2和3下调度进程
+<ul>
+<li>抢占式调度需要硬件支持，如定时器</li>
+<li>需要同步原语</li>
+</ul>
+</li>
+</ul>
+<h4 id="注协作式调度与抢占式调度">注：协作式调度与抢占式调度
+</h4><ul>
+<li>协作式调度：自觉排队
+<ul>
+<li>基本思想：没有管理员的机房，每个人用完电脑后主动让给下一个人，程序自己决定什么时候停下来并主动分享资源</li>
+<li>什么时候让出CPU
+<ul>
+<li>程序需要读写文件时（I/O）</li>
+<li>程序主动调用sleep休眠</li>
+<li>程序运行完毕退出</li>
+<li>程序主动调用yield让出</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>抢占式调度：由管理员的排队
+<ul>
+<li>核心思想：有管理员的机房，管理员用定时器控制每个人的使用时间，到了时间就必须让出</li>
+</ul>
+</li>
+<li>什么时候强制切换
+<ul>
+<li>时间片用完</li>
+<li>有更高优先级的程序要运行</li>
+<li>程序进行I/O操作时</li>
+<li>程序运行完毕</li>
+</ul>
+</li>
+</ul>
+<h3 id="抢占">抢占
+</h3><h4 id="内核抢占">内核抢占
+</h4><ul>
+<li>抢占也会影响系统内核的设计</li>
+<li>如果在更新共享数据时被抢占，内核状态将会不一致</li>
+<li>即当中断发生时内核正在服务系统调用</li>
+<li>两种解决方案
+<ul>
+<li>等待系统调用完成或I/O阻塞</li>
+<li>内核时非抢占式的，但对进程仍然是抢占式的</li>
+<li>在更新共享数据时禁用内核抢占</li>
+</ul>
+</li>
+<li>最新的Linux内核采用这种方法
+<ul>
+<li>Linux支持SMP</li>
+<li>共享数据受内核同步保护</li>
+<li>在内核同步时禁用内核抢占</li>
+<li>将非抢占式SMP内核转变为抢占式内核</li>
+</ul>
+</li>
+</ul>
+<h4 id="用户抢占和内核抢占的具体时机">用户抢占和内核抢占的具体时机
+</h4><ul>
+<li>用户抢占
+<ul>
+<li>从系统调用返回用户空间时</li>
+<li>从中断处理程序返回用户空间时</li>
+</ul>
+</li>
+<li>内核抢占
+<ul>
+<li>当中断处理程序退出，返回内核空间之前</li>
+<li>当内核代码重新变为可抢占时</li>
+<li>如果内核中的任务显示调用schedule()</li>
+<li>如果内核中的任务阻塞（这会导致调用schedule）</li>
+</ul>
+</li>
+</ul>
+<h3 id="分派器dispatcher">分派器(Dispatcher)
+</h3><ul>
+<li>分派器模块将CPU的控制权交给由段齐调度器选中的进程</li>
+<li>切换上下文</li>
+<li>切换到用户模式</li>
+<li>跳转到用户程序中的正确位置以重启该程序</li>
+<li>分派延迟：分派其停止一个进程并启动另一个进程所需的时间</li>
+</ul>
+<h3 id="调度标准">调度标准
+</h3><ul>
+<li>CPU利用率：CPU忙碌的百分比</li>
+<li>吞吐量：每个事件单位内完成执行的进程数量</li>
+<li>周转时间：执行特定进程的事件
+<ul>
+<li>从提交时间到完成时间</li>
+</ul>
+</li>
+<li>等待时间：在就绪队列中等待的总时间</li>
+<li>相应时间：从请求提交到产生第一个相应所需的时间
+<ul>
+<li>开始相应所需的时间</li>
+</ul>
+</li>
+</ul>
+<h3 id="调度算法优化标准">调度算法优化标准
+</h3><ul>
+<li>一般来说，最大化CPU利用率和吞吐率，最小化周转时间、等待时间和响应时间</li>
+<li>不同系统优化不同的值</li>
+<li>在多数情况下优化平均值</li>
+<li>在某些情况下，优化最小值或最大值
+<ul>
+<li>例如：实时系统</li>
+</ul>
+</li>
+<li>对于交互式系统，最小化响应时间的方差</li>
+</ul>
+<h3 id="调度算法">调度算法
+</h3><h4 id="先来先服务调度fcfs">先来先服务调度(FCFS)
+</h4><ul>
+<li>总结：排队买票</li>
+<li>核心思想：谁先来谁先服务，就像银行排队一样</li>
+<li>工作原理
+<ul>
+<li>按照进程到达的先后顺序执行</li>
+<li>第一个到达当地的进程先执行完，在执行第二个，以此类推</li>
+<li>一旦开始执行就不会被打断</li>
+</ul>
+</li>
+<li>优点：公平、简单、不会饥饿</li>
+<li>缺点：短任务可能等很久（护航效应）</li>
+</ul>
+<h4 id="最短作业优先调整sjf">最短作业优先调整(SJF)
+</h4><ul>
+<li>总结：快餐优先</li>
+<li>核心思想：总是先做最快能完成的任务</li>
+<li>工作原理：
+<ul>
+<li>在所有等待的进程中，选择执行时间最短的执行</li>
+<li>可以大幅减少平均等待时间</li>
+<li>需要事先知道每个进程要执行多长时间</li>
+</ul>
+</li>
+<li>优点：平均等待时间最短（理论最优）</li>
+<li>缺点：长任务可能永远轮不到（饥饿问题）</li>
+</ul>
+<h4 id="优先级调度priority">优先级调度(Priority)
+</h4><ul>
+<li>核心思想：重要的任务先做</li>
+<li>工作原理：
+<ul>
+<li>每个进程都有一个优先级数字</li>
+<li>总是选择优先级最高的进程执行</li>
+<li>可以根据重要性动态调整优先级</li>
+</ul>
+</li>
+<li>老化机制：为了防止普通顾客永远等不到，可以让等待时间长的客户逐渐升级</li>
+<li>优点：体现重要性，灵活可控</li>
+<li>缺点：低优先级可能饥饿，需要防饥饿机制</li>
+</ul>
+<h4 id="时间片轮转调度round-robin">时间片轮转调度(Round Robin)
+</h4><ul>
+<li>核心思想：轮流服务</li>
+<li>工作原理：
+<ul>
+<li>给每个进程分配相同的时间片</li>
+<li>时间到了就强制切换到下一个进程</li>
+<li>没完成的进程重新排队等下一轮</li>
+</ul>
+</li>
+<li>优点：响应时间好，公平，适合交互式系统</li>
+<li>缺点：频繁切换有开销，时间片大小难选择</li>
+</ul>
+<h4 id="多级队列调度mlq">多级队列调度(MLQ)
+</h4><ul>
+<li>核心思想：分类服务</li>
+<li>工作原理
+<ul>
+<li>把进程分成几个固定的类别（系统进程、前台进程、后台进程等）</li>
+<li>每个类别有自己的队列和调度策略</li>
+<li>高优先级队列优先服务</li>
+</ul>
+</li>
+<li>优点：不同类型用最适合的策略，系统进程优先</li>
+<li>缺点：底层队列可能饥饿，分类可能不准确</li>
+</ul>
+<h4 id="多级反馈队列调度mlfq">多级反馈队列调度(MLFQ)
+</h4><ul>
+<li>核心思想：根据客户的行为表现动态调整服务等级</li>
+<li>工作原理：
+<ul>
+<li>新进程从最高优先级队列开始</li>
+<li>如果用完时间片还没完成，就降级到下一级队列</li>
+<li>如果主动让出CPU（比如等待I/O），可能提升等级</li>
+<li>等待太久的进程会自动升级（防止饥饿）</li>
+</ul>
+</li>
+<li>优点：最只能，自适应，段任务响应快，长任务不饥饿</li>
+<li>缺点：最复杂，参数调整困难，实现开销大</li>
+</ul>
+<h4 id="mlq详解">MLQ详解
+</h4><h5 id="多级队列调度">多级队列调度
+</h5><ul>
+<li>多级队列调度
+<ul>
+<li>就绪队列被分割为多个独立的队列</li>
+<li>例如：前台（交互式）进程和后台（批处理）进程</li>
+<li>进程被永久分配到指定的队列</li>
+<li>每个队列都有自己的调度算法</li>
+<li>例如：交互式进程使用RR，批处理进程使用FCFS</li>
+</ul>
+</li>
+<li>队列间调度
+<ul>
+<li>必须子啊队列之间进行调度</li>
+<li>固定优先级调度</li>
+<li>存在饥饿的可能性</li>
+<li>时间片分配：每个队列获得一定数量的CPU时间，用于在其进程之间进行调度</li>
+<li>例如：前台进程80%时间用RR，后台进程20%时间用FCFS</li>
+</ul>
+</li>
+<li>多级反馈队列
+<ul>
+<li>多级反馈队列调度使用多级队列</li>
+<li>进程可以在不同队列之间移动</li>
+<li>它试图推断进程的类型</li>
+<li>老化机制可以通过这种方式实现</li>
+<li>目标时给交互式和I/O密集型进程高优先级</li>
+</ul>
+</li>
+<li>MLFQ定义参数
+<ul>
+<li>MLFQ调度器由以下参数定义</li>
+<li>队列数量</li>
+<li>每个队列的调度算法</li>
+<li>确定何时给进程分配更高优先级的方法</li>
+<li>确定何时降级进程的方法</li>
+<li>确定进程需要服务时进入那个队列的方法</li>
+<li>MLFQ是最通用的CPU调度算法</li>
+</ul>
+</li>
+</ul>
+<h3 id="线程调度">线程调度
+</h3><ul>
+<li>操作系统内核调度内核线程</li>
+<li>系统竞争范围 (SCS)：系统中所有线程之间的竞争</li>
+<li>内核不知道用户线程的存在</li>
+<li>线程库将用户线程调度到LWP上</li>
+<li>用于多对一和多对多线程模型</li>
+<li>进程竞争范围 (PCS)：进程内部的调度竞争</li>
+<li>PCS通常基于用户设置的优先级</li>
+<li>被调度到LWP的用户线程不一定在CPU上运行</li>
+<li>操作系统内核需要将LWP的内核线程调度到CPU上</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">计算机系统</a>
+        
+            <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/%E7%BA%BF%E7%A8%8B/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">线程</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E8%BF%9B%E7%A8%8B/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">进程</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">操作系统</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E6%B5%81%E6%B0%B4%E7%BA%BF%E4%B8%8E%E5%9C%A8%E5%A4%84%E7%90%86%E5%99%A8%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">流水线与在处理器中的应用</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Example Person
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="介绍进程相关原理和实现">
+<title>进程</title>
+
+<link rel='canonical' href='https://example.com/p/%E8%BF%9B%E7%A8%8B/'>
+
+<link rel="stylesheet" href="/scss/style.min.cfa5b1b0e78d61c00a14173992a1f3fa3b5c1b9fa34d023de959af564e7b19dd.css"><meta property='og:title' content="进程">
+<meta property='og:description' content="介绍进程相关原理和实现">
+<meta property='og:url' content='https://example.com/p/%E8%BF%9B%E7%A8%8B/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='计算机系统' /><meta property='article:tag' content='操作系统' /><meta property='article:published_time' content='2025-08-01T21:50:00&#43;08:00'/><meta property='article:modified_time' content='2025-08-01T21:50:00&#43;08:00'/>
+<meta name="twitter:title" content="进程">
+<meta name="twitter:description" content="介绍进程相关原理和实现">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_f509edb42ecc0ebd.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://example.com/" selected>English</option>
+                                
+                                    <option value="https://example.com/zh-cn/" >中文</option>
+                                
+                                    <option value="https://example.com/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Dark Mode</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#进程的概念">进程的概念</a>
+      <ol>
+        <li><a href="#进程与程序">进程与程序</a></li>
+        <li><a href="#进程的组成">进程的组成</a></li>
+        <li><a href="#进程的状态state">进程的状态(State)</a></li>
+        <li><a href="#进程控制块process-control-block-pcb">进程控制块(Process Control Block, PCB)</a>
+          <ol>
+            <li><a href="#基本概念">基本概念</a></li>
+            <li><a href="#pcb的四大类信息">PCB的四大类信息、</a></li>
+            <li><a href="#pcb的关键作用">PCB的关键作用</a></li>
+            <li><a href="#pcb在linux中的实现-task_struct">PCB在linux中的实现: task_struct</a></li>
+          </ol>
+        </li>
+        <li><a href="#线程thread">线程(Thread)</a></li>
+      </ol>
+    </li>
+    <li><a href="#进程调度">进程调度</a>
+      <ol>
+        <li><a href="#调度">调度</a></li>
+        <li><a href="#调度队列">调度队列</a>
+          <ol>
+            <li><a href="#定义">定义</a></li>
+            <li><a href="#三种主要调度队列">三种主要调度队列</a></li>
+          </ol>
+        </li>
+        <li><a href="#上下文切换context-switch">上下文切换(Context Switch)</a>
+          <ol>
+            <li><a href="#定义-1">定义</a></li>
+            <li><a href="#开销">开销</a></li>
+          </ol>
+        </li>
+        <li><a href="#进程创建">进程创建</a>
+          <ol>
+            <li><a href="#概念">概念</a></li>
+            <li><a href="#design-choices">Design choices</a></li>
+            <li><a href="#用于进程创建的系统调用">用于进程创建的系统调用</a></li>
+          </ol>
+        </li>
+        <li><a href="#进程终止">进程终止</a>
+          <ol>
+            <li><a href="#工作流程">工作流程</a></li>
+            <li><a href="#注exit与_exit">注：exit与_exit</a></li>
+            <li><a href="#可能存在的错误僵尸进程与孤儿进程">可能存在的错误————僵尸进程与孤儿进程</a></li>
+          </ol>
+        </li>
+        <li><a href="#android进程">Android进程</a>
+          <ol>
+            <li><a href="#android进程重要性层次结构">Android进程重要性层次结构</a></li>
+          </ol>
+        </li>
+        <li><a href="#浏览器的多进程架构">浏览器的多进程架构</a></li>
+        <li><a href="#进程间通信">进程间通信</a>
+          <ol>
+            <li><a href="#概念-1">概念</a></li>
+            <li><a href="#ipc模型">IPC模型</a></li>
+          </ol>
+        </li>
+        <li><a href="#生产者-消费者问题">生产者-消费者问题</a></li>
+        <li><a href="#消息传递">消息传递</a></li>
+        <li><a href="#posix共享内存">POSIX共享内存</a>
+          <ol>
+            <li><a href="#概念-2">概念</a></li>
+          </ol>
+        </li>
+        <li><a href="#管道">管道</a></li>
+        <li><a href="#客户端-用户交互">客户端-用户交互</a>
+          <ol>
+            <li><a href="#套接字socket">套接字(Socket)</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/" >
+                计算机体系结构
+            </a>
+        
+            <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" >
+                操作系统
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E8%BF%9B%E7%A8%8B/">进程</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            介绍进程相关原理和实现
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Aug 01, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    2 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="进程">进程
+</h1><h2 id="进程的概念">进程的概念
+</h2><h3 id="进程与程序">进程与程序
+</h3><ul>
+<li>一个操作系统可以运行许多个程序，一个运行中的程序被称为<strong>进程(Process)</strong></li>
+<li>进程与程序的关系：
+<ul>
+<li>程序是被动和静态的，进程是主动和动态的</li>
+<li>一个程序对应的可能有多个进程</li>
+<li>程序可以通过GUI或命令行启动</li>
+</ul>
+</li>
+</ul>
+<h3 id="进程的组成">进程的组成
+</h3><ul>
+<li>程序代码
+<ul>
+<li>内容：可执行的程序指令</li>
+<li>特点：只读，多个相同进程可以共享同一份代码</li>
+</ul>
+</li>
+<li>运行时CPU状态
+<ul>
+<li>程序技术去(PC): 指向下一条要执行的指令地址</li>
+<li>寄存器组：
+<ul>
+<li>通用寄存器：存储计算数据</li>
+<li>状态寄存器：保存处理器状态标志</li>
+<li>专用寄存器：如栈指针、基址寄存器等</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>内存区域
+<ul>
+<li>栈(Stack)</li>
+<li>数据段(Data Section)</li>
+<li>堆(Heap)</li>
+</ul>
+</li>
+</ul>
+<h3 id="进程的状态state">进程的状态(State)
+</h3><ul>
+<li>一个进程包含以下状态
+<ul>
+<li>new</li>
+<li>running</li>
+<li>wating/blocking</li>
+<li>ready</li>
+<li>terminated</li>
+</ul>
+</li>
+<li>状态转换示意图</li>
+</ul>
+<p align="center">
+    <img src="/images/process1.png" alt="State" width="80%">
+</p>
+<h3 id="进程控制块process-control-block-pcb">进程控制块(Process Control Block, PCB)
+</h3><h4 id="基本概念">基本概念
+</h4><ul>
+<li>PCB是操作系统管理进程的核心数据结构，每个进程都有唯一的PCB</li>
+</ul>
+<h4 id="pcb的四大类信息">PCB的四大类信息、
+</h4><ul>
+<li>进程标识信息
+<ul>
+<li>PID：进程唯一标识符</li>
+<li>PPID：父进程ID</li>
+<li>UID/GID：用户和组标识符</li>
+</ul>
+</li>
+<li>处理机状态信息
+<ul>
+<li>程序计数器(PC)：下一条指令地址</li>
+<li>寄存器组：CPU寄存器的值</li>
+<li>栈指针：当前栈位置</li>
+</ul>
+</li>
+<li>进程调度信息：
+<ul>
+<li>优先级：调度优先级</li>
+<li>进程状态：运行/就绪/阻塞等</li>
+<li>CPU时间：已使用和分配的时间</li>
+</ul>
+</li>
+<li>进程控制信息
+<ul>
+<li>内存管理：页表、内存映射</li>
+<li>文件管理：打开的文件列表</li>
+<li>信号处理：信号处理机制</li>
+</ul>
+</li>
+</ul>
+<h4 id="pcb的关键作用">PCB的关键作用
+</h4><ul>
+<li>上下文切换
+<ul>
+<li>保存当前进程状态到PCB，然后从PCB恢复目标进程状态</li>
+</ul>
+</li>
+<li>进程管理
+<ul>
+<li>创建：分配新PCB</li>
+<li>调度：基于PCB信息选择进程</li>
+<li>终止：释放PCB和相关资源</li>
+</ul>
+</li>
+<li>资源跟踪
+<ul>
+<li>内存分配情况</li>
+<li>打开的文件</li>
+<li>拥有的设备</li>
+</ul>
+</li>
+</ul>
+<h4 id="pcb在linux中的实现-task_struct">PCB在linux中的实现: task_struct
+</h4><ul>
+<li>Linux使用task_struct结构体实现PCB，包含：
+<ul>
+<li>进程状态和标识</li>
+<li>内存管理信息(mm_struct)</li>
+<li>文件系统信息(files_struct)</li>
+<li>父子进程关系</li>
+</ul>
+</li>
+<li>PCB在系统中的组织
+<ul>
+<li>进程链表：所有进程形成链表</li>
+<li>哈希表：通过PID快速查找</li>
+<li>运行队列：就绪进程的调度队列</li>
+</ul>
+</li>
+</ul>
+<h3 id="线程thread">线程(Thread)
+</h3><h2 id="进程调度">进程调度
+</h2><h3 id="调度">调度
+</h3><ul>
+<li>CPU调度器会选择接下来要运行的进程并分配内存。这个操作一般是非常快的</li>
+</ul>
+<h3 id="调度队列">调度队列
+</h3><h4 id="定义">定义
+</h4><ul>
+<li>操作系统内核用来组织和管理不同状态进程的数据结构，是实现搞笑进程调度的基础。</li>
+</ul>
+<h4 id="三种主要调度队列">三种主要调度队列
+</h4><ul>
+<li>作业队列(Job Queue)
+<ul>
+<li>范围：系统中的所有进程</li>
+<li>用途：全局管理和统计</li>
+<li>对应命令：ps aux</li>
+</ul>
+</li>
+<li>就绪队列(Ready Queue)
+<ul>
+<li>范围：准备执行的进程</li>
+<li>特点：按优先级组织，支持快速选择</li>
+<li>实现：多级队列 + 位图索引</li>
+</ul>
+</li>
+<li>设备队列(Device Queue)
+<ul>
+<li>范围：等待I/O的进程</li>
+<li>分类：磁盘、网络、键盘等不同设备</li>
+<li>状态：TASK_INTERRUPTIBLE/UNINTERRUPTIBLE</li>
+</ul>
+</li>
+</ul>
+<h3 id="上下文切换context-switch">上下文切换(Context Switch)
+</h3><h4 id="定义-1">定义
+</h4><ul>
+<li>内核切换到另一个进程去执行，保存就进程的状态并加载新进程的已保存状态</li>
+</ul>
+<h4 id="开销">开销
+</h4><ul>
+<li>上下文切换是开销，CPU在切换时不做任何有用的工作。操作系统和PCB越复杂，上下文切换时间越长，时间取决于硬件支持。某些硬件为每个CPU提供多组寄存器，可以同时加载多个上下文</li>
+</ul>
+<h3 id="进程创建">进程创建
+</h3><h4 id="概念">概念
+</h4><ul>
+<li>父进程可以创建子进程，子进程可以进一步创建子进程，形成进程树。进程通过进程标识符(PID)来识别和管理</li>
+</ul>
+<h4 id="design-choices">Design choices
+</h4><ul>
+<li>三种可能的资源共享级别：全部、子集、无</li>
+<li>父进程和子进程的地址空间管理
+<ul>
+<li>子进程复制父进程地址空间(Linux)</li>
+<li>子进程加载新程序(Windows)</li>
+</ul>
+</li>
+<li>父进程和子进程的执行
+<ul>
+<li>父进程和子进程并发执行</li>
+<li>父进程等待子进程终止</li>
+</ul>
+</li>
+</ul>
+<h4 id="用于进程创建的系统调用">用于进程创建的系统调用
+</h4><ul>
+<li>fork: 创建一个新的进程副本，结束时会返回</li>
+<li>exec: 使用一个新的进程的地址覆盖当前进程地址，加载了新程序，不会返回原程序</li>
+<li>wait: 阻塞直到子进程结束</li>
+</ul>
+<h3 id="进程终止">进程终止
+</h3><h4 id="工作流程">工作流程
+</h4><ul>
+<li>正常终止：进程执行最后一条语句并请求内核删除它(exit)
+<ul>
+<li>操作系统将子进程的返回值传递给父进程(wait)</li>
+<li>进程的资源被操作系统释放</li>
+</ul>
+</li>
+<li>异常终止：父进程可能终止子进程的执行(abort)
+<ul>
+<li>子进程超出了分配到的资源</li>
+<li>分配给子进程的任务不在被需要</li>
+<li>如果父进程退出，一些操作系统不允许子进程继续
+<ul>
+<li>所有子进程（整个子树）将被终止-这被称为<strong>级联终止(cascading termination)</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="注exit与_exit">注：exit与_exit
+</h4><ul>
+<li>exit为标准库函数，执行终止进程和清理</li>
+<li>_exit为系统调用，直接请求内核终止进程，不做清理</li>
+</ul>
+<h4 id="可能存在的错误僵尸进程与孤儿进程">可能存在的错误————僵尸进程与孤儿进程
+</h4><h5 id="僵尸进程">僵尸进程
+</h5><ul>
+<li>僵尸进程时已经执行完毕但父进程还没有回收其退出状态的子进程</li>
+<li>特征
+<ul>
+<li>进程已死亡：不再执行任何代码</li>
+<li>PCB仍存在：内核保留进程控制块</li>
+<li>保存退出状态：等待父进程读取</li>
+<li>不占用内存：代码段、数据段、栈都释放</li>
+<li>占用PID槽位：PID不能被其他进程使用</li>
+<li>ps显示为&lt;defunct&gt;：状态标记为Z</li>
+</ul>
+</li>
+</ul>
+<h5 id="孤儿进程">孤儿进程
+</h5><ul>
+<li>孤儿进程是父进程已经退出，但子进程仍然在运行的进程</li>
+<li>特征
+<ul>
+<li>仍在运行：进程仍然正常执行</li>
+<li>父进程变更：PPID变为1（init进程）</li>
+<li>正常运行：功能不受影响</li>
+<li>自动回收：退出时由init进程回收</li>
+<li>通常无害：不会造成资源泄漏</li>
+</ul>
+</li>
+</ul>
+<h5 id="关键区别">关键区别
+</h5><ul>
+<li>僵尸进程是管理问题，有害，大量积累会耗尽系统资源，需要程序员解决</li>
+<li>孤儿进程是自然现象，无害，系统自动解决</li>
+</ul>
+<h3 id="android进程">Android进程
+</h3><h4 id="android进程重要性层次结构">Android进程重要性层次结构
+</h4><ul>
+<li>移动操作系统经常需要终止进程来回收系统资源（如内存）。按重要性从高到低排列
+<ul>
+<li>前台进程：在屏幕上可见
+<ul>
+<li>用户正在使用微信</li>
+</ul>
+</li>
+<li>可见进程：不直接可见，但执行前台进程正在引用的活动
+<ul>
+<li>视频应用播放时弹出权限对话框</li>
+</ul>
+</li>
+<li>服务进程：如流媒体音乐
+<ul>
+<li>音乐应用后台播放</li>
+</ul>
+</li>
+<li>后台进程：执行活动，但用户不明显感知
+<ul>
+<li>用户切换应用后原应用进入后台</li>
+</ul>
+</li>
+<li>空进程：不包含任何活动</li>
+</ul>
+</li>
+<li>Android将开始终止最不重要的进程</li>
+</ul>
+<h3 id="浏览器的多进程架构">浏览器的多进程架构
+</h3><ul>
+<li>在过去许多网页浏览器作为单一进程运行（有些仍然如此）。这会导致如果一个网站出现问题，整个浏览器都可能挂起或崩溃</li>
+<li>Google Chrome浏览器采用多进程架构，包含3中不同类型的进程：
+<ul>
+<li>浏览器进程：管理用户界面、磁盘和网络I/O</li>
+<li>渲染进程：渲染网页，处理HTML、Javascript。为每个打开的网页创建新的渲染进程</li>
+<li>运行在沙箱中，限制磁盘和网络I/O,最小化安全漏洞的影响</li>
+<li>插件进程：为每种类型的插件创建进程</li>
+</ul>
+</li>
+</ul>
+<h3 id="进程间通信">进程间通信
+</h3><h4 id="概念-1">概念
+</h4><ul>
+<li>系统中的进程可能是独立的或协作的
+<ul>
+<li>独立进程：无法影响或被其他进程的执行所影响的进程</li>
+<li>协作进程：可以影响或被其他进程影响的进程，包括共享数据</li>
+</ul>
+</li>
+<li>协作进程的原因：信息共享、计算加速、模块化、便利性、安全性</li>
+<li>写作进程需要进程间通信(IPC)</li>
+</ul>
+<h4 id="ipc模型">IPC模型
+</h4><ul>
+<li>存在两种IPC模型：
+<ul>
+<li>共享内存</li>
+<li>消息传递</li>
+</ul>
+</li>
+<li>示意图：
+  <p align="center">
+      <img src="/images/process2.png" alt="IPC" width="70%">
+  </p>
+</li>
+</ul>
+<h3 id="生产者-消费者问题">生产者-消费者问题
+</h3><ul>
+<li>协作进程的范例，生产者进程产生信息，被消费者进程消费</li>
+<li>无界缓冲区：对缓冲区大小没有实际限制</li>
+<li>有界缓冲区：假设有固定的缓冲区大小</li>
+</ul>
+<h3 id="消息传递">消息传递
+</h3><ul>
+<li>进程通过交换消息互相通信</li>
+<li>无需依赖共享变量</li>
+<li>消息传递提供两个操作
+<ul>
+<li>send：发送消息</li>
+<li>receive：接受消息</li>
+</ul>
+</li>
+<li>如果P和Q希望通信，它们需要
+<ul>
+<li>在它们之间建立通信链路</li>
+<li>例如：邮箱(间接)或基于pid(直接)</li>
+<li>通过send/receive交换消息</li>
+</ul>
+</li>
+<li>直接与间接通信
+<ul>
+<li>直接通信
+<ul>
+<li>对称寻址: send(P, Message), receive(Q, Message)</li>
+<li>非对称寻址: send(P, message), receive(id, Message)</li>
+</ul>
+</li>
+<li>间接通信
+<ul>
+<li>send(A, Message), receive(A, Message) -邮箱A</li>
+<li>邮箱可以由进程和操作系统实现</li>
+<li>邮箱所有者：谁可以接收消息</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>同步机制
+<ul>
+<li>消息传递可以是阻塞的或非阻塞的</li>
+<li>阻塞被认为是同步的
+<ul>
+<li>阻塞发送：发送者阻塞直到消息被接收</li>
+<li>阻塞接收：接收者阻塞直到有消息可用</li>
+</ul>
+</li>
+<li>非阻塞被认为是异步的
+<ul>
+<li>非阻塞发送：发送者发送消息后继续执行</li>
+<li>非阻塞接收：接收者接收有效消息或返回空值</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>缓冲机制
+<ul>
+<li>附加到链路的消息队列</li>
+<li>零容量：0条消息
+<ul>
+<li>发送者必须等待接收者</li>
+</ul>
+</li>
+<li>有些容量：有线长度的n条消息
+<ul>
+<li>如果链路满，发送者必须等待</li>
+</ul>
+</li>
+<li>误解容量：无限长度
+<ul>
+<li>发送者永不等待</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="posix共享内存">POSIX共享内存
+</h3><h4 id="概念-2">概念
+</h4><ul>
+<li>进程首先创建共享内存段</li>
+<li>也用于打开现有的内存段</li>
+<li>设置对象的大小</li>
+<li>使用mmap()将文件指针内存映射到共享内存对象</li>
+<li>对共享内存的督学通过mmap()返回的指针完成</li>
+</ul>
+<h3 id="管道">管道
+</h3><ul>
+<li>管道作为一个通道，允许两个本地进程通信</li>
+<li>关键问题
+<ul>
+<li>通信是单向的还是双向的？</li>
+<li>在双向通信的情况下，是半双工还是全双工？</li>
+<li>进程之间是否必须存在关系（即父子关系）？</li>
+<li>管道是否可以在网络上使用？</li>
+<li>通常只用于本地进程</li>
+</ul>
+</li>
+<li>普通管道
+<ul>
+<li>普通管道允许生产者-消费者风格的通信</li>
+<li>生产者写入一端</li>
+<li>消费者从另一端读取</li>
+<li>因此普通管道是单向的</li>
+<li>如果需要双向通信，需要两个管道</li>
+<li>要求通信进程之间有父子关系</li>
+</ul>
+</li>
+<li>命名管道
+<ul>
+<li>命名管道比普通管道更强大</li>
+<li>通信是双向的</li>
+<li>进程之间不需要父子关系</li>
+<li>多个进程可以使用命名管道进行通信</li>
+<li>命名管道在UNIX和Windows系统上都有提供</li>
+<li>在Linux上，它被称为FIFO</li>
+</ul>
+</li>
+</ul>
+<h3 id="客户端-用户交互">客户端-用户交互
+</h3><h4 id="套接字socket">套接字(Socket)
+</h4><ul>
+<li>套接字被定义为通信的端点</li>
+<li>IP地址和端口的连接</li>
+<li>套接字 161.25.19.8:1625 指的是主机 161.25.19.8 上的端口 1625</li>
+<li>通信在一对套接字之间进行</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">计算机系统</a>
+        
+            <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/%E7%BA%BF%E7%A8%8B/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">线程</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E8%B0%83%E5%BA%A6/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">调度</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">操作系统</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E6%B5%81%E6%B0%B4%E7%BA%BF%E4%B8%8E%E5%9C%A8%E5%A4%84%E7%90%86%E5%99%A8%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">流水线与在处理器中的应用</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Example Person
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
