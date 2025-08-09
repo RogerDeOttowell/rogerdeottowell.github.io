@@ -7,7 +7,39 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
         <copyright>Example Person</copyright>
-        <lastBuildDate>Fri, 01 Aug 2025 21:50:00 +0800</lastBuildDate><atom:link href="https://example.com/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 09 Aug 2025 21:41:00 +0800</lastBuildDate><atom:link href="https://example.com/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>NP完全性</title>
+        <link>https://example.com/tags/np%E5%AE%8C%E5%85%A8%E6%80%A7/</link>
+        <pubDate>Sat, 09 Aug 2025 21:41:00 +0800</pubDate>
+        
+        <guid>https://example.com/tags/np%E5%AE%8C%E5%85%A8%E6%80%A7/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>P vs NP</title>
+        <link>https://example.com/tags/p-vs-np/</link>
+        <pubDate>Sat, 09 Aug 2025 21:41:00 +0800</pubDate>
+        
+        <guid>https://example.com/tags/p-vs-np/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>规约</title>
+        <link>https://example.com/tags/%E8%A7%84%E7%BA%A6/</link>
+        <pubDate>Sat, 09 Aug 2025 21:41:00 +0800</pubDate>
+        
+        <guid>https://example.com/tags/%E8%A7%84%E7%BA%A6/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>计算复杂性</title>
+        <link>https://example.com/tags/%E8%AE%A1%E7%AE%97%E5%A4%8D%E6%9D%82%E6%80%A7/</link>
+        <pubDate>Sat, 09 Aug 2025 21:41:00 +0800</pubDate>
+        
+        <guid>https://example.com/tags/%E8%AE%A1%E7%AE%97%E5%A4%8D%E6%9D%82%E6%80%A7/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>操作系统</title>
         <link>https://example.com/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</link>
         <pubDate>Fri, 01 Aug 2025 21:50:00 +0800</pubDate>
