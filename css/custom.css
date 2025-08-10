@@ -1,0 +1,25 @@
+/* static/css/custom.css */
+
+/* 1) 先移除主题可能添加在 li 上的伪元素圆点，避免与原生符号冲突 */
+.article-content ul li::before,
+.article-content ol li::before {
+  content: none !important;
+}
+
+/* 2) 确保列表使用原生 marker，并放在外侧显示 */
+.article-content ul,
+.article-content ol {
+  list-style-position: outside !important;
+  padding-left: 1.25rem; /* 适度的缩进，避免贴边 */
+  margin-left: 0.25rem;
+}
+
+/* 3) 为不同层级 ul 设置不同的原生符号样式 */
+.article-content ul { list-style-type: disc !important; }
+.article-content ul ul { list-style-type: circle !important; }
+.article-content ul ul ul { list-style-type: square !important; }
+
+/* 4) 进一步使用 ::marker 明确各层级符号（在部分主题强制覆盖时更稳妥） */
+.article-content ul li::marker { content: "•  "; }
+.article-content ul ul li::marker { content: "◦  "; }
+.article-content ul ul ul li::marker { content: "▪  "; }
