@@ -7,10 +7,10 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
         <copyright>Example Person</copyright>
-        <lastBuildDate>Wed, 31 Jul 2024 10:00:00 +0800</lastBuildDate><atom:link href="https://example.com/categories/%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 13 Aug 2025 10:00:00 +0800</lastBuildDate><atom:link href="https://example.com/categories/%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>估算法</title>
         <link>https://example.com/p/%E4%BC%B0%E7%AE%97%E6%B3%95/</link>
-        <pubDate>Wed, 31 Jul 2024 10:00:00 +0800</pubDate>
+        <pubDate>Wed, 13 Aug 2025 10:00:00 +0800</pubDate>
         
         <guid>https://example.com/p/%E4%BC%B0%E7%AE%97%E6%B3%95/</guid>
         <description>&lt;h1 id=&#34;估算法&#34;&gt;估算法
@@ -129,6 +129,158 @@ $$ w(u, v) \leq w(u, v) + w(x, v) $$&lt;/li&gt;
 </description>
         </item>
         <item>
+        <title>随机算法</title>
+        <link>https://example.com/p/%E9%9A%8F%E6%9C%BA%E7%AE%97%E6%B3%95/</link>
+        <pubDate>Wed, 13 Aug 2025 10:00:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E9%9A%8F%E6%9C%BA%E7%AE%97%E6%B3%95/</guid>
+        <description>&lt;h1 id=&#34;随机算法&#34;&gt;随机算法
+&lt;/h1&gt;&lt;h2 id=&#34;经典问题&#34;&gt;经典问题
+&lt;/h2&gt;&lt;h3 id=&#34;离线雇佣问题&#34;&gt;（离线）雇佣问题
+&lt;/h3&gt;&lt;h4 id=&#34;问题描述&#34;&gt;问题描述
+&lt;/h4&gt;&lt;h5 id=&#34;基本数据&#34;&gt;基本数据
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;假设你需要招聘一名新的助理。你委托了一家职业介绍所，这家机构在 n 天内，每天会向你推荐一名候选人。你的招聘流程如下：
+&lt;ul&gt;
+&lt;li&gt;面试当天的候选人。&lt;/li&gt;
+&lt;li&gt;如果这位候选人比你当前雇佣的助理更优秀，你就会解雇当前的助理，然后雇佣这位新的候选人。&lt;/li&gt;
+&lt;li&gt;为了简化问题，我们假设你第一天总会雇佣第一位候选人。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;成本分析&#34;&gt;成本分析
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;面试每个候选人有一个固定的，较低的成本，我们记为c_i&lt;/li&gt;
+&lt;li&gt;每雇佣一次新人，都有一个较高的成本，我们称之为c_h&lt;/li&gt;
+&lt;li&gt;在n天里，会共面试n个人，所以总的面试成本是固定的 n*c_i。我们真正关心的是哪个不确定的、可能很高的总雇佣成本。假设我们总共雇佣了m次，那么总成本就是：
+&lt;ul&gt;
+&lt;li&gt;总成本 = n&lt;em&gt;c_i + m&lt;/em&gt;c_h&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;由于n*c_i是固定的，我们的目标是分析并设法降低m，即总的雇佣次数&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;最坏情况分析确定性算法&#34;&gt;最坏情况分析（确定性算法）
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;在没有任何随机化的情况下，最坏的情况是职业介绍所每天推荐来的候选人能力都是严格递增的。在这种情况下，每次面试都会触发一次雇佣。总的雇佣次数 m = n。此时总成本将是 n * c_i + n*c_h。即可能的最大成本&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;引入随机算法&#34;&gt;引入随机算法
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;我们无法控制候选人到来的自然顺序，但是可以控制面试的顺序。&lt;/li&gt;
+&lt;li&gt;核心思想：不按照职业介绍所给的顺序面试，而是先拿到n个候选人的名单，然后将这个名单打乱（随机排列），再按照这个新的随机顺序去逐一面试&lt;/li&gt;
+&lt;li&gt;通过这个随机化步骤，把问题从分析一个特定输入序列的性能转换为了分析所有可能输入序列的平均性能。这样无需再害怕某个特定的最坏序列。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;随机化后的期望分析&#34;&gt;随机化后的期望分析
+&lt;/h4&gt;&lt;h5 id=&#34;指示器随机变量&#34;&gt;指示器随机变量
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;为了计算随机排列后，期望的雇佣次数，我们引入一个数学工具：指示器随机变量(Indicator Random Variables)
+&lt;ul&gt;
+&lt;li&gt;我们定义一个变量x_i，它对应&amp;quot;第i个被面试的候选人是否被雇佣这个事件&amp;quot;，如果第i个被面试的候选人被雇佣了，则x_i = 1，反之则有x_i = 0&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;总的雇佣次数m就是所有x_i的总和&lt;/li&gt;
+&lt;li&gt;根据期望的线性性质可知总雇佣次数的期望即为每个x_i期望的和&lt;/li&gt;
+&lt;li&gt;对于一个指示器随机变量，它的期望值就等于它所指示的事件发生的概率，即E[X_i] = P。&lt;/li&gt;
+&lt;li&gt;那么，第i个候选人被雇佣的概率是多少？
+&lt;ul&gt;
+&lt;li&gt;当且仅当第i个候选人比前面面试过的i-1个人都优秀时才会被雇佣。由于当前的队列是完全随机化的。i个人中的每一个都有同等的概率是最优秀的那个。即第i个候选人被雇佣的概率是1/i&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;故P(第i个候选人被雇佣) = 1/i，即E[x_i] = 1/i。&lt;/li&gt;
+&lt;li&gt;E[m] = 1 + 1/2 + 1/3 + &amp;hellip; + 1/n，构成了一个调和级数，它约等于ln(n)。&lt;/li&gt;
+&lt;li&gt;结论：随机化下期望雇佣次数为ln(n)次&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;在线雇佣问题&#34;&gt;在线雇佣问题
+&lt;/h3&gt;&lt;h4 id=&#34;问题描述-1&#34;&gt;问题描述
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;与离线雇佣问题的区别：
+&lt;ul&gt;
+&lt;li&gt;在在线雇佣问题中，我们不能提前拿到所有人的名单，候选人按照无法控制的顺序注意到来&lt;/li&gt;
+&lt;li&gt;对于每一位面试者必须当场做出决定&lt;/li&gt;
+&lt;li&gt;问题目标变成了使得成功雇佣到最优秀的人的概率最大&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;策略观察-然后-跳转&#34;&gt;策略：观察-然后-跳转
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;这个策略将过程分为两个阶段
+&lt;ul&gt;
+&lt;li&gt;阶段一：观察期
+&lt;ul&gt;
+&lt;li&gt;我们首先确定一个数字k&lt;/li&gt;
+&lt;li&gt;对于前来面试的前k名候选人，我们只面试，但一律不雇佣&lt;/li&gt;
+&lt;li&gt;这个阶段的唯一目的是收集信息，建立一个对候选人能力水平的基准。我们会几下这k个人中能力最强的人，称之为&amp;quot;标杆&amp;quot;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;阶段二：决策期
+&lt;ul&gt;
+&lt;li&gt;从k+1人开始继续面试&lt;/li&gt;
+&lt;li&gt;一旦遇到比标杆更优秀的人，就立刻雇佣，然后停止招聘&lt;/li&gt;
+&lt;li&gt;特殊情况：如果面试到最后一个人都没有发现比标杆更优秀的，雇佣最后一个人&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;最优的k的选择为n/e，即拒绝约前37%的人&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;随机化快速排序&#34;&gt;随机化快速排序
+&lt;/h4&gt;&lt;h5 id=&#34;标准化快速排序&#34;&gt;标准化快速排序
+&lt;/h5&gt;&lt;h6 id=&#34;标准化快速排序的工作方式&#34;&gt;标准化快速排序的工作方式
+&lt;/h6&gt;&lt;ul&gt;
+&lt;li&gt;分解
+&lt;ul&gt;
+&lt;li&gt;从数组中选择一个元素作为主元。在一个确定性的实现中，我们通常会固定地选择第一个元素、最后一个元素或中间的元素&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;征服
+&lt;ul&gt;
+&lt;li&gt;重新排列数组，使得所有小于住院的元素都移动到主元的左边，所有大于主元的元素都移动到主元的右边。这个过程成为分区。分区阶数后，主元就处在它最终排序后正确的位置上&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;合并
+&lt;ul&gt;
+&lt;li&gt;因为是原地排序，当递归的子数组都排好序后，整个数组也就完成了排序，不需要额外的合并步骤&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h6 id=&#34;标准化快速排序的缺陷&#34;&gt;标准化快速排序的缺陷
+&lt;/h6&gt;&lt;ul&gt;
+&lt;li&gt;性能高度依赖于主元pivot的选择
+&lt;ul&gt;
+&lt;li&gt;最好的情况：每次分区，主元都恰好是当前子数组的中位数。这样数组被完美地平分为两半，递归树的深度是 log n，每层分区操作的总时间是 O(n)，所以总的时间复杂度是 O(n log n)。&lt;/li&gt;
+&lt;li&gt;最坏的情况：每次分区，主元都选到了当前子数组的最小值或最大值。例如，如果对一个已经排好序的数组使用“总是选择第一个元素作为主元”的策略，就会发生这种情况。
+&lt;ul&gt;
+&lt;li&gt;分区后，一个子数组是空的，另一个子数组包含了剩下 n-1 个元素。&lt;/li&gt;
+&lt;li&gt;这会导致递归树严重不平衡，深度变成 n。&lt;/li&gt;
+&lt;li&gt;总的时间复杂度退化为 O(n^2)，和效率低下的冒泡排序、插入排序一个级别。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;引入随机化修复缺陷&#34;&gt;引入随机化————修复缺陷
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;随机化快速排序的核心思想非常简单：不要让主元 pivot 的选择有固定的模式，让它变得不可预测。通过引入随机性，我们可以确保对于任何输入（即使是已经排好序的），算法都能有极高的概率表现出接近最优的性能。我们不是在赌运气，而是在用概率论来保证整体的、长期的优秀表现。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h6 id=&#34;随机化方式&#34;&gt;随机化方式
+&lt;/h6&gt;&lt;ul&gt;
+&lt;li&gt;随机选取主元
+&lt;ul&gt;
+&lt;li&gt;这是最直接的方法。在每次执行 partition 操作时，不再固定选择某个位置的元素，而是在当前待排序的子数组 A[p&amp;hellip;r] 中，随机地选择一个索引 i（其中 p ≤ i ≤ r），然后将 A[i] 与子数组的末尾元素 A[r] (或开头元素 A[p]) 交换。&lt;/li&gt;
+&lt;li&gt;之后，就按照标准的 partition 流程，使用 A[r] 作为主元进行分区。&lt;/li&gt;
+&lt;li&gt;这样，每个元素都有同等的机会被选为下一轮的主元，从而极大概率地避免了不平衡的划分。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;随机打乱整个数组
+&lt;ul&gt;
+&lt;li&gt;这是一个更高层面的随机化。在调用快速排序算法之前，先对整个输入数组进行一次随机洗牌（比如使用 Fisher-Yates shuffle 算法）。&lt;/li&gt;
+&lt;li&gt;完成洗牌后，再使用一个完全确定性的快速排序算法（比如总是选择最后一个元素作为主元）。&lt;/li&gt;
+&lt;li&gt;其效果和方法一在理论上是等价的：因为输入序列是随机的，所以你固定选择的那个主元，在原始数据中实际上是随机的。这种方法有时在理论分析上更为方便。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
         <title>分治法</title>
         <link>https://example.com/p/%E5%88%86%E6%B2%BB%E6%B3%95/</link>
         <pubDate>Wed, 31 Jul 2024 10:00:00 +0800</pubDate>
@@ -172,27 +324,6 @@ $$ w(u, v) \leq w(u, v) + w(x, v) $$&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;&#34;&gt;
 &lt;/h3&gt;</description>
-        </item>
-        <item>
-        <title>动态规划</title>
-        <link>https://example.com/p/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/</link>
-        <pubDate>Wed, 31 Jul 2024 10:00:00 +0800</pubDate>
-        
-        <guid>https://example.com/p/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/</guid>
-        <description>&lt;h1 id=&#34;动态规划&#34;&gt;动态规划
-&lt;/h1&gt;&lt;h2 id=&#34;定义&#34;&gt;定义
-&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;定义：动态规划（英语：Dynamic programming，简称 DP），是一种在数学、管理科学、计算机科学、经济学和生物信息学中使用的，通过把原问题分解为相对简单的子问题的方式求解复杂问题的方法。动态规划常常适用于有重叠子问题和最优子结构性质的问题。&lt;/li&gt;
-&lt;li&gt;核心：将问题拆解成多个子问题，每一级子问题都可以从上一级（或几级）子问题推出。&lt;/li&gt;
-&lt;li&gt;动态规划三要素：
-&lt;ul&gt;
-&lt;li&gt;最优子结构&lt;/li&gt;
-&lt;li&gt;重叠子问题&lt;/li&gt;
-&lt;li&gt;状态转移方程&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-</description>
         </item>
         <item>
         <title>外部排序</title>
@@ -788,158 +919,6 @@ $\hat{a}&lt;em&gt;i = c_i + \Phi(D_i) - \Phi(D&lt;/em&gt;{i-1})$&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;即两种抢矿下摊还成本都为3，时间复杂度为O(1)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        </item>
-        <item>
-        <title>随机算法</title>
-        <link>https://example.com/p/%E9%9A%8F%E6%9C%BA%E7%AE%97%E6%B3%95/</link>
-        <pubDate>Wed, 31 Jul 2024 10:00:00 +0800</pubDate>
-        
-        <guid>https://example.com/p/%E9%9A%8F%E6%9C%BA%E7%AE%97%E6%B3%95/</guid>
-        <description>&lt;h1 id=&#34;随机算法&#34;&gt;随机算法
-&lt;/h1&gt;&lt;h2 id=&#34;经典问题&#34;&gt;经典问题
-&lt;/h2&gt;&lt;h3 id=&#34;离线雇佣问题&#34;&gt;（离线）雇佣问题
-&lt;/h3&gt;&lt;h4 id=&#34;问题描述&#34;&gt;问题描述
-&lt;/h4&gt;&lt;h5 id=&#34;基本数据&#34;&gt;基本数据
-&lt;/h5&gt;&lt;ul&gt;
-&lt;li&gt;假设你需要招聘一名新的助理。你委托了一家职业介绍所，这家机构在 n 天内，每天会向你推荐一名候选人。你的招聘流程如下：
-&lt;ul&gt;
-&lt;li&gt;面试当天的候选人。&lt;/li&gt;
-&lt;li&gt;如果这位候选人比你当前雇佣的助理更优秀，你就会解雇当前的助理，然后雇佣这位新的候选人。&lt;/li&gt;
-&lt;li&gt;为了简化问题，我们假设你第一天总会雇佣第一位候选人。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h5 id=&#34;成本分析&#34;&gt;成本分析
-&lt;/h5&gt;&lt;ul&gt;
-&lt;li&gt;面试每个候选人有一个固定的，较低的成本，我们记为c_i&lt;/li&gt;
-&lt;li&gt;每雇佣一次新人，都有一个较高的成本，我们称之为c_h&lt;/li&gt;
-&lt;li&gt;在n天里，会共面试n个人，所以总的面试成本是固定的 n*c_i。我们真正关心的是哪个不确定的、可能很高的总雇佣成本。假设我们总共雇佣了m次，那么总成本就是：
-&lt;ul&gt;
-&lt;li&gt;总成本 = n&lt;em&gt;c_i + m&lt;/em&gt;c_h&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;由于n*c_i是固定的，我们的目标是分析并设法降低m，即总的雇佣次数&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;最坏情况分析确定性算法&#34;&gt;最坏情况分析（确定性算法）
-&lt;/h4&gt;&lt;ul&gt;
-&lt;li&gt;在没有任何随机化的情况下，最坏的情况是职业介绍所每天推荐来的候选人能力都是严格递增的。在这种情况下，每次面试都会触发一次雇佣。总的雇佣次数 m = n。此时总成本将是 n * c_i + n*c_h。即可能的最大成本&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;引入随机算法&#34;&gt;引入随机算法
-&lt;/h4&gt;&lt;ul&gt;
-&lt;li&gt;我们无法控制候选人到来的自然顺序，但是可以控制面试的顺序。&lt;/li&gt;
-&lt;li&gt;核心思想：不按照职业介绍所给的顺序面试，而是先拿到n个候选人的名单，然后将这个名单打乱（随机排列），再按照这个新的随机顺序去逐一面试&lt;/li&gt;
-&lt;li&gt;通过这个随机化步骤，把问题从分析一个特定输入序列的性能转换为了分析所有可能输入序列的平均性能。这样无需再害怕某个特定的最坏序列。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;随机化后的期望分析&#34;&gt;随机化后的期望分析
-&lt;/h4&gt;&lt;h5 id=&#34;指示器随机变量&#34;&gt;指示器随机变量
-&lt;/h5&gt;&lt;ul&gt;
-&lt;li&gt;为了计算随机排列后，期望的雇佣次数，我们引入一个数学工具：指示器随机变量(Indicator Random Variables)
-&lt;ul&gt;
-&lt;li&gt;我们定义一个变量x_i，它对应&amp;quot;第i个被面试的候选人是否被雇佣这个事件&amp;quot;，如果第i个被面试的候选人被雇佣了，则x_i = 1，反之则有x_i = 0&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;总的雇佣次数m就是所有x_i的总和&lt;/li&gt;
-&lt;li&gt;根据期望的线性性质可知总雇佣次数的期望即为每个x_i期望的和&lt;/li&gt;
-&lt;li&gt;对于一个指示器随机变量，它的期望值就等于它所指示的事件发生的概率，即E[X_i] = P。&lt;/li&gt;
-&lt;li&gt;那么，第i个候选人被雇佣的概率是多少？
-&lt;ul&gt;
-&lt;li&gt;当且仅当第i个候选人比前面面试过的i-1个人都优秀时才会被雇佣。由于当前的队列是完全随机化的。i个人中的每一个都有同等的概率是最优秀的那个。即第i个候选人被雇佣的概率是1/i&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;故P(第i个候选人被雇佣) = 1/i，即E[x_i] = 1/i。&lt;/li&gt;
-&lt;li&gt;E[m] = 1 + 1/2 + 1/3 + &amp;hellip; + 1/n，构成了一个调和级数，它约等于ln(n)。&lt;/li&gt;
-&lt;li&gt;结论：随机化下期望雇佣次数为ln(n)次&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;在线雇佣问题&#34;&gt;在线雇佣问题
-&lt;/h3&gt;&lt;h4 id=&#34;问题描述-1&#34;&gt;问题描述
-&lt;/h4&gt;&lt;ul&gt;
-&lt;li&gt;与离线雇佣问题的区别：
-&lt;ul&gt;
-&lt;li&gt;在在线雇佣问题中，我们不能提前拿到所有人的名单，候选人按照无法控制的顺序注意到来&lt;/li&gt;
-&lt;li&gt;对于每一位面试者必须当场做出决定&lt;/li&gt;
-&lt;li&gt;问题目标变成了使得成功雇佣到最优秀的人的概率最大&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;策略观察-然后-跳转&#34;&gt;策略：观察-然后-跳转
-&lt;/h4&gt;&lt;ul&gt;
-&lt;li&gt;这个策略将过程分为两个阶段
-&lt;ul&gt;
-&lt;li&gt;阶段一：观察期
-&lt;ul&gt;
-&lt;li&gt;我们首先确定一个数字k&lt;/li&gt;
-&lt;li&gt;对于前来面试的前k名候选人，我们只面试，但一律不雇佣&lt;/li&gt;
-&lt;li&gt;这个阶段的唯一目的是收集信息，建立一个对候选人能力水平的基准。我们会几下这k个人中能力最强的人，称之为&amp;quot;标杆&amp;quot;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;阶段二：决策期
-&lt;ul&gt;
-&lt;li&gt;从k+1人开始继续面试&lt;/li&gt;
-&lt;li&gt;一旦遇到比标杆更优秀的人，就立刻雇佣，然后停止招聘&lt;/li&gt;
-&lt;li&gt;特殊情况：如果面试到最后一个人都没有发现比标杆更优秀的，雇佣最后一个人&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;最优的k的选择为n/e，即拒绝约前37%的人&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;随机化快速排序&#34;&gt;随机化快速排序
-&lt;/h4&gt;&lt;h5 id=&#34;标准化快速排序&#34;&gt;标准化快速排序
-&lt;/h5&gt;&lt;h6 id=&#34;标准化快速排序的工作方式&#34;&gt;标准化快速排序的工作方式
-&lt;/h6&gt;&lt;ul&gt;
-&lt;li&gt;分解
-&lt;ul&gt;
-&lt;li&gt;从数组中选择一个元素作为主元。在一个确定性的实现中，我们通常会固定地选择第一个元素、最后一个元素或中间的元素&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;征服
-&lt;ul&gt;
-&lt;li&gt;重新排列数组，使得所有小于住院的元素都移动到主元的左边，所有大于主元的元素都移动到主元的右边。这个过程成为分区。分区阶数后，主元就处在它最终排序后正确的位置上&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;合并
-&lt;ul&gt;
-&lt;li&gt;因为是原地排序，当递归的子数组都排好序后，整个数组也就完成了排序，不需要额外的合并步骤&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h6 id=&#34;标准化快速排序的缺陷&#34;&gt;标准化快速排序的缺陷
-&lt;/h6&gt;&lt;ul&gt;
-&lt;li&gt;性能高度依赖于主元pivot的选择
-&lt;ul&gt;
-&lt;li&gt;最好的情况：每次分区，主元都恰好是当前子数组的中位数。这样数组被完美地平分为两半，递归树的深度是 log n，每层分区操作的总时间是 O(n)，所以总的时间复杂度是 O(n log n)。&lt;/li&gt;
-&lt;li&gt;最坏的情况：每次分区，主元都选到了当前子数组的最小值或最大值。例如，如果对一个已经排好序的数组使用“总是选择第一个元素作为主元”的策略，就会发生这种情况。
-&lt;ul&gt;
-&lt;li&gt;分区后，一个子数组是空的，另一个子数组包含了剩下 n-1 个元素。&lt;/li&gt;
-&lt;li&gt;这会导致递归树严重不平衡，深度变成 n。&lt;/li&gt;
-&lt;li&gt;总的时间复杂度退化为 O(n^2)，和效率低下的冒泡排序、插入排序一个级别。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h5 id=&#34;引入随机化修复缺陷&#34;&gt;引入随机化————修复缺陷
-&lt;/h5&gt;&lt;ul&gt;
-&lt;li&gt;随机化快速排序的核心思想非常简单：不要让主元 pivot 的选择有固定的模式，让它变得不可预测。通过引入随机性，我们可以确保对于任何输入（即使是已经排好序的），算法都能有极高的概率表现出接近最优的性能。我们不是在赌运气，而是在用概率论来保证整体的、长期的优秀表现。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h6 id=&#34;随机化方式&#34;&gt;随机化方式
-&lt;/h6&gt;&lt;ul&gt;
-&lt;li&gt;随机选取主元
-&lt;ul&gt;
-&lt;li&gt;这是最直接的方法。在每次执行 partition 操作时，不再固定选择某个位置的元素，而是在当前待排序的子数组 A[p&amp;hellip;r] 中，随机地选择一个索引 i（其中 p ≤ i ≤ r），然后将 A[i] 与子数组的末尾元素 A[r] (或开头元素 A[p]) 交换。&lt;/li&gt;
-&lt;li&gt;之后，就按照标准的 partition 流程，使用 A[r] 作为主元进行分区。&lt;/li&gt;
-&lt;li&gt;这样，每个元素都有同等的机会被选为下一轮的主元，从而极大概率地避免了不平衡的划分。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;随机打乱整个数组
-&lt;ul&gt;
-&lt;li&gt;这是一个更高层面的随机化。在调用快速排序算法之前，先对整个输入数组进行一次随机洗牌（比如使用 Fisher-Yates shuffle 算法）。&lt;/li&gt;
-&lt;li&gt;完成洗牌后，再使用一个完全确定性的快速排序算法（比如总是选择最后一个元素作为主元）。&lt;/li&gt;
-&lt;li&gt;其效果和方法一在理论上是等价的：因为输入序列是随机的，所以你固定选择的那个主元，在原始数据中实际上是随机的。这种方法有时在理论分析上更为方便。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
