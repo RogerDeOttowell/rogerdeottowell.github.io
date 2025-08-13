@@ -673,14 +673,14 @@ $$η = \frac{Sp}{m} = \frac{n}{m+n-1}$$
 </h4><ul>
 <li>以上的演示都未展示具体的指令内容和访问的对象，并且默认了各条指令间是独立的。但在实践场景中，指令间可能是关联的，这将引发<strong>数据冒险</strong>。如下：</li>
 </ul>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-asm" data-lang="asm"><span style="display:flex;"><span><span style="color:#a6e22e">add</span> <span style="color:#66d9ef">x1</span>, <span style="color:#66d9ef">x2</span>, <span style="color:#66d9ef">x3</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">sub</span> <span style="color:#66d9ef">x4</span>, <span style="color:#66d9ef">x1</span>, <span style="color:#66d9ef">x5</span>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-asm" data-lang="asm"><span class="line"><span class="cl"><span class="nf">add</span> <span class="no">x1</span><span class="p">,</span> <span class="no">x2</span><span class="p">,</span> <span class="no">x3</span>
+</span></span><span class="line"><span class="cl"><span class="nf">sub</span> <span class="no">x4</span><span class="p">,</span> <span class="no">x1</span><span class="p">,</span> <span class="no">x5</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><ul>
@@ -692,14 +692,14 @@ $$η = \frac{Sp}{m} = \frac{n}{m+n-1}$$
 <li>可以看到在第一个指令完成WB之前就执行了第二个指令的ID，这会导致第二条指令无法去到正确的x1值。这种错误被称为<strong>读后写</strong>(RAW - Read After Write)</li>
 <li>此外还有一种较为少见的冒险<strong>写后读</strong>(WAR - Write After Read)。如果我们按照上面的演示思路来思考，会发现似乎是不会出现写后读问题的，这是因为写后读事实上一般出现在乱序执行的处理器中。</li>
 </ul>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-asm" data-lang="asm"><span style="display:flex;"><span><span style="color:#a6e22e">add</span> <span style="color:#66d9ef">r1</span>, <span style="color:#66d9ef">r2</span>, <span style="color:#66d9ef">r3</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">sub</span> <span style="color:#66d9ef">r2</span>, <span style="color:#66d9ef">r4</span>, <span style="color:#66d9ef">r5</span>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-asm" data-lang="asm"><span class="line"><span class="cl"><span class="nf">add</span> <span class="no">r1</span><span class="p">,</span> <span class="no">r2</span><span class="p">,</span> <span class="no">r3</span>
+</span></span><span class="line"><span class="cl"><span class="nf">sub</span> <span class="no">r2</span><span class="p">,</span> <span class="no">r4</span><span class="p">,</span> <span class="no">r5</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><ul>

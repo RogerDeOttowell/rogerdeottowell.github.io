@@ -412,14 +412,14 @@
 <p>压入参数（arg1， arg2）</p>
 <ul>
 <li>指令：
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-asm" data-lang="asm"><span style="display:flex;"><span><span style="color:#a6e22e">push</span> <span style="color:#66d9ef">arg2</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">push</span> <span style="color:#66d9ef">arg1</span> <span style="color:#75715e">;注意，逆序压入参数
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-asm" data-lang="asm"><span class="line"><span class="cl"><span class="nf">push</span> <span class="no">arg2</span>
+</span></span><span class="line"><span class="cl"><span class="nf">push</span> <span class="no">arg1</span> <span class="c1">;注意，逆序压入参数
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div></li>
@@ -433,18 +433,18 @@
 <p>调用函数</p>
 <ul>
 <li>指令
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-asm" data-lang="asm"><span style="display:flex;"><span><span style="color:#a6e22e">call</span> <span style="color:#66d9ef">fuc</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">; 等价于
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">push</span> <span style="color:#66d9ef">eip</span><span style="color:#960050;background-color:#1e0010">+</span><span style="color:#ae81ff">5</span> <span style="color:#75715e">;5为call指令的长度
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">jmp</span> <span style="color:#66d9ef">fuc</span>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-asm" data-lang="asm"><span class="line"><span class="cl"><span class="nf">call</span> <span class="no">fuc</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; 等价于
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nf">push</span> <span class="no">eip</span><span class="err">+</span><span class="mi">5</span> <span class="c1">;5为call指令的长度
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nf">jmp</span> <span class="no">fuc</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div></li>
@@ -459,16 +459,16 @@
 <ul>
 <li>指令：</li>
 </ul>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-asm" data-lang="asm"><span style="display:flex;"><span><span style="color:#a6e22e">push</span> <span style="color:#66d9ef">ebp</span>     <span style="color:#75715e">;保存调用者的EBP
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">ebp</span>, <span style="color:#66d9ef">esp</span> <span style="color:#75715e">;设置当前函数的EBP
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">sub</span> <span style="color:#66d9ef">esp</span>, <span style="color:#ae81ff">8</span>   <span style="color:#75715e">;为局部变量分配空间（示例中分配8字节）
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-asm" data-lang="asm"><span class="line"><span class="cl"><span class="nf">push</span> <span class="no">ebp</span>     <span class="c1">;保存调用者的EBP
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nf">mov</span> <span class="no">ebp</span><span class="p">,</span> <span class="no">esp</span> <span class="c1">;设置当前函数的EBP
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nf">sub</span> <span class="no">esp</span><span class="p">,</span> <span class="mi">8</span>   <span class="c1">;为局部变量分配空间（示例中分配8字节）
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><ul>
@@ -483,16 +483,16 @@
 <ul>
 <li>指令：</li>
 </ul>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-asm" data-lang="asm"><span style="display:flex;"><span><span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">eax</span>, [<span style="color:#66d9ef">ebp</span><span style="color:#960050;background-color:#1e0010">+</span><span style="color:#ae81ff">8</span>]  <span style="color:#75715e">;访问arg1
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">ebx</span>, [<span style="color:#66d9ef">ebp</span><span style="color:#960050;background-color:#1e0010">+</span><span style="color:#ae81ff">12</span>] <span style="color:#75715e">;访问arg2
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">ecx</span>, [<span style="color:#66d9ef">ebp-4</span>]  <span style="color:#75715e">;访问val1
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-asm" data-lang="asm"><span class="line"><span class="cl"><span class="nf">mov</span> <span class="no">eax</span><span class="p">,</span> <span class="p">[</span><span class="no">ebp</span><span class="err">+</span><span class="mi">8</span><span class="p">]</span>  <span class="c1">;访问arg1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nf">mov</span> <span class="no">ebx</span><span class="p">,</span> <span class="p">[</span><span class="no">ebp</span><span class="err">+</span><span class="mi">12</span><span class="p">]</span> <span class="c1">;访问arg2
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nf">mov</span> <span class="no">ecx</span><span class="p">,</span> <span class="p">[</span><span class="no">ebp-4</span><span class="p">]</span>  <span class="c1">;访问val1
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><ul>
@@ -507,16 +507,16 @@
 <ul>
 <li>指令</li>
 </ul>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-asm" data-lang="asm"><span style="display:flex;"><span><span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">esp</span>, <span style="color:#66d9ef">ebp</span> <span style="color:#75715e">;释放局部变量
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">pop</span> <span style="color:#66d9ef">ebp</span>      <span style="color:#75715e">;恢复调用者ebp
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">ret</span>          <span style="color:#75715e">;返回到调用者
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-asm" data-lang="asm"><span class="line"><span class="cl"><span class="nf">mov</span> <span class="no">esp</span><span class="p">,</span> <span class="no">ebp</span> <span class="c1">;释放局部变量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nf">pop</span> <span class="no">ebp</span>      <span class="c1">;恢复调用者ebp
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nf">ret</span>          <span class="c1">;返回到调用者
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><ul>
@@ -531,12 +531,12 @@
 <ul>
 <li>指令</li>
 </ul>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-asm" data-lang="asm"><span style="display:flex;"><span><span style="color:#a6e22e">sub</span> <span style="color:#66d9ef">esp</span>, <span style="color:#ae81ff">8</span>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-asm" data-lang="asm"><span class="line"><span class="cl"><span class="nf">sub</span> <span class="no">esp</span><span class="p">,</span> <span class="mi">8</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><ul>
@@ -558,91 +558,91 @@
 <ul>
 <li>示例：</li>
 </ul>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span><span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>()
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> a[<span style="color:#ae81ff">5</span>];
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">gets</span>(a);
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">puts</span>(a);
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%c&#34;</span>, a[<span style="color:#ae81ff">5</span>]);
-</span></span><span style="display:flex;"><span>}
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">char</span> <span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">gets</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">puts</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;%c&#34;</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>直接编译</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gcc buffer_overflow1.c
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">gcc buffer_overflow1.c
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>可以看到如下warning</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>buffer_overflow1.c: In <span style="color:#66d9ef">function</span> ‘main’:
-</span></span><span style="display:flex;"><span>buffer_overflow1.c:6:5: warning: implicit declaration of <span style="color:#66d9ef">function</span> ‘gets’; did you mean ‘fgets’? <span style="color:#f92672">[</span>-Wimplicit-function-declaration<span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">6</span> |     gets<span style="color:#f92672">(</span>a<span style="color:#f92672">)</span>;
-</span></span><span style="display:flex;"><span>      |     ^~~~
-</span></span><span style="display:flex;"><span>      |     fgets
-</span></span><span style="display:flex;"><span>/usr/bin/ld: /tmp/ccA63mQo.o: in <span style="color:#66d9ef">function</span> <span style="color:#e6db74">`</span>main<span style="color:#e6db74">&#39;:
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">buffer_overflow1.c:(.text+0x28): warning: the `gets&#39;</span> <span style="color:#66d9ef">function</span> is dangerous and should not be used.
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">buffer_overflow1.c: In <span class="k">function</span> ‘main’:
+</span></span><span class="line"><span class="cl">buffer_overflow1.c:6:5: warning: implicit declaration of <span class="k">function</span> ‘gets’<span class="p">;</span> did you mean ‘fgets’? <span class="o">[</span>-Wimplicit-function-declaration<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">6</span> <span class="p">|</span>     gets<span class="o">(</span>a<span class="o">)</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">|</span>     ^~~~
+</span></span><span class="line"><span class="cl">      <span class="p">|</span>     fgets
+</span></span><span class="line"><span class="cl">/usr/bin/ld: /tmp/ccA63mQo.o: in <span class="k">function</span> <span class="sb">`</span>main<span class="s1">&#39;:
+</span></span></span><span class="line"><span class="cl"><span class="s1">buffer_overflow1.c:(.text+0x28): warning: the `gets&#39;</span> <span class="k">function</span> is dangerous and should not be used.
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>这是因为gets(puts)是一个不安全的函数，缺少缓冲区边界检查，即没有对读入字符个数的检查和限制。
 现在编译后的可执行文件</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./a.out
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./a.out
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>输入6个字母abcdef，可以看到如下输出</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>abcdef
-</span></span><span style="display:flex;"><span>abcdef
-</span></span><span style="display:flex;"><span>*** stack smashing detected ***: terminated
-</span></span><span style="display:flex;"><span>Aborted <span style="color:#f92672">(</span>core dumped<span style="color:#f92672">)</span>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">abcdef
+</span></span><span class="line"><span class="cl">abcdef
+</span></span><span class="line"><span class="cl">*** stack smashing detected ***: terminated
+</span></span><span class="line"><span class="cl">Aborted <span class="o">(</span>core dumped<span class="o">)</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>可以看到程序被终止，并且给出了*** stack smashing detected ***: terminated，这是由堆栈保护机制（Stack Smashing Protection, SSP）发出的警告信息。当编译器开启了 SSP 选项（例如 GCC 的 -fstack-protector 或 -fstack-protector-all）时，它会在函数栈帧中插入一个被称为“canary”（金丝雀）的随机值。如果缓冲区溢出发生，覆盖了返回地址，那么这个 canary 值也会被改变。在函数返回之前，程序会检查这个 canary 值是否被篡改。如果被篡改，就意味着发生了缓冲区溢出，程序会立即终止执行，并打印这个警告信息。
 现在在关闭相关保护机制的情况下编译</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gcc -fno-stack-protector -no-pie buffer_overflow1.c
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">gcc -fno-stack-protector -no-pie buffer_overflow1.c
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>其中的编译选项含义如下：</p>
@@ -651,16 +651,16 @@
 <li>-no-pie: 禁用位置独立可执行文件（Position Independent Executable），使得程序加载到固定的内存地址。这与另一种针对栈溢出的防御地址空间布局随机化（ASLR）有关。</li>
 </ul>
 <p>运行后得到如下输出</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>abcdef
-</span></span><span style="display:flex;"><span>abcdef
-</span></span><span style="display:flex;"><span>f
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">abcdef
+</span></span><span class="line"><span class="cl">abcdef
+</span></span><span class="line"><span class="cl">f
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>可以看到输入的字符成功覆盖了字符串的后一个字节。即可以利用栈溢出篡改内存中的字节，这是栈溢出攻击的基本原理。</p>

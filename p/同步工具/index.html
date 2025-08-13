@@ -519,18 +519,18 @@
 </h3><h4 id="互斥锁mutex">互斥锁(Mutex)
 </h4><ul>
 <li>基本概念
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// 基本操作
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">mutex_lock</span>(<span style="color:#f92672">&amp;</span>mutex);    <span style="color:#75715e">// 获取锁（原子操作）
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 临界区代码
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">mutex_unlock</span>(<span style="color:#f92672">&amp;</span>mutex);  <span style="color:#75715e">// 释放锁（原子操作）
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// 基本操作
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nf">mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>    <span class="c1">// 获取锁（原子操作）
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 临界区代码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nf">mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>  <span class="c1">// 释放锁（原子操作）
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div></li>
@@ -563,16 +563,16 @@
 </ul>
 </li>
 <li>基本概念
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#a6e22e">sem_wait</span>(<span style="color:#f92672">&amp;</span>semaphore);   <span style="color:#75715e">// P操作：信号量-1，如果&lt;0则阻塞
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#75715e">// 临界区或资源使用
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">sem_post</span>(<span style="color:#f92672">&amp;</span>semaphore);   <span style="color:#75715e">// V操作：信号量+1，唤醒等待进程
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="nf">sem_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">semaphore</span><span class="p">);</span>   <span class="c1">// P操作：信号量-1，如果&lt;0则阻塞
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// 临界区或资源使用
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nf">sem_post</span><span class="p">(</span><span class="o">&amp;</span><span class="n">semaphore</span><span class="p">);</span>   <span class="c1">// V操作：信号量+1，唤醒等待进程
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div></li>
@@ -659,30 +659,30 @@
 </h3><ul>
 <li>完整的进程结构</li>
 </ul>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">do</span>
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">request_permission</span>(); <span style="color:#75715e">//进入区，请求进入临界区的许可
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">access_shared_resource</span>(); <span style="color:#75715e">//临界区，访问和修改共享资源的核心代码
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">release_permission</span>(); <span style="color:#75715e">//退出区，释放临界区，允许其他进程进入
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">do_other_work</span>(); <span style="color:#75715e">//剩余区，执行不涉及共享资源的其他操作
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">do</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">request_permission</span><span class="p">();</span> <span class="c1">//进入区，请求进入临界区的许可
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="nf">access_shared_resource</span><span class="p">();</span> <span class="c1">//临界区，访问和修改共享资源的核心代码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="nf">release_permission</span><span class="p">();</span> <span class="c1">//退出区，释放临界区，允许其他进程进入
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="nf">do_other_work</span><span class="p">();</span> <span class="c1">//剩余区，执行不涉及共享资源的其他操作
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="基本要求">基本要求
@@ -709,142 +709,142 @@
 <li>每个进程都表达自己想要进入临界区的意愿</li>
 <li>同时主动谦让把优先权交给对方</li>
 <li>实现代码
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// 进程Pi (i = 0 或 1)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// j是另一个进程的编号 (j = 1-i)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">do</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// === 进入区 ===
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    flag[i] <span style="color:#f92672">=</span> true;              <span style="color:#75715e">// 第1步：举手表示&#34;我想进入临界区&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    turn <span style="color:#f92672">=</span> j;                    <span style="color:#75715e">// 第2步：谦让，&#34;你先请&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 第3步：等待检查
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">while</span> (flag[j] <span style="color:#f92672">==</span> true <span style="color:#f92672">&amp;&amp;</span> turn <span style="color:#f92672">==</span> j) {
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 如果对方也想进入(flag[j]==true) 
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">// 且确实轮到对方(turn==j)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">// 那么我就等待
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">// 这里是忙等待
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// === 临界区 ===
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">critical_section</span>();
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// === 退出区 ===
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    flag[i] <span style="color:#f92672">=</span> false;             <span style="color:#75715e">// 第4步：表示&#34;我不再需要临界区了&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// === 剩余区 ===
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">remainder_section</span>();
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>} <span style="color:#66d9ef">while</span> (true);
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// 进程Pi (i = 0 或 1)
+</span></span></span><span class="line"><span class="cl"><span class="c1">// j是另一个进程的编号 (j = 1-i)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">do</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// === 进入区 ===
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">flag</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>              <span class="c1">// 第1步：举手表示&#34;我想进入临界区&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">turn</span> <span class="o">=</span> <span class="n">j</span><span class="p">;</span>                    <span class="c1">// 第2步：谦让，&#34;你先请&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 第3步：等待检查
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">while</span> <span class="p">(</span><span class="n">flag</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="nb">true</span> <span class="o">&amp;&amp;</span> <span class="n">turn</span> <span class="o">==</span> <span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 如果对方也想进入(flag[j]==true) 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 且确实轮到对方(turn==j)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 那么我就等待
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 这里是忙等待
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// === 临界区 ===
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">critical_section</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// === 退出区 ===
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">flag</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>             <span class="c1">// 第4步：表示&#34;我不再需要临界区了&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// === 剩余区 ===
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">remainder_section</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">);</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div></li>
 <li>处理两个进程时的代码
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// ====== 进程P0 ======
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">do</span> {
-</span></span><span style="display:flex;"><span>    flag[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> true;    <span style="color:#75715e">// P0想要进入
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    turn <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;          <span style="color:#75715e">// P0谦让，优先权给P1
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> (flag[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">==</span> true <span style="color:#f92672">&amp;&amp;</span> turn <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>) {
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 等待：如果P1也想进入且轮到P1
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// P0的临界区
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;P0 in critical section</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 访问共享资源...
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>  flag[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> false;   <span style="color:#75715e">// P0完成，退出
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// P0的其他工作
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>}<span style="color:#66d9ef">while</span> (true);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// ====== 进程P1 ======
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">do</span> {
-</span></span><span style="display:flex;"><span>    flag[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> true;    <span style="color:#75715e">// P1想要进入
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    turn <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;          <span style="color:#75715e">// P1谦让，优先权给P0
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> (flag[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">==</span> true <span style="color:#f92672">&amp;&amp;</span> turn <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 等待：如果P0也想进入且轮到P0
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// P1的临界区
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;P1 in critical section</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 访问共享资源...
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>    flag[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> false;   <span style="color:#75715e">// P1完成，退出
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// P1的其他工作
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>} <span style="color:#66d9ef">while</span> (true);
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// ====== 进程P0 ======
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">do</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>    <span class="c1">// P0想要进入
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">turn</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>          <span class="c1">// P0谦让，优先权给P1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="n">flag</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="nb">true</span> <span class="o">&amp;&amp;</span> <span class="n">turn</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 等待：如果P1也想进入且轮到P1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// P0的临界区
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;P0 in critical section</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 访问共享资源...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="n">flag</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>   <span class="c1">// P0完成，退出
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// P0的其他工作
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span><span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// ====== 进程P1 ======
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">do</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>    <span class="c1">// P1想要进入
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">turn</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>          <span class="c1">// P1谦让，优先权给P0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="n">flag</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="nb">true</span> <span class="o">&amp;&amp;</span> <span class="n">turn</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 等待：如果P0也想进入且轮到P0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// P1的临界区
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;P1 in critical section</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 访问共享资源...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>   <span class="c1">// P1完成，退出
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// P1的其他工作
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">);</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div></li>
@@ -920,28 +920,28 @@
 </ul>
 <h3 id="存储缓冲区的详细结构">存储缓冲区的详细结构
 </h3><h4 id="硬件组织">硬件组织
-</h4><div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>          CPU Core
-</span></span><span style="display:flex;"><span>             |
-</span></span><span style="display:flex;"><span>    [Store Buffer]  ←── 队列结构，FIFO
-</span></span><span style="display:flex;"><span>       |  |  |  |
-</span></span><span style="display:flex;"><span>    Entry Entry Entry Entry
-</span></span><span style="display:flex;"><span>       |  |  |  |
-</span></span><span style="display:flex;"><span>         Cache
-</span></span><span style="display:flex;"><span>         |
-</span></span><span style="display:flex;"><span>       Memory
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">          CPU Core
+</span></span><span class="line"><span class="cl">             |
+</span></span><span class="line"><span class="cl">    [Store Buffer]  ←── 队列结构，FIFO
+</span></span><span class="line"><span class="cl">       |  |  |  |
+</span></span><span class="line"><span class="cl">    Entry Entry Entry Entry
+</span></span><span class="line"><span class="cl">       |  |  |  |
+</span></span><span class="line"><span class="cl">         Cache
+</span></span><span class="line"><span class="cl">         |
+</span></span><span class="line"><span class="cl">       Memory
 </span></span></code></pre></td></tr></table>
 </div>
 </div><ul>
@@ -969,87 +969,87 @@
 <h3 id="工作机制fifo队列">工作机制：FIFO队列
 </h3><h3 id="存在的问题">存在的问题
 </h3><h4 id="违反程序顺序">违反程序顺序
-</h4><div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>  <span style="color:#75715e">//程序意图：先设置数据，再设置标志
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  data <span style="color:#f92672">=</span> <span style="color:#ae81ff">42</span>;    <span style="color:#75715e">//写操作1：进入Store Buffer
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  flag <span style="color:#f92672">=</span> true;  <span style="color:#75715e">//写操作2：也进入Store Buffer
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">//其他CPU可能观察到的顺序：
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#75715e">//flag=true先生效（如果flag在缓存中）
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#75715e">//data=42后生效（如果data需要从呢村加载到缓存）
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">//这违反了程序顺序
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl">  <span class="c1">//程序意图：先设置数据，再设置标志
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">data</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>    <span class="c1">//写操作1：进入Store Buffer
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">flag</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>  <span class="c1">//写操作2：也进入Store Buffer
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="c1">//其他CPU可能观察到的顺序：
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">//flag=true先生效（如果flag在缓存中）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">//data=42后生效（如果data需要从呢村加载到缓存）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="c1">//这违反了程序顺序
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><h4 id="peterson算法失败">Peterson算法失败
-</h4><div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>  // 时间线分析：两个CPU同时执行Peterson算法
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  时间0: 初始状态
-</span></span><span style="display:flex;"><span>  flag[0] = false, flag[1] = false, turn = 任意值
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  时间1: CPU0和CPU1几乎同时开始执行
-</span></span><span style="display:flex;"><span>  CPU0: flag[0] = true  → 进入CPU0的Store Buffer
-</span></span><span style="display:flex;"><span>  CPU1: flag[1] = true  → 进入CPU1的Store Buffer
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  时间2: 继续执行
-</span></span><span style="display:flex;"><span>  CPU0: turn = 1        → 进入CPU0的Store Buffer  
-</span></span><span style="display:flex;"><span>  CPU1: turn = 0        → 进入CPU1的Store Buffer
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  时间3: 开始检查条件
-</span></span><span style="display:flex;"><span>  CPU0: 读取flag[1]    → 从内存读到false（CPU1的写入还在Store Buffer中！）
-</span></span><span style="display:flex;"><span>  CPU1: 读取flag[0]    → 从内存读到false（CPU0的写入还在Store Buffer中！）
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  时间4: 条件检查结果
-</span></span><span style="display:flex;"><span>  CPU0: flag[1]==false &amp;&amp; turn==1 → false，所以不等待
-</span></span><span style="display:flex;"><span>  CPU1: flag[0]==false &amp;&amp; turn==0 → false，所以不等待
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  时间5: 灾难发生
-</span></span><span style="display:flex;"><span>  CPU0: 进入临界区 
-</span></span><span style="display:flex;"><span>  CPU1: 进入临界区 
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  两个进程同时进入临界区！Peterson算法失败！
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">  // 时间线分析：两个CPU同时执行Peterson算法
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  时间0: 初始状态
+</span></span><span class="line"><span class="cl">  flag[0] = false, flag[1] = false, turn = 任意值
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  时间1: CPU0和CPU1几乎同时开始执行
+</span></span><span class="line"><span class="cl">  CPU0: flag[0] = true  → 进入CPU0的Store Buffer
+</span></span><span class="line"><span class="cl">  CPU1: flag[1] = true  → 进入CPU1的Store Buffer
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  时间2: 继续执行
+</span></span><span class="line"><span class="cl">  CPU0: turn = 1        → 进入CPU0的Store Buffer  
+</span></span><span class="line"><span class="cl">  CPU1: turn = 0        → 进入CPU1的Store Buffer
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  时间3: 开始检查条件
+</span></span><span class="line"><span class="cl">  CPU0: 读取flag[1]    → 从内存读到false（CPU1的写入还在Store Buffer中！）
+</span></span><span class="line"><span class="cl">  CPU1: 读取flag[0]    → 从内存读到false（CPU0的写入还在Store Buffer中！）
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  时间4: 条件检查结果
+</span></span><span class="line"><span class="cl">  CPU0: flag[1]==false &amp;&amp; turn==1 → false，所以不等待
+</span></span><span class="line"><span class="cl">  CPU1: flag[0]==false &amp;&amp; turn==0 → false，所以不等待
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  时间5: 灾难发生
+</span></span><span class="line"><span class="cl">  CPU0: 进入临界区 
+</span></span><span class="line"><span class="cl">  CPU1: 进入临界区 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  两个进程同时进入临界区！Peterson算法失败！
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="内存屏障与store-buffer">内存屏障与Store BUffer
@@ -1059,148 +1059,148 @@
 <li>可以类比成红灯，只有当所有应该到达的车到达了才转绿灯</li>
 </ul>
 <h4 id="写屏障">写屏障
-</h4><div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>  <span style="color:#75715e">// 写屏障的作用：确保屏障前的写操作完成
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">store_barrier</span>() {
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// 等待Store Buffer排空
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#66d9ef">while</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">store_buffer_empty</span>()) {
-</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">drain_store_buffer</span>();
-</span></span><span style="display:flex;"><span>      }
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// 确保所有写操作都到达缓存/内存
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Peterson算法的修复：
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  flag[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> true;
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">store_barrier</span>();       <span style="color:#75715e">// 确保flag[0]写入完成
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  turn <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">store_barrier</span>();       <span style="color:#75715e">// 确保turn写入完成
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">while</span> (flag[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">&amp;&amp;</span> turn <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>);
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl">  <span class="c1">// 写屏障的作用：确保屏障前的写操作完成
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="kt">void</span> <span class="nf">store_barrier</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 等待Store Buffer排空
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nf">store_buffer_empty</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="nf">drain_store_buffer</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 确保所有写操作都到达缓存/内存
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// Peterson算法的修复：
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">flag</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">store_barrier</span><span class="p">();</span>       <span class="c1">// 确保flag[0]写入完成
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">turn</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">store_barrier</span><span class="p">();</span>       <span class="c1">// 确保turn写入完成
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">while</span> <span class="p">(</span><span class="n">flag</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="n">turn</span> <span class="o">==</span> <span class="mi">1</span><span class="p">);</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h4 id="不同类型的屏障">不同类型的屏障
-</h4><div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>  <span style="color:#75715e">// x86架构的内存屏障：
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// SFENCE：Store Fence，写屏障
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">sfence</span>() {
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">asm</span> <span style="color:#66d9ef">volatile</span>(<span style="color:#e6db74">&#34;sfence&#34;</span> <span style="color:#f92672">:::</span> <span style="color:#e6db74">&#34;memory&#34;</span>);
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// MFENCE：Memory Fence，全屏障
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">mfence</span>() {
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">asm</span> <span style="color:#66d9ef">volatile</span>(<span style="color:#e6db74">&#34;mfence&#34;</span> <span style="color:#f92672">:::</span> <span style="color:#e6db74">&#34;memory&#34;</span>);
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 编译器屏障：防止编译器重排序
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">compiler_barrier</span>() {
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">asm</span> <span style="color:#66d9ef">volatile</span>(<span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">:::</span> <span style="color:#e6db74">&#34;memory&#34;</span>);
-</span></span><span style="display:flex;"><span>  }
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl">  <span class="c1">// x86架构的内存屏障：
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// SFENCE：Store Fence，写屏障
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">void</span> <span class="nf">sfence</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">asm</span> <span class="k">volatile</span><span class="p">(</span><span class="s">&#34;sfence&#34;</span> <span class="o">:::</span> <span class="s">&#34;memory&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// MFENCE：Memory Fence，全屏障
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">void</span> <span class="nf">mfence</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">asm</span> <span class="k">volatile</span><span class="p">(</span><span class="s">&#34;mfence&#34;</span> <span class="o">:::</span> <span class="s">&#34;memory&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 编译器屏障：防止编译器重排序
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">void</span> <span class="nf">compiler_barrier</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">asm</span> <span class="k">volatile</span><span class="p">(</span><span class="s">&#34;&#34;</span> <span class="o">:::</span> <span class="s">&#34;memory&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="store-to-load-forwarding存储转发机制详解">Store-to-Load Forwarding(存储转发)机制详解
 </h3><h4 id="作用演示">作用演示
-</h4><div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>  <span style="color:#75715e">// 程序代码：
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  x <span style="color:#f92672">=</span> <span style="color:#ae81ff">42</span>;        <span style="color:#75715e">// 写操作：把42写入变量x
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">int</span> a <span style="color:#f92672">=</span> x;     <span style="color:#75715e">// 读操作：读取变量x的值
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 没有转发机制的问题：
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#75715e">// 1. x = 42进入Store Buffer，还没写到内存
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#75715e">// 2. int a = x从内存读取，读到的是旧值（比如0）
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#75715e">// 3. 明明刚写了42，却读到了0！
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 有转发机制的解决：
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#75715e">// 1. x = 42进入Store Buffer
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#75715e">// 2. int a = x时，CPU检查Store Buffer
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#75715e">// 3. 发现Store Buffer中有x=42，直接返回42
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#75715e">// 4. 读到了正确的值！
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl">  <span class="c1">// 程序代码：
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">x</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>        <span class="c1">// 写操作：把42写入变量x
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>     <span class="c1">// 读操作：读取变量x的值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 没有转发机制的问题：
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// 1. x = 42进入Store Buffer，还没写到内存
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// 2. int a = x从内存读取，读到的是旧值（比如0）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// 3. 明明刚写了42，却读到了0！
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 有转发机制的解决：
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// 1. x = 42进入Store Buffer
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// 2. int a = x时，CPU检查Store Buffer
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// 3. 发现Store Buffer中有x=42，直接返回42
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// 4. 读到了正确的值！
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><h4 id="转发机制的实现">转发机制的实现
-</h4><div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">load_operation</span>(address addr) {
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// 1. 首先检查Store Buffer
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> store_buffer.newest; i <span style="color:#f92672">&gt;=</span> store_buffer.oldest; i<span style="color:#f92672">--</span>) {
-</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">if</span> (store_buffer[i].address <span style="color:#f92672">==</span> addr <span style="color:#f92672">&amp;&amp;</span> store_buffer[i].valid) {
-</span></span><span style="display:flex;"><span>              <span style="color:#75715e">// 找到匹配的待写入数据，直接返回
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>              <span style="color:#66d9ef">return</span> store_buffer[i].value;
-</span></span><span style="display:flex;"><span>          }
-</span></span><span style="display:flex;"><span>      }
-</span></span><span style="display:flex;"><span>      
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// 2. Store Buffer中没有，从缓存/内存读取
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">cache_read</span>(addr);
-</span></span><span style="display:flex;"><span>  }
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl">  <span class="kt">int</span> <span class="nf">load_operation</span><span class="p">(</span><span class="n">address</span> <span class="n">addr</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 1. 首先检查Store Buffer
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">store_buffer</span><span class="p">.</span><span class="n">newest</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">store_buffer</span><span class="p">.</span><span class="n">oldest</span><span class="p">;</span> <span class="n">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="k">if</span> <span class="p">(</span><span class="n">store_buffer</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">address</span> <span class="o">==</span> <span class="n">addr</span> <span class="o">&amp;&amp;</span> <span class="n">store_buffer</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">valid</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">              <span class="c1">// 找到匹配的待写入数据，直接返回
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>              <span class="k">return</span> <span class="n">store_buffer</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">value</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">          <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      
+</span></span><span class="line"><span class="cl">      <span class="c1">// 2. Store Buffer中没有，从缓存/内存读取
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">return</span> <span class="nf">cache_read</span><span class="p">(</span><span class="n">addr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><ul>
