@@ -7055,15 +7055,6 @@ $$η = \frac{Sp}{m} = \frac{n}{m+n-1}$$
 </description>
         </item>
         <item>
-        <title></title>
-        <link>https://example.com/p/</link>
-        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-        
-        <guid>https://example.com/p/</guid>
-        <description>&lt;!-- mermaid --&gt;  
-{{- partial &#34;mermaid.html&#34; . -}}</description>
-        </item>
-        <item>
         <title>Links</title>
         <link>https://example.com/links/</link>
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
