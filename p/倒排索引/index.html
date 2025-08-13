@@ -420,30 +420,30 @@
 <li>关系：词典中的每个词项T指向其最近的记录表L。L中按顺序（通常是DoclD升序）存储了所有包含T的文档的ID。</li>
 <li>索引构建伪代码</li>
 </ul>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
 </span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">Index</span> <span class="n">Generator</span>
-</span></span><span class="line"><span class="cl"><span class="nf">while</span> <span class="p">(</span> <span class="n">read</span> <span class="n">a</span> <span class="n">document</span> <span class="n">D</span> <span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span> <span class="n">read</span> <span class="n">a</span> <span class="n">term</span> <span class="n">T</span> <span class="n">in</span> <span class="n">D</span> <span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span> <span class="nf">Find</span><span class="p">(</span> <span class="n">Dictionary</span><span class="p">,</span> <span class="n">T</span> <span class="p">)</span> <span class="o">==</span> <span class="nb">false</span> <span class="p">)</span>
-</span></span><span class="line"><span class="cl">            <span class="nf">Insert</span><span class="p">(</span> <span class="n">Dictionary</span><span class="p">,</span> <span class="n">T</span> <span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">Get</span> <span class="n">T</span><span class="err">’</span><span class="n">s</span> <span class="n">posting</span> <span class="n">list</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="n">Insert</span> <span class="n">a</span> <span class="nf">node</span> <span class="p">(</span><span class="n">with</span> <span class="n">docID</span> <span class="n">D</span><span class="p">)</span> <span class="n">to</span> <span class="n">T</span><span class="err">’</span><span class="n">s</span> <span class="n">posting</span> <span class="n">list</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="n">Write</span> <span class="n">the</span> <span class="n">inverted</span> <span class="n">index</span> <span class="n">to</span> <span class="n">disk</span><span class="p">;</span>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>Index Generator
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">while</span> ( read a document D ) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> ( read a term T in D ) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> ( <span style="color:#a6e22e">Find</span>( Dictionary, T ) <span style="color:#f92672">==</span> false )
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">Insert</span>( Dictionary, T );
+</span></span><span style="display:flex;"><span>        Get T<span style="color:#960050;background-color:#1e0010">’</span>s posting list;
+</span></span><span style="display:flex;"><span>        Insert a <span style="color:#a6e22e">node</span> (with docID D) to T<span style="color:#960050;background-color:#1e0010">’</span>s posting list;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>Write the inverted index to disk;
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="文本预处理">文本预处理
@@ -480,44 +480,44 @@
 </li>
 </ul>
 <h3 id="内存不足时的索引建构">内存不足时的索引建构
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
+</h3><div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
 </span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">BlockCnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="p">(</span> <span class="n">read</span> <span class="n">a</span> <span class="n">document</span> <span class="n">D</span> <span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span> <span class="n">read</span> <span class="n">a</span> <span class="n">term</span> <span class="n">T</span> <span class="n">in</span> <span class="n">D</span> <span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span> <span class="n">out</span> <span class="n">of</span> <span class="n">memory</span> <span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="n">Write</span> <span class="n">BlockIndex</span><span class="p">[</span><span class="n">BlockCnt</span><span class="p">]</span> <span class="n">to</span> <span class="n">disk</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="n">BlockCnt</span> <span class="o">++</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="n">FreeMemory</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span> <span class="nf">Find</span><span class="p">(</span> <span class="n">Dictionary</span><span class="p">,</span> <span class="n">T</span> <span class="p">)</span> <span class="o">==</span> <span class="nb">false</span> <span class="p">)</span>
-</span></span><span class="line"><span class="cl">            <span class="nf">Insert</span><span class="p">(</span> <span class="n">Dictionary</span><span class="p">,</span> <span class="n">T</span> <span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">Get</span> <span class="n">T</span><span class="err">’</span><span class="n">s</span> <span class="n">posting</span> <span class="n">list</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="n">Insert</span> <span class="n">a</span> <span class="n">node</span> <span class="n">to</span> <span class="n">T</span><span class="err">’</span><span class="n">s</span> <span class="n">posting</span> <span class="n">list</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="p">(</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">BlockCnt</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">Merge</span><span class="p">(</span> <span class="n">InvertedIndex</span><span class="p">,</span> <span class="n">BlockIndex</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">Sorted</span>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>BlockCnt <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> ( read a document D ) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> ( read a term T in D ) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> ( out of memory ) {
+</span></span><span style="display:flex;"><span>            Write BlockIndex[BlockCnt] to disk;
+</span></span><span style="display:flex;"><span>            BlockCnt <span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>            FreeMemory;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> ( <span style="color:#a6e22e">Find</span>( Dictionary, T ) <span style="color:#f92672">==</span> false )
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">Insert</span>( Dictionary, T );
+</span></span><span style="display:flex;"><span>        Get T<span style="color:#960050;background-color:#1e0010">’</span>s posting list;
+</span></span><span style="display:flex;"><span>        Insert a node to T<span style="color:#960050;background-color:#1e0010">’</span>s posting list;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> ( i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>; i<span style="color:#f92672">&lt;</span>BlockCnt; i<span style="color:#f92672">++</span> )
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Merge</span>( InvertedIndex, BlockIndex[i] );
+</span></span><span style="display:flex;"><span>Sorted
 </span></span></code></pre></td></tr></table>
 </div>
 </div><ul>
