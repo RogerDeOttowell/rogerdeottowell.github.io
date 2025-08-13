@@ -292,7 +292,7 @@
 &lt;/li&gt;
 &lt;li&gt;线程的主要数据结构包括
 &lt;ul&gt;
-&lt;li&gt;ETHREAD：执行线程块（&lt;/li&gt;
+&lt;li&gt;ETHREAD：执行线程块&lt;/li&gt;
 &lt;li&gt;KTHREAD：内核线程块&lt;/li&gt;
 &lt;li&gt;TEB：线程环境块&lt;/li&gt;
 &lt;/ul&gt;
@@ -361,8 +361,9 @@
 &lt;ul&gt;
 &lt;li&gt;当有多个CPU可用时，CPU调度变得更加复杂&lt;/li&gt;
 &lt;li&gt;假设处理器在功能上时相同的（同构的）&lt;/li&gt;
-&lt;li&gt;多处理器调度的方法&lt;/li&gt;
-&lt;li&gt;非堆成多处理：
+&lt;li&gt;多处理器调度的方法
+&lt;ul&gt;
+&lt;li&gt;非对称多处理：
 &lt;ul&gt;
 &lt;li&gt;只有一个处理器做调度决策、I/O处理和其他活动&lt;/li&gt;
 &lt;li&gt;其他处理器充当虚拟处理单元&lt;/li&gt;
@@ -372,6 +373,8 @@
 &lt;ul&gt;
 &lt;li&gt;调度数据结构是共享的，需要同步&lt;/li&gt;
 &lt;li&gt;被通用操作系统使用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -489,9 +492,8 @@
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;windows调度系统详解&#34;&gt;Windows调度系统详解
-&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;Windows调度基础
-&lt;ul&gt;
+&lt;/h3&gt;&lt;h4 id=&#34;windows调度基础&#34;&gt;Windows调度基础
+&lt;/h4&gt;&lt;ul&gt;
 &lt;li&gt;Windows使用基于优先级的抢占式调度&lt;/li&gt;
 &lt;li&gt;最高优先级的线程下一个运行&lt;/li&gt;
 &lt;li&gt;调度器就是分发器(Dispatcher)&lt;/li&gt;
@@ -502,13 +504,9 @@
 &lt;li&gt;每个优先级一个队列&lt;/li&gt;
 &lt;li&gt;如果没有可运行线程，运行空闲线程&lt;/li&gt;
 &lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Windows优先级类
-&lt;ul&gt;
+&lt;h4 id=&#34;windows优先级类&#34;&gt;Windows优先级类
+&lt;/h4&gt;&lt;ul&gt;
 &lt;li&gt;不同的优先级类&lt;/li&gt;
-&lt;li&gt;一个类内的相对优先级&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
 &lt;/ul&gt;
 </description>
         </item>
