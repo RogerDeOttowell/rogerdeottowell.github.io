@@ -408,111 +408,47 @@
 </li>
 <li>以下是示意图</li>
 </ul>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">graph TD;
-</span></span><span class="line"><span class="cl">    subgraph B_0
-</span></span><span class="line"><span class="cl">        A((&#34;Node&#34;));
-</span></span><span class="line"><span class="cl">    end
-</span></span></code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">graph TD;
-</span></span><span class="line"><span class="cl">    subgraph B_1
-</span></span><span class="line"><span class="cl">        A((&#34;Root&#34;));
-</span></span><span class="line"><span class="cl">        B((&#34;Child&#34;));
-</span></span><span class="line"><span class="cl">        A--&gt;B;
-</span></span><span class="line"><span class="cl">    end
-</span></span></code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">graph TD;
-</span></span><span class="line"><span class="cl">    subgraph B_2
-</span></span><span class="line"><span class="cl">        A((&#34;Root&#34;));
-</span></span><span class="line"><span class="cl">        B((&#34;Child of Root&#34;));
-</span></span><span class="line"><span class="cl">        C((&#34;Grandchild&#34;));
-</span></span><span class="line"><span class="cl">        D((&#34;Child of Root&#34;));
-</span></span><span class="line"><span class="cl">        A--&gt;B;
-</span></span><span class="line"><span class="cl">        A--&gt;D;
-</span></span><span class="line"><span class="cl">        B--&gt;C;
-</span></span><span class="line"><span class="cl">    end
-</span></span></code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">graph TD;
-</span></span><span class="line"><span class="cl">    subgraph B_3
-</span></span><span class="line"><span class="cl">        A((&#34;Root&#34;));
-</span></span><span class="line"><span class="cl">        B((&#34;Child&#34;));
-</span></span><span class="line"><span class="cl">        C((&#34;Child&#34;));
-</span></span><span class="line"><span class="cl">        D((&#34;Child&#34;));
-</span></span><span class="line"><span class="cl">        E((&#34;Grandchild&#34;));
-</span></span><span class="line"><span class="cl">        F((&#34;Grandchild&#34;));
-</span></span><span class="line"><span class="cl">        G((&#34;Grandchild&#34;));
-</span></span><span class="line"><span class="cl">        H((&#34;Great-Grandchild&#34;));
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        A --&gt; B;
-</span></span><span class="line"><span class="cl">        A --&gt; C;
-</span></span><span class="line"><span class="cl">        A --&gt; D;
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        B --&gt; E;
-</span></span><span class="line"><span class="cl">        B --&gt; F;
-</span></span><span class="line"><span class="cl">        C --&gt; G;
-</span></span><span class="line"><span class="cl">        E --&gt; H;
-</span></span><span class="line"><span class="cl">    end
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="性质">性质
+<div class="mermaid">graph TD;
+    subgraph B_0
+        A(("Node"));
+    end</div>
+<div class="mermaid">graph TD;
+    subgraph B_1
+        A(("Root"));
+        B(("Child"));
+        A-->B;
+    end</div>
+<div class="mermaid">graph TD;
+    subgraph B_2
+        A(("Root"));
+        B(("Child of Root"));
+        C(("Grandchild"));
+        D(("Child of Root"));
+        A-->B;
+        A-->D;
+        B-->C;
+    end</div>
+<div class="mermaid">graph TD;
+    subgraph B_3
+        A(("Root"));
+        B(("Child"));
+        C(("Child"));
+        D(("Child"));
+        E(("Grandchild"));
+        F(("Grandchild"));
+        G(("Grandchild"));
+        H(("Great-Grandchild"));
+
+        A --> B;
+        A --> C;
+        A --> D;
+
+        B --> E;
+        B --> F;
+        C --> G;
+        E --> H;
+    end</div>
+<h4 id="性质">性质
 </h4><ul>
 <li>二项树有如下重要性质：
 <ul>

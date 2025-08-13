@@ -416,123 +416,62 @@
 </ul>
 <h3 id="b树的结构特点">B树的结构特点
 </h3><h4 id="示意图">示意图
-</h4><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">graph TD
-</span></span><span class="line"><span class="cl">    subgraph &#34;B+树结构示例 (m=4)&#34;
-</span></span><span class="line"><span class="cl">        A[&#34;根节点&lt;br/&gt;[30, 60]&#34;] 
-</span></span><span class="line"><span class="cl">        B[&#34;内部节点&lt;br/&gt;[10, 20]&#34;]
-</span></span><span class="line"><span class="cl">        C[&#34;内部节点&lt;br/&gt;[40, 50]&#34;] 
-</span></span><span class="line"><span class="cl">        D[&#34;内部节点&lt;br/&gt;[70, 80]&#34;]
-</span></span><span class="line"><span class="cl">        E[&#34;叶子节点&lt;br/&gt;[5, 8, 10]&lt;br/&gt;data&#34;]
-</span></span><span class="line"><span class="cl">        F[&#34;叶子节点&lt;br/&gt;[15, 18, 20]&lt;br/&gt;data&#34;]
-</span></span><span class="line"><span class="cl">        G[&#34;叶子节点&lt;br/&gt;[25, 28, 30]&lt;br/&gt;data&#34;]
-</span></span><span class="line"><span class="cl">        H[&#34;叶子节点&lt;br/&gt;[35, 38, 40]&lt;br/&gt;data&#34;]
-</span></span><span class="line"><span class="cl">        I[&#34;叶子节点&lt;br/&gt;[45, 48, 50]&lt;br/&gt;data&#34;]
-</span></span><span class="line"><span class="cl">        J[&#34;叶子节点&lt;br/&gt;[55, 58, 60]&lt;br/&gt;data&#34;]
-</span></span><span class="line"><span class="cl">        K[&#34;叶子节点&lt;br/&gt;[65, 68, 70]&lt;br/&gt;data&#34;]
-</span></span><span class="line"><span class="cl">        L[&#34;叶子节点&lt;br/&gt;[75, 78, 80]&lt;br/&gt;data&#34;]
-</span></span><span class="line"><span class="cl">        M[&#34;叶子节点&lt;br/&gt;[85, 88, 90]&lt;br/&gt;data&#34;]
-</span></span><span class="line"><span class="cl">        
-</span></span><span class="line"><span class="cl">        A --&gt; B
-</span></span><span class="line"><span class="cl">        A --&gt; C
-</span></span><span class="line"><span class="cl">        A --&gt; D
-</span></span><span class="line"><span class="cl">        
-</span></span><span class="line"><span class="cl">        B --&gt; E
-</span></span><span class="line"><span class="cl">        B --&gt; F
-</span></span><span class="line"><span class="cl">        B --&gt; G
-</span></span><span class="line"><span class="cl">        
-</span></span><span class="line"><span class="cl">        C --&gt; H
-</span></span><span class="line"><span class="cl">        C --&gt; I
-</span></span><span class="line"><span class="cl">        C --&gt; J
-</span></span><span class="line"><span class="cl">        
-</span></span><span class="line"><span class="cl">        D --&gt; K
-</span></span><span class="line"><span class="cl">        D --&gt; L
-</span></span><span class="line"><span class="cl">        D --&gt; M
-</span></span><span class="line"><span class="cl">        
-</span></span><span class="line"><span class="cl">        E -.-&gt; F
-</span></span><span class="line"><span class="cl">        F -.-&gt; G
-</span></span><span class="line"><span class="cl">        G -.-&gt; H
-</span></span><span class="line"><span class="cl">        H -.-&gt; I
-</span></span><span class="line"><span class="cl">        I -.-&gt; J
-</span></span><span class="line"><span class="cl">        J -.-&gt; K
-</span></span><span class="line"><span class="cl">        K -.-&gt; L
-</span></span><span class="line"><span class="cl">        L -.-&gt; M
-</span></span><span class="line"><span class="cl">    end
-</span></span><span class="line"><span class="cl">    
-</span></span><span class="line"><span class="cl">    style A fill:#ffcccc
-</span></span><span class="line"><span class="cl">    style B fill:#ffffcc
-</span></span><span class="line"><span class="cl">    style C fill:#ffffcc
-</span></span><span class="line"><span class="cl">    style D fill:#ffffcc
-</span></span><span class="line"><span class="cl">    style E fill:#ccffcc
-</span></span><span class="line"><span class="cl">    style F fill:#ccffcc
-</span></span><span class="line"><span class="cl">    style G fill:#ccffcc
-</span></span><span class="line"><span class="cl">    style H fill:#ccffcc
-</span></span><span class="line"><span class="cl">    style I fill:#ccffcc
-</span></span><span class="line"><span class="cl">    style J fill:#ccffcc
-</span></span><span class="line"><span class="cl">    style K fill:#ccffcc
-</span></span><span class="line"><span class="cl">    style L fill:#ccffcc
-</span></span><span class="line"><span class="cl">    style M fill:#ccffcc
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="节点结构">节点结构
+</h4><div class="mermaid">graph TD
+    subgraph "B+树结构示例 (m=4)"
+        A["根节点<br/>[30, 60]"] 
+        B["内部节点<br/>[10, 20]"]
+        C["内部节点<br/>[40, 50]"] 
+        D["内部节点<br/>[70, 80]"]
+        E["叶子节点<br/>[5, 8, 10]<br/>data"]
+        F["叶子节点<br/>[15, 18, 20]<br/>data"]
+        G["叶子节点<br/>[25, 28, 30]<br/>data"]
+        H["叶子节点<br/>[35, 38, 40]<br/>data"]
+        I["叶子节点<br/>[45, 48, 50]<br/>data"]
+        J["叶子节点<br/>[55, 58, 60]<br/>data"]
+        K["叶子节点<br/>[65, 68, 70]<br/>data"]
+        L["叶子节点<br/>[75, 78, 80]<br/>data"]
+        M["叶子节点<br/>[85, 88, 90]<br/>data"]
+        
+        A --> B
+        A --> C
+        A --> D
+        
+        B --> E
+        B --> F
+        B --> G
+        
+        C --> H
+        C --> I
+        C --> J
+        
+        D --> K
+        D --> L
+        D --> M
+        
+        E -.-> F
+        F -.-> G
+        G -.-> H
+        H -.-> I
+        I -.-> J
+        J -.-> K
+        K -.-> L
+        L -.-> M
+    end
+    
+    style A fill:#ffcccc
+    style B fill:#ffffcc
+    style C fill:#ffffcc
+    style D fill:#ffffcc
+    style E fill:#ccffcc
+    style F fill:#ccffcc
+    style G fill:#ccffcc
+    style H fill:#ccffcc
+    style I fill:#ccffcc
+    style J fill:#ccffcc
+    style K fill:#ccffcc
+    style L fill:#ccffcc
+    style M fill:#ccffcc</div>
+<h4 id="节点结构">节点结构
 </h4><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
