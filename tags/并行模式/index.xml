@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>并行模式 on Example Site</title>
+        <link>https://example.com/tags/%E5%B9%B6%E8%A1%8C%E6%A8%A1%E5%BC%8F/</link>
+        <description>Recent content in 并行模式 on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Wed, 31 Jul 2024 10:00:00 +0800</lastBuildDate><atom:link href="https://example.com/tags/%E5%B9%B6%E8%A1%8C%E6%A8%A1%E5%BC%8F/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>并行</title>
+        <link>https://example.com/p/%E5%B9%B6%E8%A1%8C/</link>
+        <pubDate>Wed, 31 Jul 2024 10:00:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%B9%B6%E8%A1%8C/</guid>
+        <description>&lt;h1 id=&#34;并行&#34;&gt;并行
+&lt;/h1&gt;&lt;h2 id=&#34;并行模式&#34;&gt;并行模式
+&lt;/h2&gt;&lt;h3 id=&#34;指令级并行&#34;&gt;指令级并行
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;在一个 CPU 内部，多条指令可以同时执行，例如流水线 CPU，以及乱序、多发射以及超长指令字（VLIW，即把不相关的指令封装到一条超长的指令字中、超标量（例如有多个ALU，可以同时运行没有相关性的多条指令）等&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;数据级并行&#34;&gt;数据级并行
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;即将相同的操作同时应用于一些数据项的编程模型，例如经典的SIMD（Single Instruction, Multiple Data）架构，即一条指令同时作用于多个数据，例如用一条指令实现向量加法，两个向量中每对对应的元素相加互不干扰，所以可以同时进行所有的加法；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;线程级并行&#34;&gt;线程级并行
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;一种显式并行，程序员要设计并行算法，写多线程程序，这也是将要讨论的内容。线程级并行主要指同时多线程（SMT，是一种指令级并行
+的基础上的扩展，可以在一个核上运行多个线程，多个线程共享执行单元，以便提高部件的利用率，提高吞吐量）/超线程（HT，一个物理CPU核心被伪装成两个以上的逻辑CPU核心，看起就像多个CPU在同时执行任务，是通过在一个物理核心中创建多个线程实现的）以及多核和多处理器。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;并行算法基本模型&#34;&gt;并行算法基本模型
+&lt;/h2&gt;&lt;h3 id=&#34;加速比&#34;&gt;加速比
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;定义：加速比是指在并行计算中，使用p个处理器时相对于使用一个处理器时的性能提升比例，即：
+$$ S(p) = \frac{T_1}{T_p} $$
+其中$T_1$是使用一个处理器时的运行时间，$T_p$是使用p个处理器时的运行时间。&lt;/li&gt;
+&lt;li&gt;显然最理想的情况下，加速比应当是p，即使用p个处理器时的运行时间是使用一个处理器时的1/p。&lt;/li&gt;
+&lt;li&gt;然而实际情况中，由于并行算法的设计和实现都有一定的困难：首先，使用多个处理器意味着额外的通信开销；其次，如果处理器并未分配到完全相同的工作量，则会产生一部分的闲置，就会造成负载不均衡（load unbalance），再次降低实际速度；最后，代码运行可能依赖其原有顺序，不能完全并行。&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

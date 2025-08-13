@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>分治法 on Example Site</title>
+        <link>https://example.com/tags/%E5%88%86%E6%B2%BB%E6%B3%95/</link>
+        <description>Recent content in 分治法 on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Wed, 31 Jul 2024 10:00:00 +0800</lastBuildDate><atom:link href="https://example.com/tags/%E5%88%86%E6%B2%BB%E6%B3%95/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>分治法</title>
+        <link>https://example.com/p/%E5%88%86%E6%B2%BB%E6%B3%95/</link>
+        <pubDate>Wed, 31 Jul 2024 10:00:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%88%86%E6%B2%BB%E6%B3%95/</guid>
+        <description>&lt;h1 id=&#34;分治法&#34;&gt;分治法
+&lt;/h1&gt;&lt;h2 id=&#34;分治法的时间复杂度分析&#34;&gt;分治法的时间复杂度分析
+&lt;/h2&gt;&lt;h3 id=&#34;分治法的时间复杂度表达式&#34;&gt;分治法的时间复杂度表达式
+&lt;/h3&gt;$$T(n) = aT(n/b) + f(n)$$&lt;ul&gt;
+&lt;li&gt;其中
+&lt;ul&gt;
+&lt;li&gt;a：子问题的个数&lt;/li&gt;
+&lt;li&gt;n/b：每个子问题的规模&lt;/li&gt;
+&lt;li&gt;f(n)：分解问题和合并结果的时间复杂度&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;主定理&#34;&gt;主定理
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;主定理是解决分治算法时间复杂度的强大工具，设$T(n) = aT(n/b) + f(n)$,其中$a \geq 1， \space b &amp;gt; 1 $，则
+&lt;ul&gt;
+&lt;li&gt;情况1：$f(n) = O(n^c)$，其中$c &amp;lt; log_b(a)$
+&lt;ul&gt;
+&lt;li&gt;此时$T(N) = \Theta(n^{log_b(a)})$&lt;/li&gt;
+&lt;li&gt;即此时递归树的叶子节点主导了时间复杂度&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;情况2：$f(n) = \Theta(n^c)$，其中$c = log_b(a)0$
+&lt;ul&gt;
+&lt;li&gt;此时$T(n) = \Theta(n^c \times log \space n)$&lt;/li&gt;
+&lt;li&gt;每层的工作量相同，总共有$log \space n$层&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;情况3：$f(n) = \Omega(n^c)$，其中$c &amp;gt; log_b(a)$
+&lt;ul&gt;
+&lt;li&gt;此时$T(n) = \Theta(n \space log \space n)$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;&#34;&gt;
+&lt;/h3&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

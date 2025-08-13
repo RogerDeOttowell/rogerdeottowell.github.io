@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>摊还分析 on Example Site</title>
+        <link>https://example.com/tags/%E6%91%8A%E8%BF%98%E5%88%86%E6%9E%90/</link>
+        <description>Recent content in 摊还分析 on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Wed, 31 Jul 2024 10:00:00 +0800</lastBuildDate><atom:link href="https://example.com/tags/%E6%91%8A%E8%BF%98%E5%88%86%E6%9E%90/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>摊还分析</title>
+        <link>https://example.com/p/%E6%91%8A%E8%BF%98%E5%88%86%E6%9E%90/</link>
+        <pubDate>Wed, 31 Jul 2024 10:00:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E6%91%8A%E8%BF%98%E5%88%86%E6%9E%90/</guid>
+        <description>&lt;h1 id=&#34;摊还分析&#34;&gt;摊还分析
+&lt;/h1&gt;&lt;h2 id=&#34;概念&#34;&gt;概念
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;核心观点：摊还分析计算的是在一个操作序列中，每个操作的平均成本。它保证了整个序列的总成本不会超过所有操作的瘫痪成本之和。关键在于，这个&amp;quot;摊还成本&amp;quot;通常是一个较小的、固定的值，即使序列中某些操作的实际成本可能非常高。&lt;/li&gt;
+&lt;li&gt;类比：可以想象一下上班通勤，大部分时候只需要约15分钟，但偶尔（如平均一个月一次）会遇到大堵车，此时要花费2个小时
+&lt;ul&gt;
+&lt;li&gt;最坏情况分析会说：&amp;ldquo;你上班通勤最多要花费2小时。&amp;ldquo;这个结论没错，但不能准确反映日常的通勤体验&lt;/li&gt;
+&lt;li&gt;摊还分析则会说：&amp;ldquo;我们把罕见的2小时堵车成本分摊到整个月的通勤中。可能每天的摊还成本就变成了20分钟。&amp;ldquo;这个结论更能代表通勤的时间成本&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;意义&#34;&gt;意义
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;当数据结构的操作成本波动很大时，摊还分析非常有用。一个典型的例子是C++的vector或Java的ArrayList（动态数组）
+&lt;ul&gt;
+&lt;li&gt;大多数push_back操作：如果数组容量未满，这个操作非常快，时间复杂度是O(1)&lt;/li&gt;
+&lt;li&gt;偶尔的push_back操作：如果数据容量满了，时间复杂度是O(n)&lt;/li&gt;
+&lt;li&gt;如果我们只看最坏情况，会得出 push_back 的复杂度是 O(n) 的结论。但这显然忽略了 O(1) 操作占绝大多数的事实。摊还分析可以证明，push_back 的摊还成本其实是 O(1)。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;摊还分析方法&#34;&gt;摊还分析方法
+&lt;/h2&gt;&lt;h3 id=&#34;聚合分析&#34;&gt;聚合分析
+&lt;/h3&gt;&lt;h4 id=&#34;计算方法&#34;&gt;计算方法
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;计算出一个包含n个操作的序列的总实际成本&lt;/li&gt;
+&lt;li&gt;用总成本T(n)除以操作次数n，得到每个操作的平均成本，即摊还成本&lt;/li&gt;
+&lt;li&gt;摊还成本$T = T(n)/n$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;案例动态数组的push_back&#34;&gt;案例：动态数组的push_back
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;假设我们从一个空数组开始，连续执行n次push_back操作。数组容量从1开始，每次满了就翻倍
+&lt;ul&gt;
+&lt;li&gt;常规插入（非扩容）：每次成本为1个单位&lt;/li&gt;
+&lt;li&gt;扩容插入：当元素数量打到1,2,4,8,&amp;hellip;，2^k^时，需要扩容，需要复制2^i-1^个元素&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;现在来看n次操作的总成本：
+&lt;ul&gt;
+&lt;li&gt;常规插入（非扩容）总成本：每次1单位成本，故总成本为n&lt;/li&gt;
+&lt;li&gt;扩容总成本：扩容发生在2^k^时，总扩容成本时2^k^-1，这个成本小于n&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;总实际成本： O(n)&lt;/li&gt;
+&lt;li&gt;摊还成本：O(1)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;记账法核算法&#34;&gt;记账法/核算法
+&lt;/h3&gt;&lt;h4 id=&#34;计算方法-1&#34;&gt;计算方法：
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;这份方法为每个操作分配一个“摊还成本”
+&lt;ul&gt;
+&lt;li&gt;如果一个操作的摊还成本&amp;gt;实际成本，多出来的部分存入&amp;quot;账户&amp;quot;中&lt;/li&gt;
+&lt;li&gt;如果一个操作的实际成本&amp;lt;摊还成本，那么不足的部分就从&amp;quot;银行账户&amp;quot;中取出&amp;quot;存款&amp;quot;来支付&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;关键原则：只要保证&amp;quot;银行账户&amp;quot;余额不为负，我们设定的摊还成本就是有效的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;案例动态数组的push_back-1&#34;&gt;案例：动态数组的push_back
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;我们设定push_back的摊还成本为3个单位&lt;/li&gt;
+&lt;li&gt;情况1：数组未满（实际成本为1）
+&lt;ul&gt;
+&lt;li&gt;我们支付3单位的摊还成本&lt;/li&gt;
+&lt;li&gt;1单位用于本次插入&lt;/li&gt;
+&lt;li&gt;剩下2单位存入银行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;情况2：数组已满，需要扩容
+&lt;ul&gt;
+&lt;li&gt;此时，数组中有m个元素。我们需要将它们全部复制到新数组（大小为2m），然后再插入新元素，实际成本为m+1&lt;/li&gt;
+&lt;li&gt;足够支付，设定成立&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;时间复杂度为O(1)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;摊还成本的选取&#34;&gt;摊还成本的选取
+&lt;/h4&gt;&lt;h5 id=&#34;选取原则&#34;&gt;选取原则
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;原则是在满足不会出现负资产的前提下（在级数上）尽可能小&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;示例&#34;&gt;示例
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;仍然以push_back操作为例。从刚执行完一次扩容的状态开始，此时数组中有$m$个元素，设摊还分析代价为$x$，那么当执行到下一次扩容时，余额是$m(x-1)$下一次扩容时，数组大小为$2m$，要插入第$2m+1$个元素，成本为$2m+1$。需要取出的代价为$2m+1-x$&lt;/li&gt;
+&lt;li&gt;即x需要满足于$m(x-1) \geq 2m+1-x$，可以解得$x &amp;gt;= \frac{3m+1}{m+1}$，可知右式小于3且当$m$趋向于正无穷时收敛于3，那么可以解得$m \geq 3$。上面示例中的3就是这么得到的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;势能法&#34;&gt;势能法
+&lt;/h3&gt;&lt;h4 id=&#34;计算方法-2&#34;&gt;计算方法
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;这是最灵活也最抽象的方法，结合了物理学中势能的概念
+&lt;ul&gt;
+&lt;li&gt;定义一个势函数$\Phi$，将数据结构的某个状态D映射到一个非负数$\Phi(D)$，代表该状态下积累的&amp;quot;势能&amp;rdquo;。我们要求初始状态$D_0$的势能$\Phi(D_0) =  0 $&lt;/li&gt;
+&lt;li&gt;第i个操作的摊还成本$\hat{a}_i$，有
+$\hat{a}&lt;em&gt;i = c_i + \Phi(D_i) - \Phi(D&lt;/em&gt;{i-1})$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;案例动态数组的push_back-2&#34;&gt;案例：动态数组的push_back
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;定义势函数：
+&lt;ul&gt;
+&lt;li&gt;首先给出两个参数
+&lt;ul&gt;
+&lt;li&gt;size：数组中元素的数量&lt;/li&gt;
+&lt;li&gt;capacity：数组的容量&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;然后定义势函数$ Φ(D) = 2 * size - capacity $
+&lt;ul&gt;
+&lt;li&gt;初始状态：$size = 0, capacity = 0, \Phi(D_0) = 0$&lt;/li&gt;
+&lt;li&gt;我们必须保证任何时候有$\Phi(D) \geq 0$，因为capacity总是大于等于size，并且在扩容后capacity = 2*size，所以这个势函数总是非负的。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;然后分析第i次push_back
+&lt;ul&gt;
+&lt;li&gt;$size_i = size_{i-1} + 1$&lt;/li&gt;
+&lt;li&gt;$c_i = $ 实际成本
+&lt;ul&gt;
+&lt;li&gt;情况1：不扩容
+&lt;ul&gt;
+&lt;li&gt;实际成本$c_i = 1$&lt;/li&gt;
+&lt;li&gt;势能变化：$ΔΦ = Φ(D_i) - Φ(D_{i-1}) = (2size_i - capacity_i) - (2size_{i-1} - capacity_{i-1}) = 2(size_i - size_{i-1}) = 2$&lt;/li&gt;
+&lt;li&gt;摊还成本：$â_i = c_i + ΔΦ = 1 + 2 = 3$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;情况2：扩容(size_{i-1} = capacity_{i-1})
+&lt;ul&gt;
+&lt;li&gt;扩容前，$size = m，capacity = m$&lt;/li&gt;
+&lt;li&gt;扩容后，$size = m+1，capacity = 2m$&lt;/li&gt;
+&lt;li&gt;实际成本$c_i = m+1$&lt;/li&gt;
+&lt;li&gt;势能变化：
+&lt;ul&gt;
+&lt;li&gt;$\Phi(D({i-1})) = m$&lt;/li&gt;
+&lt;li&gt;$\Phi(D_i) = 2(m+1) - 2m = 2$&lt;/li&gt;
+&lt;li&gt;$\Delta\Phi = 2-m$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;摊还成本$ â_i = c_i + ΔΦ = (m+1) + (2 - m) = 3$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;即两种抢矿下摊还成本都为3，时间复杂度为O(1)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

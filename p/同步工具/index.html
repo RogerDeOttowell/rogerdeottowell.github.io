@@ -1,0 +1,1550 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="介绍操作系统中用于并发控制的各种同步工具，如互斥锁、信号量、条件变量等，并探讨相关的概念如竞态条件、临界区和内存模型。">
+<title>同步工具</title>
+
+<link rel='canonical' href='https://example.com/p/%E5%90%8C%E6%AD%A5%E5%B7%A5%E5%85%B7/'>
+
+<link rel="stylesheet" href="/scss/style.min.cfa5b1b0e78d61c00a14173992a1f3fa3b5c1b9fa34d023de959af564e7b19dd.css"><meta property='og:title' content="同步工具">
+<meta property='og:description' content="介绍操作系统中用于并发控制的各种同步工具，如互斥锁、信号量、条件变量等，并探讨相关的概念如竞态条件、临界区和内存模型。">
+<meta property='og:url' content='https://example.com/p/%E5%90%8C%E6%AD%A5%E5%B7%A5%E5%85%B7/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='同步' /><meta property='article:tag' content='并发' /><meta property='article:tag' content='操作系统' /><meta property='article:published_time' content='2024-07-31T10:00:00&#43;08:00'/><meta property='article:modified_time' content='2024-07-31T10:00:00&#43;08:00'/>
+<meta name="twitter:title" content="同步工具">
+<meta name="twitter:description" content="介绍操作系统中用于并发控制的各种同步工具，如互斥锁、信号量、条件变量等，并探讨相关的概念如竞态条件、临界区和内存模型。">
+<link rel="stylesheet" href="/css/custom.css" />
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_f509edb42ecc0ebd.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://example.com/" selected>English</option>
+                                
+                                    <option value="https://example.com/zh-cn/" >中文</option>
+                                
+                                    <option value="https://example.com/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Dark Mode</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#同步工具概述">同步工具概述</a>
+      <ol>
+        <li><a href="#定义">定义</a></li>
+        <li><a href="#核心目标">核心目标</a></li>
+        <li><a href="#作用">作用</a></li>
+        <li><a href="#主要同步工具类型">主要同步工具类型</a>
+          <ol>
+            <li><a href="#互斥锁mutex">互斥锁(Mutex)</a></li>
+            <li><a href="#信号量semaphore">信号量(Semaphore)</a></li>
+            <li><a href="#条件变量condition-variable">条件变量(Condition Variable)</a></li>
+            <li><a href="#读写锁read-writer-lock">读写锁(Read-Writer Lock)</a></li>
+            <li><a href="#屏障barrier">屏障(Barrier)</a></li>
+            <li><a href="#自旋锁spin-lock">自旋锁(Spin Lock)</a></li>
+            <li><a href="#注生产者-消费者问题">注：生产者-消费者问题</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#竞态条件">竞态条件</a>
+      <ol>
+        <li><a href="#定义-1">定义</a></li>
+        <li><a href="#核心特征">核心特征</a></li>
+        <li><a href="#经典案例">经典案例</a></li>
+      </ol>
+    </li>
+    <li><a href="#临界区">临界区</a>
+      <ol>
+        <li><a href="#定义-2">定义</a></li>
+        <li><a href="#组成">组成</a></li>
+        <li><a href="#基本要求">基本要求</a></li>
+        <li><a href="#解决方案">解决方案</a></li>
+        <li><a href="#时机应用场景">时机应用场景</a></li>
+        <li><a href="#经典的软件同步算法peterson算法">经典的软件同步算法————Peterson算法</a>
+          <ol>
+            <li><a href="#核心设计思想谦让机制">核心设计思想————谦让机制</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#顺序一致性">顺序一致性</a>
+      <ol>
+        <li><a href="#基本概念">基本概念</a>
+          <ol>
+            <li><a href="#定义-3">定义</a></li>
+            <li><a href="#两个核心要求">两个核心要求</a></li>
+          </ol>
+        </li>
+        <li><a href="#直观理解">直观理解</a></li>
+      </ol>
+    </li>
+    <li><a href="#存储缓冲区store-buffer">存储缓冲区(Store Buffer)</a>
+      <ol>
+        <li><a href="#基本概念-1">基本概念</a></li>
+        <li><a href="#为什么需要store-buffer">为什么需要Store Buffer</a></li>
+        <li><a href="#存储缓冲区的详细结构">存储缓冲区的详细结构</a>
+          <ol>
+            <li><a href="#硬件组织">硬件组织</a></li>
+            <li><a href="#典型的store-buffer参数">典型的Store Buffer参数</a></li>
+          </ol>
+        </li>
+        <li><a href="#工作机制fifo队列">工作机制：FIFO队列</a></li>
+        <li><a href="#存在的问题">存在的问题</a>
+          <ol>
+            <li><a href="#违反程序顺序">违反程序顺序</a></li>
+            <li><a href="#peterson算法失败">Peterson算法失败</a></li>
+          </ol>
+        </li>
+        <li><a href="#内存屏障与store-buffer">内存屏障与Store BUffer</a>
+          <ol>
+            <li><a href="#定义-4">定义</a></li>
+            <li><a href="#写屏障">写屏障</a></li>
+            <li><a href="#不同类型的屏障">不同类型的屏障</a></li>
+          </ol>
+        </li>
+        <li><a href="#store-to-load-forwarding存储转发机制详解">Store-to-Load Forwarding(存储转发)机制详解</a>
+          <ol>
+            <li><a href="#作用演示">作用演示</a></li>
+            <li><a href="#转发机制的实现">转发机制的实现</a></li>
+          </ol>
+        </li>
+        <li><a href="#store-buffer的性能优化">Store Buffer的性能优化</a>
+          <ol>
+            <li><a href="#写合并">写合并</a></li>
+            <li><a href="#store-buffer的管理策略">Store Buffer的管理策略</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#原子变量">原子变量</a>
+      <ol>
+        <li><a href="#概念">概念：</a></li>
+      </ol>
+    </li>
+    <li><a href="#过度自旋too-much-spinning">过度自旋(Too Much Spinning)</a>
+      <ol>
+        <li><a href="#概念-1">概念</a></li>
+        <li><a href="#解决方法">解决方法</a>
+          <ol>
+            <li><a href="#混合锁">混合锁</a></li>
+            <li><a href="#指数退避">指数退避</a></li>
+            <li><a href="#自适应自旋">自适应自旋</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" >
+                操作系统
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E5%90%8C%E6%AD%A5%E5%B7%A5%E5%85%B7/">同步工具</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            介绍操作系统中用于并发控制的各种同步工具，如互斥锁、信号量、条件变量等，并探讨相关的概念如竞态条件、临界区和内存模型。
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jul 31, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    5 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="同步工具">同步工具
+</h1><h2 id="同步工具概述">同步工具概述
+</h2><h3 id="定义">定义
+</h3><ul>
+<li>同步工具是操作系统提供的机制，用于协调并发进程/线程对共享资源的访问，确保数据一致性和程序正确性</li>
+</ul>
+<h3 id="核心目标">核心目标
+</h3><ul>
+<li>互斥：确保临界区间同时只有一个进程访问</li>
+<li>同步：控制进程间的执行顺序</li>
+<li>痛惜：进程间安全地交换信息</li>
+</ul>
+<h3 id="作用">作用
+</h3><ul>
+<li>保证数据一致性
+<ul>
+<li>避免线程并发运行导致的数据错误。</li>
+<li>可以想象成银行。假设A和B同时登录一个有1000元存款的银行账户，A取出500元，B取出400元。但由于并发执行，B查看账户时的余额仍然是1000元，并且取钱后会将600元写入余额，导致错误。</li>
+<li>所以需要通过并发锁等方式，在A访问账户时阻塞B对账户的访问</li>
+</ul>
+</li>
+<li>控制访问顺序
+<ul>
+<li>确保每个环节在正确的时机开始</li>
+<li>可以想象成厨房。假设没有控制访问，会出现在菜还没做完时，服务员就上菜的现象。需要控制在炒菜完成后，才开始上菜线程。</li>
+</ul>
+</li>
+<li>协调资源分配
+<ul>
+<li>确保正确分配资源</li>
+<li>可以想象成停车场，如果没有调度，会发生有车试图停在已经被占用的车位，而空车位没有车去停泊</li>
+</ul>
+</li>
+</ul>
+<h3 id="主要同步工具类型">主要同步工具类型
+</h3><h4 id="互斥锁mutex">互斥锁(Mutex)
+</h4><ul>
+<li>基本概念
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// 基本操作
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nf">mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>    <span class="c1">// 获取锁（原子操作）
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 临界区代码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nf">mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>  <span class="c1">// 释放锁（原子操作）
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>工作机制
+<ul>
+<li>加锁：如果锁可用则获取，否则阻塞等待</li>
+<li>解锁：释放锁并唤醒等待的进程</li>
+<li>原子性：加锁和解锁操作不可被中断</li>
+</ul>
+</li>
+<li>使用场景：上面提及的银行账户问题</li>
+<li>高级特性：
+<ul>
+<li>递归锁：同一线程可多次获取</li>
+<li>优先级继承：防止优先级反转</li>
+<li>超时机制：避免无限期等待</li>
+</ul>
+</li>
+</ul>
+<h4 id="信号量semaphore">信号量(Semaphore)
+</h4><ul>
+<li>一种用于进程/线程同步的抽象数据结构</li>
+<li>核心思想：由一个整数来表示可用资源的数量，通过原子操作来控制对这些资源的访问</li>
+<li>就像一个“资源计数器”
+<ul>
+<li>记录还有多少资源可以使用</li>
+<li>当有人要用资源时，计数器+1</li>
+<li>当有人释放资源时，计数器-1</li>
+<li>当计数器为0时，后来的人必须等待</li>
+</ul>
+</li>
+<li>基本概念
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="nf">sem_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">semaphore</span><span class="p">);</span>   <span class="c1">// P操作：信号量-1，如果&lt;0则阻塞
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// 临界区或资源使用
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nf">sem_post</span><span class="p">(</span><span class="o">&amp;</span><span class="n">semaphore</span><span class="p">);</span>   <span class="c1">// V操作：信号量+1，唤醒等待进程
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>类型分类
+<ul>
+<li>计数信号量（用于泊车问题）</li>
+<li>二进制信号量（类似互斥锁）</li>
+</ul>
+</li>
+<li>经典问题：生产者-消费者问题</li>
+</ul>
+<h4 id="条件变量condition-variable">条件变量(Condition Variable)
+</h4><ul>
+<li>基本概念：条件变量用于在某个条件满足之前让线程等待，通常与互斥锁配合使用。</li>
+</ul>
+<h4 id="读写锁read-writer-lock">读写锁(Read-Writer Lock)
+</h4><ul>
+<li>基本概念：允许多个读者同时访问，但写者需要独占访问。</li>
+<li>使用场景
+<ul>
+<li>数据库系统</li>
+<li>缓存系统</li>
+<li>文件系统</li>
+<li>读多写少的场景</li>
+</ul>
+</li>
+</ul>
+<h4 id="屏障barrier">屏障(Barrier)
+</h4><ul>
+<li>基本概念：让多个线程在某个点等待，直到所有线程都到达该点才继续执行。、</li>
+</ul>
+<h4 id="自旋锁spin-lock">自旋锁(Spin Lock)
+</h4><ul>
+<li>基本概念：不会让线程睡眠，而是持续检查锁状态</li>
+<li>使用场景：
+<ul>
+<li>临界区很短</li>
+<li>多处理器系统</li>
+<li>内核级同步</li>
+</ul>
+</li>
+</ul>
+<h4 id="注生产者-消费者问题">注：生产者-消费者问题
+</h4><ul>
+<li>问题定义：生产者-消费者问题描述了两类线程之间的协作关系
+<ul>
+<li>生产者：生成数据并放入缓冲区</li>
+<li>消费者：从缓冲区取出数据并处理</li>
+<li>缓冲区：存储数据的共享区域，容量有限</li>
+</ul>
+</li>
+<li>核心约束条件
+<ul>
+<li>缓冲区满时：生产者必须等待，不能再生产</li>
+<li>缓冲区空时：消费者必须等待，不能再消费</li>
+<li>互斥访问：生产者和消费者不能同时访问缓冲区</li>
+<li>同步关系：生产者生产的数据要能被消费者及时消费</li>
+</ul>
+</li>
+</ul>
+<h2 id="竞态条件">竞态条件
+</h2><h3 id="定义-1">定义
+</h3><ul>
+<li>当多个进程（或进程）并发地访问和操作同一数据，且执行结果依赖于访问发生地特定顺序时，这种情况被成为竞态条件。</li>
+</ul>
+<h3 id="核心特征">核心特征
+</h3><ul>
+<li>多个执行流：至少有两个线程/进程</li>
+<li>共享数据：共享数据</li>
+<li>并发访问：并发访问</li>
+<li>结果不确定：最终结果取决于执行顺序</li>
+</ul>
+<h3 id="经典案例">经典案例
+</h3><ul>
+<li>银行账户问题</li>
+</ul>
+<h2 id="临界区">临界区
+</h2><h3 id="定义-2">定义
+</h3><ul>
+<li>考虑一个由n个进程组成的系统{p<del>0</del>, p<del>1</del>, &hellip; p<del>n-1</del>}，每个进程都有一个临界区代码段，例如改变公共变量、更新表格、写文件等。同时只能有一个进程位于临界区中。当一个进程在临界区中时，其他进程都不能进入它们的临界区。每个进程必须在进去区请求进入临界区的许可。许可应该在退出区被释放。</li>
+<li>即临界区为程序中访问共享资源的代码段。在多进程或多线程环境中，这段代码同一时刻只能被一个执行单元执行，以避免数据竞争和不一致</li>
+</ul>
+<h3 id="组成">组成
+</h3><ul>
+<li>完整的进程结构</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">do</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">request_permission</span><span class="p">();</span> <span class="c1">//进入区，请求进入临界区的许可
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="nf">access_shared_resource</span><span class="p">();</span> <span class="c1">//临界区，访问和修改共享资源的核心代码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="nf">release_permission</span><span class="p">();</span> <span class="c1">//退出区，释放临界区，允许其他进程进入
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="nf">do_other_work</span><span class="p">();</span> <span class="c1">//剩余区，执行不涉及共享资源的其他操作
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="基本要求">基本要求
+</h3><ul>
+<li>互斥性：同时只能由一个进程在临界区内</li>
+<li>进展性：如果临界区空闲且有进程想要进入，那应该能进入</li>
+<li>有界等待：进程等待时间应该是有限的</li>
+</ul>
+<h3 id="解决方案">解决方案
+</h3><ul>
+<li>互斥锁</li>
+<li>信号量</li>
+<li>自旋锁</li>
+</ul>
+<h3 id="时机应用场景">时机应用场景
+</h3><ul>
+<li>操作系统</li>
+<li>数据库管理系统</li>
+<li>Web服务器</li>
+</ul>
+<h3 id="经典的软件同步算法peterson算法">经典的软件同步算法————Peterson算法
+</h3><h4 id="核心设计思想谦让机制">核心设计思想————谦让机制
+</h4><ul>
+<li>每个进程都表达自己想要进入临界区的意愿</li>
+<li>同时主动谦让把优先权交给对方</li>
+<li>实现代码
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// 进程Pi (i = 0 或 1)
+</span></span></span><span class="line"><span class="cl"><span class="c1">// j是另一个进程的编号 (j = 1-i)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">do</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// === 进入区 ===
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">flag</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>              <span class="c1">// 第1步：举手表示&#34;我想进入临界区&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">turn</span> <span class="o">=</span> <span class="n">j</span><span class="p">;</span>                    <span class="c1">// 第2步：谦让，&#34;你先请&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 第3步：等待检查
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">while</span> <span class="p">(</span><span class="n">flag</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="nb">true</span> <span class="o">&amp;&amp;</span> <span class="n">turn</span> <span class="o">==</span> <span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 如果对方也想进入(flag[j]==true) 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 且确实轮到对方(turn==j)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 那么我就等待
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 这里是忙等待
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// === 临界区 ===
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">critical_section</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// === 退出区 ===
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">flag</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>             <span class="c1">// 第4步：表示&#34;我不再需要临界区了&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// === 剩余区 ===
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">remainder_section</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>处理两个进程时的代码
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// ====== 进程P0 ======
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">do</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>    <span class="c1">// P0想要进入
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">turn</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>          <span class="c1">// P0谦让，优先权给P1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="n">flag</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="nb">true</span> <span class="o">&amp;&amp;</span> <span class="n">turn</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 等待：如果P1也想进入且轮到P1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// P0的临界区
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;P0 in critical section</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 访问共享资源...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="n">flag</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>   <span class="c1">// P0完成，退出
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// P0的其他工作
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span><span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// ====== 进程P1 ======
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">do</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>    <span class="c1">// P1想要进入
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">turn</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>          <span class="c1">// P1谦让，优先权给P0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="n">flag</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="nb">true</span> <span class="o">&amp;&amp;</span> <span class="n">turn</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 等待：如果P0也想进入且轮到P0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// P1的临界区
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;P1 in critical section</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 访问共享资源...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>   <span class="c1">// P1完成，退出
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// P1的其他工作
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h2 id="顺序一致性">顺序一致性
+</h2><h3 id="基本概念">基本概念
+</h3><h4 id="定义-3">定义
+</h4><ul>
+<li>一个多处理器是顺序一致的，当且仅当任何一次的执行的结果都和某个顺序执行的结果相同，切每个处理器的操作在这个顺序中都按照程序指定的顺序出现</li>
+</ul>
+<h4 id="两个核心要求">两个核心要求
+</h4><ul>
+<li>程序顺序：每个处理器内的操作必须按程序指定的顺序执行</li>
+<li>全局顺序：所有处理器必须对所有内存操作有统一的观察顺序</li>
+</ul>
+<h3 id="直观理解">直观理解
+</h3><ul>
+<li>可以类比为图书馆的借书系统</li>
+<li>想象一个图书馆的借书系统，顺序一致性即所有人能看到相同的结束记录顺序
+<ul>
+<li>张三借《操作系统》</li>
+<li>李四借《数据结构》</li>
+<li>王五还《算法导论》</li>
+<li>无论在哪个分馆查询，大家看到的记录顺序完全一致</li>
+</ul>
+</li>
+</ul>
+<h2 id="存储缓冲区store-buffer">存储缓冲区(Store Buffer)
+</h2><h3 id="基本概念-1">基本概念
+</h3><ul>
+<li>定义：存储缓冲区是位于CPU和缓存之间的硬件组件，用于临时存储CPU发出的写操作，以提高系统性能
+<ul>
+<li>CPU -&gt; Store Buffer -&gt; Chache -&gt; Memory</li>
+</ul>
+</li>
+<li>目的：
+<ul>
+<li>避免CPU再写操作时等待</li>
+<li>提高流水线指令地效率</li>
+<li>允许写操作地批量处理和优化</li>
+</ul>
+</li>
+</ul>
+<h3 id="为什么需要store-buffer">为什么需要Store Buffer
+</h3><ul>
+<li>无Store Buffer时：
+<ul>
+<li>CPU执行：x = 1;</li>
+<li>步骤：
+<ul>
+<li>CPU发送写请求到缓存</li>
+<li>如果缓存缺失，需要等待从内存加载</li>
+<li>更新缓存</li>
+<li>CPU才能继续执行下一条指令</li>
+</ul>
+</li>
+<li>延迟可能高达几百个CPU周期</li>
+</ul>
+</li>
+<li>有Store Buffer时：
+<ul>
+<li>CPU执行：x = 1;</li>
+<li>步骤：
+<ul>
+<li>CPU将写操作放入Store Buffer</li>
+<li>CPU立即继续执行下一条指令</li>
+<li>Store Buffer在后台异步完成实际写入</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>可以类比为邮箱，如果没有邮箱，那么用户每一封信都要等待邮递员到来，才能写信交给邮递员；有邮箱后之后写完放入邮箱就能写下一封</li>
+</ul>
+<h3 id="存储缓冲区的详细结构">存储缓冲区的详细结构
+</h3><h4 id="硬件组织">硬件组织
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">          CPU Core
+</span></span><span class="line"><span class="cl">             |
+</span></span><span class="line"><span class="cl">    [Store Buffer]  ←── 队列结构，FIFO
+</span></span><span class="line"><span class="cl">       |  |  |  |
+</span></span><span class="line"><span class="cl">    Entry Entry Entry Entry
+</span></span><span class="line"><span class="cl">       |  |  |  |
+</span></span><span class="line"><span class="cl">         Cache
+</span></span><span class="line"><span class="cl">         |
+</span></span><span class="line"><span class="cl">       Memory
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>每个Entry包含：
+<ul>
+<li>地址 (Address)</li>
+<li>数据 (Data)</li>
+<li>大小 (Size)</li>
+<li>有效位 (Valid)</li>
+<li>其他控制信息</li>
+</ul>
+</li>
+</ul>
+<h4 id="典型的store-buffer参数">典型的Store Buffer参数
+</h4><ul>
+<li>现代CPU的Store Buffer特征：
+<ul>
+<li>容量：16-64个条目</li>
+<li>宽度：支持不同大小的写操作（1,2,4,8字节）</li>
+<li>合并：相邻写操作可能被合并</li>
+<li>顺序：通常按FIFO顺序排出到缓存</li>
+</ul>
+</li>
+</ul>
+<h3 id="工作机制fifo队列">工作机制：FIFO队列
+</h3><h3 id="存在的问题">存在的问题
+</h3><h4 id="违反程序顺序">违反程序顺序
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl">  <span class="c1">//程序意图：先设置数据，再设置标志
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">data</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>    <span class="c1">//写操作1：进入Store Buffer
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">flag</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>  <span class="c1">//写操作2：也进入Store Buffer
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="c1">//其他CPU可能观察到的顺序：
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">//flag=true先生效（如果flag在缓存中）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">//data=42后生效（如果data需要从呢村加载到缓存）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="c1">//这违反了程序顺序
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="peterson算法失败">Peterson算法失败
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">  // 时间线分析：两个CPU同时执行Peterson算法
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  时间0: 初始状态
+</span></span><span class="line"><span class="cl">  flag[0] = false, flag[1] = false, turn = 任意值
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  时间1: CPU0和CPU1几乎同时开始执行
+</span></span><span class="line"><span class="cl">  CPU0: flag[0] = true  → 进入CPU0的Store Buffer
+</span></span><span class="line"><span class="cl">  CPU1: flag[1] = true  → 进入CPU1的Store Buffer
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  时间2: 继续执行
+</span></span><span class="line"><span class="cl">  CPU0: turn = 1        → 进入CPU0的Store Buffer  
+</span></span><span class="line"><span class="cl">  CPU1: turn = 0        → 进入CPU1的Store Buffer
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  时间3: 开始检查条件
+</span></span><span class="line"><span class="cl">  CPU0: 读取flag[1]    → 从内存读到false（CPU1的写入还在Store Buffer中！）
+</span></span><span class="line"><span class="cl">  CPU1: 读取flag[0]    → 从内存读到false（CPU0的写入还在Store Buffer中！）
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  时间4: 条件检查结果
+</span></span><span class="line"><span class="cl">  CPU0: flag[1]==false &amp;&amp; turn==1 → false，所以不等待
+</span></span><span class="line"><span class="cl">  CPU1: flag[0]==false &amp;&amp; turn==0 → false，所以不等待
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  时间5: 灾难发生
+</span></span><span class="line"><span class="cl">  CPU0: 进入临界区 
+</span></span><span class="line"><span class="cl">  CPU1: 进入临界区 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  两个进程同时进入临界区！Peterson算法失败！
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="内存屏障与store-buffer">内存屏障与Store BUffer
+</h3><h4 id="定义-4">定义
+</h4><ul>
+<li>内存屏障是一种同步原语，用于控制内存操作的顺序，确保特定的内存操作按照预期的顺序执行</li>
+<li>可以类比成红灯，只有当所有应该到达的车到达了才转绿灯</li>
+</ul>
+<h4 id="写屏障">写屏障
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl">  <span class="c1">// 写屏障的作用：确保屏障前的写操作完成
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="kt">void</span> <span class="nf">store_barrier</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 等待Store Buffer排空
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nf">store_buffer_empty</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="nf">drain_store_buffer</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 确保所有写操作都到达缓存/内存
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// Peterson算法的修复：
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">flag</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">store_barrier</span><span class="p">();</span>       <span class="c1">// 确保flag[0]写入完成
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">turn</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">store_barrier</span><span class="p">();</span>       <span class="c1">// 确保turn写入完成
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">while</span> <span class="p">(</span><span class="n">flag</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="n">turn</span> <span class="o">==</span> <span class="mi">1</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="不同类型的屏障">不同类型的屏障
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl">  <span class="c1">// x86架构的内存屏障：
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// SFENCE：Store Fence，写屏障
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">void</span> <span class="nf">sfence</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">asm</span> <span class="k">volatile</span><span class="p">(</span><span class="s">&#34;sfence&#34;</span> <span class="o">:::</span> <span class="s">&#34;memory&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// MFENCE：Memory Fence，全屏障
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">void</span> <span class="nf">mfence</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">asm</span> <span class="k">volatile</span><span class="p">(</span><span class="s">&#34;mfence&#34;</span> <span class="o">:::</span> <span class="s">&#34;memory&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 编译器屏障：防止编译器重排序
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">void</span> <span class="nf">compiler_barrier</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">asm</span> <span class="k">volatile</span><span class="p">(</span><span class="s">&#34;&#34;</span> <span class="o">:::</span> <span class="s">&#34;memory&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="store-to-load-forwarding存储转发机制详解">Store-to-Load Forwarding(存储转发)机制详解
+</h3><h4 id="作用演示">作用演示
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl">  <span class="c1">// 程序代码：
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">x</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>        <span class="c1">// 写操作：把42写入变量x
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>     <span class="c1">// 读操作：读取变量x的值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 没有转发机制的问题：
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// 1. x = 42进入Store Buffer，还没写到内存
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// 2. int a = x从内存读取，读到的是旧值（比如0）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// 3. 明明刚写了42，却读到了0！
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 有转发机制的解决：
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// 1. x = 42进入Store Buffer
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// 2. int a = x时，CPU检查Store Buffer
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// 3. 发现Store Buffer中有x=42，直接返回42
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// 4. 读到了正确的值！
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="转发机制的实现">转发机制的实现
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl">  <span class="kt">int</span> <span class="nf">load_operation</span><span class="p">(</span><span class="n">address</span> <span class="n">addr</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 1. 首先检查Store Buffer
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">store_buffer</span><span class="p">.</span><span class="n">newest</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">store_buffer</span><span class="p">.</span><span class="n">oldest</span><span class="p">;</span> <span class="n">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="k">if</span> <span class="p">(</span><span class="n">store_buffer</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">address</span> <span class="o">==</span> <span class="n">addr</span> <span class="o">&amp;&amp;</span> <span class="n">store_buffer</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">valid</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">              <span class="c1">// 找到匹配的待写入数据，直接返回
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>              <span class="k">return</span> <span class="n">store_buffer</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">value</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">          <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      
+</span></span><span class="line"><span class="cl">      <span class="c1">// 2. Store Buffer中没有，从缓存/内存读取
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">return</span> <span class="nf">cache_read</span><span class="p">(</span><span class="n">addr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>即在Store Buffer中寻找所需数据，如果没有再从缓存/内存读取</li>
+</ul>
+<h3 id="store-buffer的性能优化">Store Buffer的性能优化
+</h3><h4 id="写合并">写合并
+</h4><ul>
+<li>在连续的地址上写入内容时会合并到同一个Entity中</li>
+</ul>
+<h4 id="store-buffer的管理策略">Store Buffer的管理策略
+</h4><ul>
+<li>阻塞策略</li>
+<li>强制排空策略</li>
+<li>优先级策略</li>
+</ul>
+<h2 id="原子变量">原子变量
+</h2><h3 id="概念">概念：
+</h3><ul>
+<li>通常，像比较交换（compare-and-swap）这样的指令被用作构建其他同步工具的基础构件</li>
+<li>其中一个工具是原子变量，它为基本数据类型提供原子的（不可中断的）更新操作</li>
+<li>例如，对原子变量sequence的increment()操作确保sequence在没有中断的情况下被递增</li>
+</ul>
+<h2 id="过度自旋too-much-spinning">过度自旋(Too Much Spinning)
+</h2><h3 id="概念-1">概念
+</h3><ul>
+<li>自旋：当线程无法获得锁时，不进入睡眠状态，而是持续循环检查锁状态，直到获得锁为止</li>
+<li>过度自旋：在不合适的场景下使用自旋锁，导致大量CPU时间被浪费在无意义的等待上</li>
+</ul>
+<h3 id="解决方法">解决方法
+</h3><h4 id="混合锁">混合锁
+</h4><ul>
+<li>核心思想：“先试试，不行就休息”</li>
+<li>设计方式：
+<ul>
+<li>短暂自旋，快速检查锁状态</li>
+<li>如果自旋失败，进入睡眠等待</li>
+<li>被唤醒时：重新尝试获取锁</li>
+</ul>
+</li>
+</ul>
+<h4 id="指数退避">指数退避
+</h4><ul>
+<li>核心思想：“越等越慢”</li>
+<li>设计方式：
+<ul>
+<li>每次检查后检查间隔增加</li>
+</ul>
+</li>
+</ul>
+<h4 id="自适应自旋">自适应自旋
+</h4><ul>
+<li>核心思想：“学习型只能等待”</li>
+<li>设计方式：
+<ul>
+<li>根据历史学习预测检查间隔时间</li>
+</ul>
+</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E5%90%8C%E6%AD%A5/">同步</a>
+        
+            <a href="/tags/%E5%B9%B6%E5%8F%91/">并发</a>
+        
+            <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/%E7%BA%BF%E7%A8%8B/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">线程</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E8%B0%83%E5%BA%A6/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">调度</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E8%BF%9B%E7%A8%8B/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">进程</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">操作系统</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Example Person
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

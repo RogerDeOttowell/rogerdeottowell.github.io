@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>估算法 on Example Site</title>
+        <link>https://example.com/tags/%E4%BC%B0%E7%AE%97%E6%B3%95/</link>
+        <description>Recent content in 估算法 on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Wed, 31 Jul 2024 10:00:00 +0800</lastBuildDate><atom:link href="https://example.com/tags/%E4%BC%B0%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>估算法</title>
+        <link>https://example.com/p/%E4%BC%B0%E7%AE%97%E6%B3%95/</link>
+        <pubDate>Wed, 31 Jul 2024 10:00:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E4%BC%B0%E7%AE%97%E6%B3%95/</guid>
+        <description>&lt;h1 id=&#34;估算法&#34;&gt;估算法
+&lt;/h1&gt;&lt;h2 id=&#34;意义&#34;&gt;意义
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;估算法的意义在于解决NP-Hard问题，对于时间复杂度大于多项式复杂度的算法而言，在数据规模相对较小时，可以使用精确算法，当数据规模足够大时，为了解决问题，只能使用估算法获取近似解&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;近似比率&#34;&gt;近似比率
+&lt;/h2&gt;&lt;h3 id=&#34;最小化问题&#34;&gt;最小化问题
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;一个算法被称为$\rho-$近似算法，如果对于任何输入，它产生的解c满足：
+$$ C \leq \rho \cdot C^*$$
+或者写成
+$$ \frac{C}{C^*} \leq \rho $$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;经典案例装箱问题&#34;&gt;经典案例————装箱问题
+&lt;/h2&gt;&lt;h3 id=&#34;问题定义&#34;&gt;问题定义
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;输入：
+&lt;ul&gt;
+&lt;li&gt;$n$个物品，每个物品$i$的尺寸为$s_i$，其中$0 &amp;lt; s_i \leq 1$&lt;/li&gt;
+&lt;li&gt;无限数量的箱子，每个箱子的容量都是1&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;目标：
+&lt;ul&gt;
+&lt;li&gt;将所有物品放入箱子中，并使用最少数量的箱子&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;这是一个NP-Hard问题，意味着对于大规模的输入，没有已知的多项式时间算法可以找到最优解。因此，我们通常依赖近似算法来找到一个足够好的解。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;近似算法策略&#34;&gt;近似算法策略
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Next Fit(NF) - &amp;ldquo;下一个适应&amp;quot;算法
+&lt;ul&gt;
+&lt;li&gt;策略：
+&lt;ul&gt;
+&lt;li&gt;始终只维护一个“当前打开”的箱子&lt;/li&gt;
+&lt;li&gt;当新物品到来时，检查它是否能放入当前箱子&lt;/li&gt;
+&lt;li&gt;如果能，就放进去&lt;/li&gt;
+&lt;li&gt;如果不能，就关闭当前箱子（以后再也不看了），然后打开一个新箱子，并将物品放入这个新箱子&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;性能：
+&lt;ul&gt;
+&lt;li&gt;近似比率$\rho = 2$。这意味着$NF(I) \leq 2 * OPT(I) - 1$，其中$NF(I)$是NF算法使用的箱子数，$OPT(I)$是最优解的箱子数&lt;/li&gt;
+&lt;li&gt;缺点：非常“健忘”，可能会留下很多无法利用的小空间。例如，一个物品0.5，一个物品0.6（开新箱），下一个0.5（再开新箱），而最优解只需要两个箱子&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;First Fit(FF) - “首次适应”算法
+&lt;ul&gt;
+&lt;li&gt;策略：
+&lt;ul&gt;
+&lt;li&gt;按编号排序维护所有已打开的箱子&lt;/li&gt;
+&lt;li&gt;当新物品到来时，从第一个箱子开始检查，将它放入第一个能容纳它的箱子&lt;/li&gt;
+&lt;li&gt;如果所有已打开的箱子都放不下，就打开一个新箱子，并把物品放进去&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;性能：
+&lt;ul&gt;
+&lt;li&gt;近似比率$\rho \approx 1.7$&lt;/li&gt;
+&lt;li&gt;有点：比Next Fit更好地利用了空间&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Best Fit(BF) - &amp;ldquo;最佳适应&amp;quot;算法
+&lt;ul&gt;
+&lt;li&gt;策略
+&lt;ul&gt;
+&lt;li&gt;当新物品到来时，检查所有已打开的并能容纳它的箱子&lt;/li&gt;
+&lt;li&gt;将物品放入那个放入后剩余空间最小的箱子内&lt;/li&gt;
+&lt;li&gt;如果已有的箱子都放不下，打开一个新箱子&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;性能：
+&lt;ul&gt;
+&lt;li&gt;近似比率$\rho = 1.7$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;离线算法与在线算法&#34;&gt;离线算法与在线算法
+&lt;/h2&gt;&lt;h3 id=&#34;离线算法&#34;&gt;离线算法
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;在开始处理前已获得了全部的输入数据，可以对所有数据进行分析、排序、预处理，以做出全局最优或近似最优的决策&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;在线算法&#34;&gt;在线算法
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;按顺序逐个接收输入数据，当接收到某个输入时必须立即做出决策给出输出，不能访问未来的输入数据。一旦做出决策通常是不可撤销的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;不可近似性&#34;&gt;不可近似性
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;在我们讨论完NP-Hard问题的不可验证性与近似计算后，我们会自然地想到，既然NP-Hard问题不能被精确求解或验证，那么能否在多项式时间内获得一个“较好”地近似呢？或者进一步说，是否所有问题都可以寻找到一个$\rho$，可以在$\rho$内近似求解&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;tsp问题的近似&#34;&gt;TSP问题的近似
+&lt;/h3&gt;&lt;h4 id=&#34;严格tsp问题的近似&#34;&gt;严格TSP问题的近似
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;对于TSP问题，有如下定理：
+&lt;ul&gt;
+&lt;li&gt;除非$P = NP$，否则对于任意的$k \geq 1$，不存在TSP的k-近似&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;证明：使用反证法，假设存在k-近似算法A，由此可知，Halmition回路问题有多项式时间算法，同时由已知Halmiton问题是多项式问题，那么有$P = NP$&lt;/li&gt;
+&lt;li&gt;由此我们可以认为，TSP问题是不可近似的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;欧式空间中tsp问题的近似&#34;&gt;欧式空间中TSP问题的近似
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;在欧式空间中，TSP问题中的距离应当满足以下式子：
+$$ w(u, v) \leq w(u, v) + w(x, v) $$&lt;/li&gt;
+&lt;li&gt;此时TSP问题存在2-近似算法&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

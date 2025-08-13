@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>局部搜索 on Example Site</title>
+        <link>https://example.com/tags/%E5%B1%80%E9%83%A8%E6%90%9C%E7%B4%A2/</link>
+        <description>Recent content in 局部搜索 on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Wed, 31 Jul 2024 10:00:00 +0800</lastBuildDate><atom:link href="https://example.com/tags/%E5%B1%80%E9%83%A8%E6%90%9C%E7%B4%A2/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>局部搜索</title>
+        <link>https://example.com/p/%E5%B1%80%E9%83%A8%E6%90%9C%E7%B4%A2/</link>
+        <pubDate>Wed, 31 Jul 2024 10:00:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%B1%80%E9%83%A8%E6%90%9C%E7%B4%A2/</guid>
+        <description>&lt;h1 id=&#34;局部搜索&#34;&gt;局部搜索
+&lt;/h1&gt;&lt;h2 id=&#34;概念&#34;&gt;概念
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;局部搜索级从一个初始解触发，在其邻域内不断搜索，迭代改进当前姐，直到无法找到更优解&lt;/li&gt;
+&lt;li&gt;概念类似于物理学中的&amp;quot;势能&amp;quot;，搜索最终会停在一个势能谷底&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;关键组成&#34;&gt;关键组成
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;搜索空间：所有可能解的集合&lt;/li&gt;
+&lt;li&gt;目标函数：也叫成本函数或适应函数，用来评价一个解的好坏。目标一般是找到使得目标函数最大或最小的解&lt;/li&gt;
+&lt;li&gt;邻域结构：定义了如何从一个解移动到另一个&amp;quot;相邻&amp;quot;的解。这是局部搜索的核心，它决定了搜索的&amp;quot;步长&amp;quot;和方向。例如。在TSP问题中，一个解（一条路径）的邻域可以是交换路径中任意两个城市的位置后得到的所有新路径&lt;/li&gt;
+&lt;li&gt;迭代过程：算法从一个初始解开始，反复地从当前解地邻域中选择下一个解，以期改善目标函数值&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;流程&#34;&gt;流程
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    graph TD
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        S[开始] --&amp;gt; A[生成一个初始解 S];
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        A --&amp;gt; B{在S的邻域中&amp;lt;br/&amp;gt;选择一个新解 S&amp;#39;};
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        B --&amp;gt; C{S&amp;#39; 是否比 S 更优?};
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        C -- 是 --&amp;gt; D[接受S&amp;#39;: S = S&amp;#39;];
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        C -- 否 --&amp;gt; E[根据特定策略决定&amp;lt;br/&amp;gt;是否接受 S&amp;#39;];
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        D --&amp;gt; B;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        E -- 接受 --&amp;gt; D;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        E -- 拒绝 --&amp;gt; F{是否满足终止条件?};
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        B -.-&amp;gt; F;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        F -- 否 --&amp;gt; B;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        F -- 是 --&amp;gt; G[输出找到的最佳解];
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        G --&amp;gt; Z[结束]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        style A fill:#cde4ff
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        style G fill:#d5e8d4
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;经典地局部搜索法&#34;&gt;经典地局部搜索法
+&lt;/h2&gt;&lt;h3 id=&#34;爬山法&#34;&gt;爬山法
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;最简单，最直观地局部搜索算法&lt;/li&gt;
+&lt;li&gt;策略：严格享受。检查当前解的所有邻居，如果找到一个比当前解更好的邻居，就立刻移动过去，然后开始新一轮的搜索；如果所有邻居都不如当前解，就停止搜索&lt;/li&gt;
+&lt;li&gt;优点：简单，快速&lt;/li&gt;
+&lt;li&gt;缺点：非常容易陷入局部最优解&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;模拟退火&#34;&gt;模拟退火
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;为了克服容易陷入局部最优的缺陷而涉及的算法。灵感来源于金属退火过程&lt;/li&gt;
+&lt;li&gt;核心思想：引入&amp;quot;概率&amp;quot;和&amp;quot;温度&amp;quot;来决定是否接受一个更差的解
+&lt;ul&gt;
+&lt;li&gt;在搜索初期，温度很高，算法有较高的概率去接受一个更差的解，这相当于允许&amp;quot;下山&amp;quot;去探索其他山谷，希望能找到通往更高山峰的路，这增加了算法的探索能力。&lt;/li&gt;
+&lt;li&gt;随着迭代的进行，温度逐渐降低，算法接受更差解的概率也越来越小。在搜索末期，它基本不再接受差的解，变得更像爬山法，专注于咋当前找到的较优区域内进行精细搜索&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;优点：理论上（在无限时间内）的全局收敛性，能够有效跳出局部最优&lt;/li&gt;
+&lt;li&gt;缺点：参数需要仔细调优，否则效果不佳&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;禁忌搜索&#34;&gt;禁忌搜索
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;禁忌搜索是另一种客服局部最优的强大技术，它引入&amp;quot;记忆&amp;quot;机制&lt;/li&gt;
+&lt;li&gt;核心思想：用一个经济标来记录最近执行过多的移动或访问过的解
+&lt;ul&gt;
+&lt;li&gt;在后续的搜索中，算法被禁止执行哪些会导致回到近期状态的移动，即使会带来一个更好的解&lt;/li&gt;
+&lt;li&gt;这样做的目的是强迫算法去探索新的未曾访问过的搜索区域，避免在几个解之间循环往复&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;特赦准则：禁忌不是绝对的。如果一个被禁忌的移动能带来一个足够好的解，那么禁忌可以被特赦&lt;/li&gt;
+&lt;li&gt;优点：强大的防循环和探索能力&lt;/li&gt;
+&lt;li&gt;缺点：紧急表的长度和管理策略对算法性能影响很大，设计相对复杂&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;遗传算法&#34;&gt;遗传算法
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;核心思想：模拟生物进化
+&lt;ul&gt;
+&lt;li&gt;它不维护但各界，而是维护一个多个解组成的种群&lt;/li&gt;
+&lt;li&gt;通过选择、交叉、和变异等操作更新种群，对种群实现迭代演化，生成新一代的解&lt;/li&gt;
+&lt;li&gt;好的解有更大概率被选中繁衍后低&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;优点：全局搜索能力强，不容易陷入局部最优，适合处理复杂和高位的搜索空间&lt;/li&gt;
+&lt;li&gt;缺点：算法复杂，计算开销大，收敛速度可能较慢&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;pls完全性polynomial-local-search-complete&#34;&gt;PLS完全性(Polynomial Local Search Complete)
+&lt;/h2&gt;&lt;h3 id=&#34;pls类的定义&#34;&gt;PLS类的定义
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;一个PLS类的优化问题满足以下条件
+&lt;ul&gt;
+&lt;li&gt;必须有一个多项式时间算法，能为任何问题实例生成一个初始的合法解。&lt;/li&gt;
+&lt;li&gt;必须有一个多项式时间算法，能计算出任何一个给定解的成本（或收益）&lt;/li&gt;
+&lt;li&gt;必须有一个多项式时间算法，能检查当前的解S是否是局部最优的。
+&lt;ul&gt;
+&lt;li&gt;如果是，就报告&amp;quot;是&amp;quot;&lt;/li&gt;
+&lt;li&gt;如果不是，必须能找出一个更好的邻居解并返回它&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;pls特征&#34;&gt;PLS特征
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;对于PLS类内的任何问题，一定能找到一位局部最优解&lt;/li&gt;
+&lt;li&gt;原因：解空间优先，成本函数有界&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;pls-complete问题pls最难的问题&#34;&gt;PLS-Complete问题————PLS最难的问题
+&lt;/h3&gt;&lt;h4 id=&#34;定义&#34;&gt;定义
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;一个PLS-Complete问题满足以下条件
+&lt;ul&gt;
+&lt;li&gt;P本身属于PLS类&lt;/li&gt;
+&lt;li&gt;所有其他PLS类的问题都可以归约到P&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;这里的归约指的是PLS-归约。它在归约的基础上还要求问题B的局部最优解可以被高效地转换成A的一个局部最优解，&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;意义&#34;&gt;意义
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;PLSC问题的局部最优解存在，但无法在多项式时间内找到&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;与np的关系&#34;&gt;与NP的关系
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;PLS是NP的一个子集&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

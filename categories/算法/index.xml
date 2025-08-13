@@ -7,25 +7,941 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
         <copyright>Example Person</copyright>
-        <lastBuildDate>Sat, 09 Aug 2025 21:41:00 +0800</lastBuildDate><atom:link href="https://example.com/categories/%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>NP完备性问题</title>
-        <link>https://example.com/p/np%E5%AE%8C%E5%A4%87%E6%80%A7%E9%97%AE%E9%A2%98/</link>
-        <pubDate>Sat, 09 Aug 2025 21:41:00 +0800</pubDate>
+        <lastBuildDate>Wed, 31 Jul 2024 10:00:00 +0800</lastBuildDate><atom:link href="https://example.com/categories/%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>估算法</title>
+        <link>https://example.com/p/%E4%BC%B0%E7%AE%97%E6%B3%95/</link>
+        <pubDate>Wed, 31 Jul 2024 10:00:00 +0800</pubDate>
         
-        <guid>https://example.com/p/np%E5%AE%8C%E5%A4%87%E6%80%A7%E9%97%AE%E9%A2%98/</guid>
-        <description>&lt;h1 id=&#34;np完备性问题&#34;&gt;NP完备性问题
-&lt;/h1&gt;&lt;p&gt;   NP-Complete问题（NPC问题）是信息学中一个重要和知名的命题，我们现在在尝试一下自然地理解这个问题。&lt;/p&gt;
-&lt;p&gt;   首先从涉及到的名词开始，这里会涉及到的名词包括P问题，NP问题，NPC问题和NP-Hard问题。我们从最简单的P问题开始。P问题是存在能够在多项式时间复杂度内解决问题的算法的问题。这对于实现来说是一个“好”的性质。因为更高的时间复杂度，如阶乘或指数时间复杂度算法的耗时会随着数据规模的增长极其迅速地增长，带来的开销是无法接受的。因此我们当然希望所有的问题都可以是P问题。但是我们可以发现，对于有些问题没能找出多项式时间复杂度的算法，对于这一类问题我们可以退而求其次，寻找在在多项式时间复杂度内验证一个解的方法，这就引出了NP问题。&lt;/p&gt;
-&lt;p&gt;   NP问题指的是可以在多项式时间内验证一个解的问题。我们容易知道，一个NP问题必定是一个P问题，因为既然已经求出了解，那么验证只需要进行一个不增加时间复杂度的比对就行。即有逻辑表达式$P \in NP$。那么自然的，我们也会想知道是否有$NP \in P$，如果我们能够证明$NP \in P$，那也就证明了$P = NP$，因为这就意味着凡是能在多项式复杂度内验证的问题都可以在多项式复杂度内解决，这有着重大意义。这是信息学中一个重要、知名和至今仍未被解决的问题。为了尝试证明或证伪这个命题，我们需要引入另一个概念————规约，或称约化(Reducibility)。&lt;/p&gt;
-&lt;p&gt;   规约的定义是这样的，如果可以通过将问题A转化为问题B的一个实例，从而运用解决B的方案来解决A，那么我们就说“问题A可以规约到问题B”。一个经典的例子是，问题A是求解一元一次方程，问题2是求解一元二次方程，此时A可以作为B的一个实例，即令二元一次方程的平方项系数为0，它就退化成了一个一元一次方程。因此我们说求解一元一次方程问题可以归约到求解一元二次方程问题。而在NP问题的场景下，一个经典的例子就是Halmition回路问题与TSP问题。在Hamilton回路问题中，两点相连即这两点距离为0，两点不直接相连则令其距离为1，于是问题转化为在TSP问题中，是否存在一条长为0的路径。Hamilton回路存在当且仅当TSP问题中存在长为0的回路。那么引入规约的意义在哪里呢？意义在于我们可以注意到，如果A可以被归约到B，那么必然有A的时间复杂度小于等于B，因此我们可以说A不比B简单。注意这里的简单不只是一个直观的感受，而是有明确定义的，即如果A可以被归约到B，那么A不比B简单。（当然这个定义也是符合直觉的）通过规约，我们可以尝试将一个NP问题包含到另一个NP问题中，并且尝试找到一个能够包含一切NP问题的问题，即NP-Complete问题，简称NPC问题。当然，在这一语境下，这个变换的方法的时间复杂度也必须是多项式复杂度的，否则就失去了意义。这样的规约被称为“多项式地”规约，以下简称为规约。&lt;/p&gt;
-&lt;p&gt;   首先我们来解答一个问题：是否真的存在NPC问题？答案是肯定的，历史上发现的第一个NPC问题是电路可满足性问题(CIRCUIT-SAT)。简单地说，就是组织一系列的逻辑电路。要求求解各组能够使电路输出为true的输入。那么如何证明这是一个NPC问题？首先容易发现这个问题可以在多项式时间内验证，因为只需要按照电路逐步计算即可。然后我们可以发现，所有的计算机问题都可以视为一系列的0和1信号在电路中的流动，因此所有计算机问题都可以被归约到电路可满足性问题。&lt;/p&gt;
-&lt;p&gt;   在发现了第一个NPC问题后，寻找新的NPC问题就变的容易了。因为证明一个问题是 NPC问题也很简单。先证明它至少是一个NP问题，再证明其中一个已知的NPC问题能约化到它即可。&lt;/p&gt;
-&lt;p&gt;   那么NPC问题对于证明或证伪$P = NP$有什么意义？意义在于它使得$P = NP$显得难以置信。因为所有的NPC问题在难度上都是等价的，这就意味着计算机科学领域和生产生活中的巨量问题，包括SAT、TSP、图着色问题、背包问题、蛋白质折叠问题、整数规划问题等全部都存在一个共同的、高校的解法。这就像是说，你只需要找到一把能打开“旅行商问题”这个锁的钥匙，然后你惊讶地发现，这把钥匙竟然也能打开“蛋白质折叠”、“芯片设计”、“航班调度”等成千上万把看起来完全不同的锁。这种“万能钥匙”的存在，虽然在逻辑上不能被排除，但在直觉和经验上是极其反常和令人难以置信的。&lt;/p&gt;
-&lt;p&gt;   最后来讲一下NP-Hard问题，NP-Hard问题是不被包含在上面的主线（从P到NP再到NPC）中的，因为一个NP-Hard问题可能不是一个NP问题。一个问题成为NP-Hard问题只需要满足一个条件：任何一个 NP 问题都可以在多项式时间内归约到它。它和NPC问题的区别在于NPC-Hard问题并不要求问题能在多项式时间内被验证。简单说：NP-Hard 是一个更宽泛的标签，它只关心问题的“难度下限”，而不关心问题本身是否容易验证。它包含了以下问题：&lt;/p&gt;
+        <guid>https://example.com/p/%E4%BC%B0%E7%AE%97%E6%B3%95/</guid>
+        <description>&lt;h1 id=&#34;估算法&#34;&gt;估算法
+&lt;/h1&gt;&lt;h2 id=&#34;意义&#34;&gt;意义
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;估算法的意义在于解决NP-Hard问题，对于时间复杂度大于多项式复杂度的算法而言，在数据规模相对较小时，可以使用精确算法，当数据规模足够大时，为了解决问题，只能使用估算法获取近似解&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;近似比率&#34;&gt;近似比率
+&lt;/h2&gt;&lt;h3 id=&#34;最小化问题&#34;&gt;最小化问题
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;一个算法被称为$\rho-$近似算法，如果对于任何输入，它产生的解c满足：
+$$ C \leq \rho \cdot C^*$$
+或者写成
+$$ \frac{C}{C^*} \leq \rho $$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;经典案例装箱问题&#34;&gt;经典案例————装箱问题
+&lt;/h2&gt;&lt;h3 id=&#34;问题定义&#34;&gt;问题定义
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;输入：
 &lt;ul&gt;
-&lt;li&gt;所有的 NP-Complete 问题。&lt;/li&gt;
-&lt;li&gt;比 NP-Complete 更难，但仍然可解的问题（如优化版 TSP）。&lt;/li&gt;
-&lt;li&gt;比 NP-Complete 难得多，甚至不可解的问题（如停机问题）。&lt;/li&gt;
+&lt;li&gt;$n$个物品，每个物品$i$的尺寸为$s_i$，其中$0 &amp;lt; s_i \leq 1$&lt;/li&gt;
+&lt;li&gt;无限数量的箱子，每个箱子的容量都是1&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;目标：
+&lt;ul&gt;
+&lt;li&gt;将所有物品放入箱子中，并使用最少数量的箱子&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;这是一个NP-Hard问题，意味着对于大规模的输入，没有已知的多项式时间算法可以找到最优解。因此，我们通常依赖近似算法来找到一个足够好的解。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;近似算法策略&#34;&gt;近似算法策略
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Next Fit(NF) - &amp;ldquo;下一个适应&amp;quot;算法
+&lt;ul&gt;
+&lt;li&gt;策略：
+&lt;ul&gt;
+&lt;li&gt;始终只维护一个“当前打开”的箱子&lt;/li&gt;
+&lt;li&gt;当新物品到来时，检查它是否能放入当前箱子&lt;/li&gt;
+&lt;li&gt;如果能，就放进去&lt;/li&gt;
+&lt;li&gt;如果不能，就关闭当前箱子（以后再也不看了），然后打开一个新箱子，并将物品放入这个新箱子&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;性能：
+&lt;ul&gt;
+&lt;li&gt;近似比率$\rho = 2$。这意味着$NF(I) \leq 2 * OPT(I) - 1$，其中$NF(I)$是NF算法使用的箱子数，$OPT(I)$是最优解的箱子数&lt;/li&gt;
+&lt;li&gt;缺点：非常“健忘”，可能会留下很多无法利用的小空间。例如，一个物品0.5，一个物品0.6（开新箱），下一个0.5（再开新箱），而最优解只需要两个箱子&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;First Fit(FF) - “首次适应”算法
+&lt;ul&gt;
+&lt;li&gt;策略：
+&lt;ul&gt;
+&lt;li&gt;按编号排序维护所有已打开的箱子&lt;/li&gt;
+&lt;li&gt;当新物品到来时，从第一个箱子开始检查，将它放入第一个能容纳它的箱子&lt;/li&gt;
+&lt;li&gt;如果所有已打开的箱子都放不下，就打开一个新箱子，并把物品放进去&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;性能：
+&lt;ul&gt;
+&lt;li&gt;近似比率$\rho \approx 1.7$&lt;/li&gt;
+&lt;li&gt;有点：比Next Fit更好地利用了空间&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Best Fit(BF) - &amp;ldquo;最佳适应&amp;quot;算法
+&lt;ul&gt;
+&lt;li&gt;策略
+&lt;ul&gt;
+&lt;li&gt;当新物品到来时，检查所有已打开的并能容纳它的箱子&lt;/li&gt;
+&lt;li&gt;将物品放入那个放入后剩余空间最小的箱子内&lt;/li&gt;
+&lt;li&gt;如果已有的箱子都放不下，打开一个新箱子&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;性能：
+&lt;ul&gt;
+&lt;li&gt;近似比率$\rho = 1.7$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;离线算法与在线算法&#34;&gt;离线算法与在线算法
+&lt;/h2&gt;&lt;h3 id=&#34;离线算法&#34;&gt;离线算法
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;在开始处理前已获得了全部的输入数据，可以对所有数据进行分析、排序、预处理，以做出全局最优或近似最优的决策&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;在线算法&#34;&gt;在线算法
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;按顺序逐个接收输入数据，当接收到某个输入时必须立即做出决策给出输出，不能访问未来的输入数据。一旦做出决策通常是不可撤销的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;不可近似性&#34;&gt;不可近似性
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;在我们讨论完NP-Hard问题的不可验证性与近似计算后，我们会自然地想到，既然NP-Hard问题不能被精确求解或验证，那么能否在多项式时间内获得一个“较好”地近似呢？或者进一步说，是否所有问题都可以寻找到一个$\rho$，可以在$\rho$内近似求解&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;tsp问题的近似&#34;&gt;TSP问题的近似
+&lt;/h3&gt;&lt;h4 id=&#34;严格tsp问题的近似&#34;&gt;严格TSP问题的近似
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;对于TSP问题，有如下定理：
+&lt;ul&gt;
+&lt;li&gt;除非$P = NP$，否则对于任意的$k \geq 1$，不存在TSP的k-近似&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;证明：使用反证法，假设存在k-近似算法A，由此可知，Halmition回路问题有多项式时间算法，同时由已知Halmiton问题是多项式问题，那么有$P = NP$&lt;/li&gt;
+&lt;li&gt;由此我们可以认为，TSP问题是不可近似的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;欧式空间中tsp问题的近似&#34;&gt;欧式空间中TSP问题的近似
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;在欧式空间中，TSP问题中的距离应当满足以下式子：
+$$ w(u, v) \leq w(u, v) + w(x, v) $$&lt;/li&gt;
+&lt;li&gt;此时TSP问题存在2-近似算法&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>分治法</title>
+        <link>https://example.com/p/%E5%88%86%E6%B2%BB%E6%B3%95/</link>
+        <pubDate>Wed, 31 Jul 2024 10:00:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%88%86%E6%B2%BB%E6%B3%95/</guid>
+        <description>&lt;h1 id=&#34;分治法&#34;&gt;分治法
+&lt;/h1&gt;&lt;h2 id=&#34;分治法的时间复杂度分析&#34;&gt;分治法的时间复杂度分析
+&lt;/h2&gt;&lt;h3 id=&#34;分治法的时间复杂度表达式&#34;&gt;分治法的时间复杂度表达式
+&lt;/h3&gt;$$T(n) = aT(n/b) + f(n)$$&lt;ul&gt;
+&lt;li&gt;其中
+&lt;ul&gt;
+&lt;li&gt;a：子问题的个数&lt;/li&gt;
+&lt;li&gt;n/b：每个子问题的规模&lt;/li&gt;
+&lt;li&gt;f(n)：分解问题和合并结果的时间复杂度&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;主定理&#34;&gt;主定理
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;主定理是解决分治算法时间复杂度的强大工具，设$T(n) = aT(n/b) + f(n)$,其中$a \geq 1， \space b &amp;gt; 1 $，则
+&lt;ul&gt;
+&lt;li&gt;情况1：$f(n) = O(n^c)$，其中$c &amp;lt; log_b(a)$
+&lt;ul&gt;
+&lt;li&gt;此时$T(N) = \Theta(n^{log_b(a)})$&lt;/li&gt;
+&lt;li&gt;即此时递归树的叶子节点主导了时间复杂度&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;情况2：$f(n) = \Theta(n^c)$，其中$c = log_b(a)0$
+&lt;ul&gt;
+&lt;li&gt;此时$T(n) = \Theta(n^c \times log \space n)$&lt;/li&gt;
+&lt;li&gt;每层的工作量相同，总共有$log \space n$层&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;情况3：$f(n) = \Omega(n^c)$，其中$c &amp;gt; log_b(a)$
+&lt;ul&gt;
+&lt;li&gt;此时$T(n) = \Theta(n \space log \space n)$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;&#34;&gt;
+&lt;/h3&gt;</description>
+        </item>
+        <item>
+        <title>动态规划</title>
+        <link>https://example.com/p/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/</link>
+        <pubDate>Wed, 31 Jul 2024 10:00:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/</guid>
+        <description>&lt;h1 id=&#34;动态规划&#34;&gt;动态规划
+&lt;/h1&gt;&lt;h2 id=&#34;定义&#34;&gt;定义
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;定义：动态规划（英语：Dynamic programming，简称 DP），是一种在数学、管理科学、计算机科学、经济学和生物信息学中使用的，通过把原问题分解为相对简单的子问题的方式求解复杂问题的方法。动态规划常常适用于有重叠子问题和最优子结构性质的问题。&lt;/li&gt;
+&lt;li&gt;核心：将问题拆解成多个子问题，每一级子问题都可以从上一级（或几级）子问题推出。&lt;/li&gt;
+&lt;li&gt;动态规划三要素：
+&lt;ul&gt;
+&lt;li&gt;最优子结构&lt;/li&gt;
+&lt;li&gt;重叠子问题&lt;/li&gt;
+&lt;li&gt;状态转移方程&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>外部排序</title>
+        <link>https://example.com/p/%E5%A4%96%E9%83%A8%E6%8E%92%E5%BA%8F/</link>
+        <pubDate>Wed, 31 Jul 2024 10:00:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%A4%96%E9%83%A8%E6%8E%92%E5%BA%8F/</guid>
+        <description>&lt;h1 id=&#34;外部排序&#34;&gt;外部排序
+&lt;/h1&gt;&lt;h2 id=&#34;概念与意义&#34;&gt;概念与意义
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;当待排序的数据量太大，无法依次装入内存时，需要借助外部存储器（如硬盘）来完成的排序算法。这是大数据处理中的核心技术之一。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;核心思想&#34;&gt;核心思想
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;外部排序使用分治策略
+&lt;ul&gt;
+&lt;li&gt;分割阶段：将大文件分成若干个小的有序子文件&lt;/li&gt;
+&lt;li&gt;合并阶段：将这些有序的归并段合并成一个完整的有序文件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;基本算法流程&#34;&gt;基本算法流程
+&lt;/h2&gt;&lt;h3 id=&#34;第一阶段生成初始归并带&#34;&gt;第一阶段：生成初始归并带
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;读取能装入内存的一块数据&lt;/li&gt;
+&lt;li&gt;在内存中堆这块数据进行排序（使用快速排序等内部排序算法）&lt;/li&gt;
+&lt;li&gt;将排序后恶数据写入临时文件作为一个归并段&lt;/li&gt;
+&lt;li&gt;重复上述步骤直到处理完所有数据&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;第二阶段多路归并&#34;&gt;第二阶段：多路归并
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;同时打开多个归并段文件&lt;/li&gt;
+&lt;li&gt;从每个文件中读取一部分数据到内存缓冲区&lt;/li&gt;
+&lt;li&gt;使用多路归并算法合并这些数据&lt;/li&gt;
+&lt;li&gt;将合并结果写入输出文件&lt;/li&gt;
+&lt;li&gt;重复直到所有数据合并完成&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;关键参数分析&#34;&gt;关键参数分析
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;N：总记录数&lt;/li&gt;
+&lt;li&gt;M：内存能容纳的记录数&lt;/li&gt;
+&lt;li&gt;B：磁盘块大小&lt;/li&gt;
+&lt;li&gt;初始归并段数量：$\lceil N/M \rceil$&lt;/li&gt;
+&lt;li&gt;归并路数：通常选择 $k = M/B - 1$（预留一个缓冲区给输出）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;性能分析&#34;&gt;性能分析
+&lt;/h2&gt;&lt;h3 id=&#34;时间复杂度&#34;&gt;时间复杂度
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;总的I/O次数：$O(N \times log_k[K/m])$&lt;/li&gt;
+&lt;li&gt;比较次数：$O(N \times log_k[N/M])$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;空间复杂度&#34;&gt;空间复杂度
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;内存使用：$O(M)$&lt;/li&gt;
+&lt;li&gt;临时磁盘空间：$O(N)$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;优化策略&#34;&gt;优化策略
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;替换选择排序：生成初始归并段时可以产生长度大于内存容量的归并段&lt;/li&gt;
+&lt;li&gt;多项归并：当归并段数量不是k的倍数时，使用多相归并可以减少归并趟数&lt;/li&gt;
+&lt;li&gt;缓冲区优化：为每个输入和输出文件分配合适大小的缓冲区；使用双缓冲技术overlap I/O和CPU计算&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>完全背包问题详解</title>
+        <link>https://example.com/p/%E5%AE%8C%E5%85%A8%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98%E8%AF%A6%E8%A7%A3/</link>
+        <pubDate>Wed, 31 Jul 2024 10:00:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%AE%8C%E5%85%A8%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98%E8%AF%A6%E8%A7%A3/</guid>
+        <description>&lt;h1 id=&#34;完全背包问题详解---以零钱兑换-ii-为例&#34;&gt;完全背包问题详解 - 以零钱兑换 II 为例
+&lt;/h1&gt;&lt;h2 id=&#34;1-什么是完全背包问题&#34;&gt;1. 什么是完全背包问题
+&lt;/h2&gt;&lt;p&gt;完全背包问题是动态规划中的经典问题，与01背包问题的区别在于：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;01背包&lt;/strong&gt;：每个物品只能使用一次&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;完全背包&lt;/strong&gt;：每个物品可以使用无限次&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;2-零钱兑换-ii-问题分析&#34;&gt;2. 零钱兑换 II 问题分析
+&lt;/h2&gt;&lt;h3 id=&#34;问题描述&#34;&gt;问题描述
+&lt;/h3&gt;&lt;p&gt;给定不同面额的硬币和一个总金额，计算可以凑成总金额的硬币组合数。&lt;/p&gt;
+&lt;h3 id=&#34;为什么是完全背包&#34;&gt;为什么是完全背包？
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;物品&lt;/strong&gt;：不同面额的硬币&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;背包容量&lt;/strong&gt;：目标金额&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;特点&lt;/strong&gt;：每种硬币可以使用无限次&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;目标&lt;/strong&gt;：求组合数（而非最大价值）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;3-动态规划解法详解&#34;&gt;3. 动态规划解法详解
+&lt;/h2&gt;&lt;h3 id=&#34;31-状态定义&#34;&gt;3.1 状态定义
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;dp[j] = 凑成金额 j 的硬币组合数
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;32-初始化&#34;&gt;3.2 初始化
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;// 金额为0只有1种方案：不选任何硬币
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;其他&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;33-状态转移方程&#34;&gt;3.3 状态转移方程
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;j&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;j&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;coin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;含义：当前金额 j 的组合数 = 原有组合数 + 使用当前硬币后的组合数&lt;/p&gt;
+&lt;h3 id=&#34;34-遍历顺序关键&#34;&gt;3.4 遍历顺序（关键！）
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;nl&#34;&gt;coin&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;coins&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;          &lt;span class=&#34;c1&#34;&gt;// 外层：遍历硬币
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;j&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;coin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;j&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;j&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;++&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;// 内层：遍历金额
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;j&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;j&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;coin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;为什么这样遍历？&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;先遍历硬币，再遍历金额，保证了组合的唯一性&lt;/li&gt;
+&lt;li&gt;避免了重复计算（如 1+2 和 2+1 被当作不同组合）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;4-手工模拟过程&#34;&gt;4. 手工模拟过程
+&lt;/h2&gt;&lt;p&gt;以 &lt;code&gt;amount = 5, coins = [1, 2, 5]&lt;/code&gt; 为例：&lt;/p&gt;
+&lt;h3 id=&#34;初始状态&#34;&gt;初始状态
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;dp[0] = 1, dp[1] = 0, dp[2] = 0, dp[3] = 0, dp[4] = 0, dp[5] = 0
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;处理硬币-1&#34;&gt;处理硬币 1
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;coin&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;j&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;j&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;j&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;j&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;j&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;结果：&lt;code&gt;dp = [1, 1, 1, 1, 1, 1]&lt;/code&gt;
+含义：只用硬币1，每个金额都有1种凑法&lt;/p&gt;
+&lt;h3 id=&#34;处理硬币-2&#34;&gt;处理硬币 2
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;coin&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;j&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;// 新增一种：用1个硬币2
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;j&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;// 新增一种：2+1
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;j&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;// 新增两种：2+2, 2+1+1
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;j&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;// 新增两种：2+2+1, 2+1+1+1
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;结果：&lt;code&gt;dp = [1, 1, 2, 2, 3, 3]&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;处理硬币-5&#34;&gt;处理硬币 5
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;coin&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;5&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;j&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;// 新增一种：用1个硬币5
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;最终结果：&lt;code&gt;dp = [1, 1, 2, 2, 3, 4]&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;验证组合&#34;&gt;验证组合
+&lt;/h3&gt;&lt;p&gt;金额5的4种组合：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;5&lt;/code&gt; (1个硬币5)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;2+2+1&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;2+1+1+1&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;1+1+1+1+1&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;5-关键技术点&#34;&gt;5. 关键技术点
+&lt;/h2&gt;&lt;h3 id=&#34;51-为什么内层循环正向遍历&#34;&gt;5.1 为什么内层循环正向遍历？
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;完全背包允许重复使用，所以从小到大更新&lt;/li&gt;
+&lt;li&gt;01背包需要逆向遍历，避免重复使用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;52-组合-vs-排列&#34;&gt;5.2 组合 vs 排列
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 组合（当前实现）：先遍历物品，再遍历背包
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nl&#34;&gt;coin&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;coins&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;j&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;coin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;j&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;j&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;++&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;j&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;j&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;coin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 排列：先遍历背包，再遍历物品
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;j&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;j&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;j&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;++&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nl&#34;&gt;coin&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;coins&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;j&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;coin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;j&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;j&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;coin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;53-空间优化&#34;&gt;5.3 空间优化
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;使用一维数组而非二维数组&lt;/li&gt;
+&lt;li&gt;空间复杂度从 O(n×amount) 优化到 O(amount)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;6-完全背包模板&#34;&gt;6. 完全背包模板
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 模板：完全背包求组合数
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vector&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;target&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;nl&#34;&gt;item&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;items&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;           &lt;span class=&#34;c1&#34;&gt;// 遍历物品
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;j&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;item&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;j&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;target&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;j&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;++&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;// 遍历背包（正向）
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;j&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;j&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;item&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;     &lt;span class=&#34;c1&#34;&gt;// 状态转移
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;target&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;7-复杂度分析&#34;&gt;7. 复杂度分析
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;时间复杂度&lt;/strong&gt;：O(n × amount)，其中 n 是硬币种类数&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;空间复杂度&lt;/strong&gt;：O(amount)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;8-相关变形题目&#34;&gt;8. 相关变形题目
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;零钱兑换&lt;/strong&gt;：求最少硬币数（最值问题）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;组合总和IV&lt;/strong&gt;：求排列数（改变遍历顺序）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;分割等和子集&lt;/strong&gt;：01背包变形&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;目标和&lt;/strong&gt;：01背包变形&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;完全背包问题的核心在于理解状态转移和遍历顺序，掌握了这个模板，可以解决很多相关的动态规划问题。&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>局部搜索</title>
+        <link>https://example.com/p/%E5%B1%80%E9%83%A8%E6%90%9C%E7%B4%A2/</link>
+        <pubDate>Wed, 31 Jul 2024 10:00:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%B1%80%E9%83%A8%E6%90%9C%E7%B4%A2/</guid>
+        <description>&lt;h1 id=&#34;局部搜索&#34;&gt;局部搜索
+&lt;/h1&gt;&lt;h2 id=&#34;概念&#34;&gt;概念
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;局部搜索级从一个初始解触发，在其邻域内不断搜索，迭代改进当前姐，直到无法找到更优解&lt;/li&gt;
+&lt;li&gt;概念类似于物理学中的&amp;quot;势能&amp;quot;，搜索最终会停在一个势能谷底&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;关键组成&#34;&gt;关键组成
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;搜索空间：所有可能解的集合&lt;/li&gt;
+&lt;li&gt;目标函数：也叫成本函数或适应函数，用来评价一个解的好坏。目标一般是找到使得目标函数最大或最小的解&lt;/li&gt;
+&lt;li&gt;邻域结构：定义了如何从一个解移动到另一个&amp;quot;相邻&amp;quot;的解。这是局部搜索的核心，它决定了搜索的&amp;quot;步长&amp;quot;和方向。例如。在TSP问题中，一个解（一条路径）的邻域可以是交换路径中任意两个城市的位置后得到的所有新路径&lt;/li&gt;
+&lt;li&gt;迭代过程：算法从一个初始解开始，反复地从当前解地邻域中选择下一个解，以期改善目标函数值&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;流程&#34;&gt;流程
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    graph TD
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        S[开始] --&amp;gt; A[生成一个初始解 S];
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        A --&amp;gt; B{在S的邻域中&amp;lt;br/&amp;gt;选择一个新解 S&amp;#39;};
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        B --&amp;gt; C{S&amp;#39; 是否比 S 更优?};
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        C -- 是 --&amp;gt; D[接受S&amp;#39;: S = S&amp;#39;];
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        C -- 否 --&amp;gt; E[根据特定策略决定&amp;lt;br/&amp;gt;是否接受 S&amp;#39;];
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        D --&amp;gt; B;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        E -- 接受 --&amp;gt; D;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        E -- 拒绝 --&amp;gt; F{是否满足终止条件?};
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        B -.-&amp;gt; F;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        F -- 否 --&amp;gt; B;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        F -- 是 --&amp;gt; G[输出找到的最佳解];
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        G --&amp;gt; Z[结束]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        style A fill:#cde4ff
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        style G fill:#d5e8d4
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;经典地局部搜索法&#34;&gt;经典地局部搜索法
+&lt;/h2&gt;&lt;h3 id=&#34;爬山法&#34;&gt;爬山法
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;最简单，最直观地局部搜索算法&lt;/li&gt;
+&lt;li&gt;策略：严格享受。检查当前解的所有邻居，如果找到一个比当前解更好的邻居，就立刻移动过去，然后开始新一轮的搜索；如果所有邻居都不如当前解，就停止搜索&lt;/li&gt;
+&lt;li&gt;优点：简单，快速&lt;/li&gt;
+&lt;li&gt;缺点：非常容易陷入局部最优解&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;模拟退火&#34;&gt;模拟退火
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;为了克服容易陷入局部最优的缺陷而涉及的算法。灵感来源于金属退火过程&lt;/li&gt;
+&lt;li&gt;核心思想：引入&amp;quot;概率&amp;quot;和&amp;quot;温度&amp;quot;来决定是否接受一个更差的解
+&lt;ul&gt;
+&lt;li&gt;在搜索初期，温度很高，算法有较高的概率去接受一个更差的解，这相当于允许&amp;quot;下山&amp;quot;去探索其他山谷，希望能找到通往更高山峰的路，这增加了算法的探索能力。&lt;/li&gt;
+&lt;li&gt;随着迭代的进行，温度逐渐降低，算法接受更差解的概率也越来越小。在搜索末期，它基本不再接受差的解，变得更像爬山法，专注于咋当前找到的较优区域内进行精细搜索&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;优点：理论上（在无限时间内）的全局收敛性，能够有效跳出局部最优&lt;/li&gt;
+&lt;li&gt;缺点：参数需要仔细调优，否则效果不佳&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;禁忌搜索&#34;&gt;禁忌搜索
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;禁忌搜索是另一种客服局部最优的强大技术，它引入&amp;quot;记忆&amp;quot;机制&lt;/li&gt;
+&lt;li&gt;核心思想：用一个经济标来记录最近执行过多的移动或访问过的解
+&lt;ul&gt;
+&lt;li&gt;在后续的搜索中，算法被禁止执行哪些会导致回到近期状态的移动，即使会带来一个更好的解&lt;/li&gt;
+&lt;li&gt;这样做的目的是强迫算法去探索新的未曾访问过的搜索区域，避免在几个解之间循环往复&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;特赦准则：禁忌不是绝对的。如果一个被禁忌的移动能带来一个足够好的解，那么禁忌可以被特赦&lt;/li&gt;
+&lt;li&gt;优点：强大的防循环和探索能力&lt;/li&gt;
+&lt;li&gt;缺点：紧急表的长度和管理策略对算法性能影响很大，设计相对复杂&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;遗传算法&#34;&gt;遗传算法
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;核心思想：模拟生物进化
+&lt;ul&gt;
+&lt;li&gt;它不维护但各界，而是维护一个多个解组成的种群&lt;/li&gt;
+&lt;li&gt;通过选择、交叉、和变异等操作更新种群，对种群实现迭代演化，生成新一代的解&lt;/li&gt;
+&lt;li&gt;好的解有更大概率被选中繁衍后低&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;优点：全局搜索能力强，不容易陷入局部最优，适合处理复杂和高位的搜索空间&lt;/li&gt;
+&lt;li&gt;缺点：算法复杂，计算开销大，收敛速度可能较慢&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;pls完全性polynomial-local-search-complete&#34;&gt;PLS完全性(Polynomial Local Search Complete)
+&lt;/h2&gt;&lt;h3 id=&#34;pls类的定义&#34;&gt;PLS类的定义
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;一个PLS类的优化问题满足以下条件
+&lt;ul&gt;
+&lt;li&gt;必须有一个多项式时间算法，能为任何问题实例生成一个初始的合法解。&lt;/li&gt;
+&lt;li&gt;必须有一个多项式时间算法，能计算出任何一个给定解的成本（或收益）&lt;/li&gt;
+&lt;li&gt;必须有一个多项式时间算法，能检查当前的解S是否是局部最优的。
+&lt;ul&gt;
+&lt;li&gt;如果是，就报告&amp;quot;是&amp;quot;&lt;/li&gt;
+&lt;li&gt;如果不是，必须能找出一个更好的邻居解并返回它&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;pls特征&#34;&gt;PLS特征
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;对于PLS类内的任何问题，一定能找到一位局部最优解&lt;/li&gt;
+&lt;li&gt;原因：解空间优先，成本函数有界&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;pls-complete问题pls最难的问题&#34;&gt;PLS-Complete问题————PLS最难的问题
+&lt;/h3&gt;&lt;h4 id=&#34;定义&#34;&gt;定义
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;一个PLS-Complete问题满足以下条件
+&lt;ul&gt;
+&lt;li&gt;P本身属于PLS类&lt;/li&gt;
+&lt;li&gt;所有其他PLS类的问题都可以归约到P&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;这里的归约指的是PLS-归约。它在归约的基础上还要求问题B的局部最优解可以被高效地转换成A的一个局部最优解，&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;意义&#34;&gt;意义
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;PLSC问题的局部最优解存在，但无法在多项式时间内找到&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;与np的关系&#34;&gt;与NP的关系
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;PLS是NP的一个子集&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>摊还分析</title>
+        <link>https://example.com/p/%E6%91%8A%E8%BF%98%E5%88%86%E6%9E%90/</link>
+        <pubDate>Wed, 31 Jul 2024 10:00:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E6%91%8A%E8%BF%98%E5%88%86%E6%9E%90/</guid>
+        <description>&lt;h1 id=&#34;摊还分析&#34;&gt;摊还分析
+&lt;/h1&gt;&lt;h2 id=&#34;概念&#34;&gt;概念
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;核心观点：摊还分析计算的是在一个操作序列中，每个操作的平均成本。它保证了整个序列的总成本不会超过所有操作的瘫痪成本之和。关键在于，这个&amp;quot;摊还成本&amp;quot;通常是一个较小的、固定的值，即使序列中某些操作的实际成本可能非常高。&lt;/li&gt;
+&lt;li&gt;类比：可以想象一下上班通勤，大部分时候只需要约15分钟，但偶尔（如平均一个月一次）会遇到大堵车，此时要花费2个小时
+&lt;ul&gt;
+&lt;li&gt;最坏情况分析会说：&amp;ldquo;你上班通勤最多要花费2小时。&amp;ldquo;这个结论没错，但不能准确反映日常的通勤体验&lt;/li&gt;
+&lt;li&gt;摊还分析则会说：&amp;ldquo;我们把罕见的2小时堵车成本分摊到整个月的通勤中。可能每天的摊还成本就变成了20分钟。&amp;ldquo;这个结论更能代表通勤的时间成本&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;意义&#34;&gt;意义
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;当数据结构的操作成本波动很大时，摊还分析非常有用。一个典型的例子是C++的vector或Java的ArrayList（动态数组）
+&lt;ul&gt;
+&lt;li&gt;大多数push_back操作：如果数组容量未满，这个操作非常快，时间复杂度是O(1)&lt;/li&gt;
+&lt;li&gt;偶尔的push_back操作：如果数据容量满了，时间复杂度是O(n)&lt;/li&gt;
+&lt;li&gt;如果我们只看最坏情况，会得出 push_back 的复杂度是 O(n) 的结论。但这显然忽略了 O(1) 操作占绝大多数的事实。摊还分析可以证明，push_back 的摊还成本其实是 O(1)。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;摊还分析方法&#34;&gt;摊还分析方法
+&lt;/h2&gt;&lt;h3 id=&#34;聚合分析&#34;&gt;聚合分析
+&lt;/h3&gt;&lt;h4 id=&#34;计算方法&#34;&gt;计算方法
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;计算出一个包含n个操作的序列的总实际成本&lt;/li&gt;
+&lt;li&gt;用总成本T(n)除以操作次数n，得到每个操作的平均成本，即摊还成本&lt;/li&gt;
+&lt;li&gt;摊还成本$T = T(n)/n$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;案例动态数组的push_back&#34;&gt;案例：动态数组的push_back
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;假设我们从一个空数组开始，连续执行n次push_back操作。数组容量从1开始，每次满了就翻倍
+&lt;ul&gt;
+&lt;li&gt;常规插入（非扩容）：每次成本为1个单位&lt;/li&gt;
+&lt;li&gt;扩容插入：当元素数量打到1,2,4,8,&amp;hellip;，2^k^时，需要扩容，需要复制2^i-1^个元素&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;现在来看n次操作的总成本：
+&lt;ul&gt;
+&lt;li&gt;常规插入（非扩容）总成本：每次1单位成本，故总成本为n&lt;/li&gt;
+&lt;li&gt;扩容总成本：扩容发生在2^k^时，总扩容成本时2^k^-1，这个成本小于n&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;总实际成本： O(n)&lt;/li&gt;
+&lt;li&gt;摊还成本：O(1)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;记账法核算法&#34;&gt;记账法/核算法
+&lt;/h3&gt;&lt;h4 id=&#34;计算方法-1&#34;&gt;计算方法：
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;这份方法为每个操作分配一个“摊还成本”
+&lt;ul&gt;
+&lt;li&gt;如果一个操作的摊还成本&amp;gt;实际成本，多出来的部分存入&amp;quot;账户&amp;quot;中&lt;/li&gt;
+&lt;li&gt;如果一个操作的实际成本&amp;lt;摊还成本，那么不足的部分就从&amp;quot;银行账户&amp;quot;中取出&amp;quot;存款&amp;quot;来支付&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;关键原则：只要保证&amp;quot;银行账户&amp;quot;余额不为负，我们设定的摊还成本就是有效的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;案例动态数组的push_back-1&#34;&gt;案例：动态数组的push_back
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;我们设定push_back的摊还成本为3个单位&lt;/li&gt;
+&lt;li&gt;情况1：数组未满（实际成本为1）
+&lt;ul&gt;
+&lt;li&gt;我们支付3单位的摊还成本&lt;/li&gt;
+&lt;li&gt;1单位用于本次插入&lt;/li&gt;
+&lt;li&gt;剩下2单位存入银行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;情况2：数组已满，需要扩容
+&lt;ul&gt;
+&lt;li&gt;此时，数组中有m个元素。我们需要将它们全部复制到新数组（大小为2m），然后再插入新元素，实际成本为m+1&lt;/li&gt;
+&lt;li&gt;足够支付，设定成立&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;时间复杂度为O(1)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;摊还成本的选取&#34;&gt;摊还成本的选取
+&lt;/h4&gt;&lt;h5 id=&#34;选取原则&#34;&gt;选取原则
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;原则是在满足不会出现负资产的前提下（在级数上）尽可能小&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;示例&#34;&gt;示例
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;仍然以push_back操作为例。从刚执行完一次扩容的状态开始，此时数组中有$m$个元素，设摊还分析代价为$x$，那么当执行到下一次扩容时，余额是$m(x-1)$下一次扩容时，数组大小为$2m$，要插入第$2m+1$个元素，成本为$2m+1$。需要取出的代价为$2m+1-x$&lt;/li&gt;
+&lt;li&gt;即x需要满足于$m(x-1) \geq 2m+1-x$，可以解得$x &amp;gt;= \frac{3m+1}{m+1}$，可知右式小于3且当$m$趋向于正无穷时收敛于3，那么可以解得$m \geq 3$。上面示例中的3就是这么得到的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;势能法&#34;&gt;势能法
+&lt;/h3&gt;&lt;h4 id=&#34;计算方法-2&#34;&gt;计算方法
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;这是最灵活也最抽象的方法，结合了物理学中势能的概念
+&lt;ul&gt;
+&lt;li&gt;定义一个势函数$\Phi$，将数据结构的某个状态D映射到一个非负数$\Phi(D)$，代表该状态下积累的&amp;quot;势能&amp;rdquo;。我们要求初始状态$D_0$的势能$\Phi(D_0) =  0 $&lt;/li&gt;
+&lt;li&gt;第i个操作的摊还成本$\hat{a}_i$，有
+$\hat{a}&lt;em&gt;i = c_i + \Phi(D_i) - \Phi(D&lt;/em&gt;{i-1})$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;案例动态数组的push_back-2&#34;&gt;案例：动态数组的push_back
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;定义势函数：
+&lt;ul&gt;
+&lt;li&gt;首先给出两个参数
+&lt;ul&gt;
+&lt;li&gt;size：数组中元素的数量&lt;/li&gt;
+&lt;li&gt;capacity：数组的容量&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;然后定义势函数$ Φ(D) = 2 * size - capacity $
+&lt;ul&gt;
+&lt;li&gt;初始状态：$size = 0, capacity = 0, \Phi(D_0) = 0$&lt;/li&gt;
+&lt;li&gt;我们必须保证任何时候有$\Phi(D) \geq 0$，因为capacity总是大于等于size，并且在扩容后capacity = 2*size，所以这个势函数总是非负的。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;然后分析第i次push_back
+&lt;ul&gt;
+&lt;li&gt;$size_i = size_{i-1} + 1$&lt;/li&gt;
+&lt;li&gt;$c_i = $ 实际成本
+&lt;ul&gt;
+&lt;li&gt;情况1：不扩容
+&lt;ul&gt;
+&lt;li&gt;实际成本$c_i = 1$&lt;/li&gt;
+&lt;li&gt;势能变化：$ΔΦ = Φ(D_i) - Φ(D_{i-1}) = (2size_i - capacity_i) - (2size_{i-1} - capacity_{i-1}) = 2(size_i - size_{i-1}) = 2$&lt;/li&gt;
+&lt;li&gt;摊还成本：$â_i = c_i + ΔΦ = 1 + 2 = 3$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;情况2：扩容(size_{i-1} = capacity_{i-1})
+&lt;ul&gt;
+&lt;li&gt;扩容前，$size = m，capacity = m$&lt;/li&gt;
+&lt;li&gt;扩容后，$size = m+1，capacity = 2m$&lt;/li&gt;
+&lt;li&gt;实际成本$c_i = m+1$&lt;/li&gt;
+&lt;li&gt;势能变化：
+&lt;ul&gt;
+&lt;li&gt;$\Phi(D({i-1})) = m$&lt;/li&gt;
+&lt;li&gt;$\Phi(D_i) = 2(m+1) - 2m = 2$&lt;/li&gt;
+&lt;li&gt;$\Delta\Phi = 2-m$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;摊还成本$ â_i = c_i + ΔΦ = (m+1) + (2 - m) = 3$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;即两种抢矿下摊还成本都为3，时间复杂度为O(1)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>随机算法</title>
+        <link>https://example.com/p/%E9%9A%8F%E6%9C%BA%E7%AE%97%E6%B3%95/</link>
+        <pubDate>Wed, 31 Jul 2024 10:00:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E9%9A%8F%E6%9C%BA%E7%AE%97%E6%B3%95/</guid>
+        <description>&lt;h1 id=&#34;随机算法&#34;&gt;随机算法
+&lt;/h1&gt;&lt;h2 id=&#34;经典问题&#34;&gt;经典问题
+&lt;/h2&gt;&lt;h3 id=&#34;离线雇佣问题&#34;&gt;（离线）雇佣问题
+&lt;/h3&gt;&lt;h4 id=&#34;问题描述&#34;&gt;问题描述
+&lt;/h4&gt;&lt;h5 id=&#34;基本数据&#34;&gt;基本数据
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;假设你需要招聘一名新的助理。你委托了一家职业介绍所，这家机构在 n 天内，每天会向你推荐一名候选人。你的招聘流程如下：
+&lt;ul&gt;
+&lt;li&gt;面试当天的候选人。&lt;/li&gt;
+&lt;li&gt;如果这位候选人比你当前雇佣的助理更优秀，你就会解雇当前的助理，然后雇佣这位新的候选人。&lt;/li&gt;
+&lt;li&gt;为了简化问题，我们假设你第一天总会雇佣第一位候选人。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;成本分析&#34;&gt;成本分析
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;面试每个候选人有一个固定的，较低的成本，我们记为c_i&lt;/li&gt;
+&lt;li&gt;每雇佣一次新人，都有一个较高的成本，我们称之为c_h&lt;/li&gt;
+&lt;li&gt;在n天里，会共面试n个人，所以总的面试成本是固定的 n*c_i。我们真正关心的是哪个不确定的、可能很高的总雇佣成本。假设我们总共雇佣了m次，那么总成本就是：
+&lt;ul&gt;
+&lt;li&gt;总成本 = n&lt;em&gt;c_i + m&lt;/em&gt;c_h&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;由于n*c_i是固定的，我们的目标是分析并设法降低m，即总的雇佣次数&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;最坏情况分析确定性算法&#34;&gt;最坏情况分析（确定性算法）
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;在没有任何随机化的情况下，最坏的情况是职业介绍所每天推荐来的候选人能力都是严格递增的。在这种情况下，每次面试都会触发一次雇佣。总的雇佣次数 m = n。此时总成本将是 n * c_i + n*c_h。即可能的最大成本&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;引入随机算法&#34;&gt;引入随机算法
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;我们无法控制候选人到来的自然顺序，但是可以控制面试的顺序。&lt;/li&gt;
+&lt;li&gt;核心思想：不按照职业介绍所给的顺序面试，而是先拿到n个候选人的名单，然后将这个名单打乱（随机排列），再按照这个新的随机顺序去逐一面试&lt;/li&gt;
+&lt;li&gt;通过这个随机化步骤，把问题从分析一个特定输入序列的性能转换为了分析所有可能输入序列的平均性能。这样无需再害怕某个特定的最坏序列。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;随机化后的期望分析&#34;&gt;随机化后的期望分析
+&lt;/h4&gt;&lt;h5 id=&#34;指示器随机变量&#34;&gt;指示器随机变量
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;为了计算随机排列后，期望的雇佣次数，我们引入一个数学工具：指示器随机变量(Indicator Random Variables)
+&lt;ul&gt;
+&lt;li&gt;我们定义一个变量x_i，它对应&amp;quot;第i个被面试的候选人是否被雇佣这个事件&amp;quot;，如果第i个被面试的候选人被雇佣了，则x_i = 1，反之则有x_i = 0&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;总的雇佣次数m就是所有x_i的总和&lt;/li&gt;
+&lt;li&gt;根据期望的线性性质可知总雇佣次数的期望即为每个x_i期望的和&lt;/li&gt;
+&lt;li&gt;对于一个指示器随机变量，它的期望值就等于它所指示的事件发生的概率，即E[X_i] = P。&lt;/li&gt;
+&lt;li&gt;那么，第i个候选人被雇佣的概率是多少？
+&lt;ul&gt;
+&lt;li&gt;当且仅当第i个候选人比前面面试过的i-1个人都优秀时才会被雇佣。由于当前的队列是完全随机化的。i个人中的每一个都有同等的概率是最优秀的那个。即第i个候选人被雇佣的概率是1/i&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;故P(第i个候选人被雇佣) = 1/i，即E[x_i] = 1/i。&lt;/li&gt;
+&lt;li&gt;E[m] = 1 + 1/2 + 1/3 + &amp;hellip; + 1/n，构成了一个调和级数，它约等于ln(n)。&lt;/li&gt;
+&lt;li&gt;结论：随机化下期望雇佣次数为ln(n)次&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;在线雇佣问题&#34;&gt;在线雇佣问题
+&lt;/h3&gt;&lt;h4 id=&#34;问题描述-1&#34;&gt;问题描述
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;与离线雇佣问题的区别：
+&lt;ul&gt;
+&lt;li&gt;在在线雇佣问题中，我们不能提前拿到所有人的名单，候选人按照无法控制的顺序注意到来&lt;/li&gt;
+&lt;li&gt;对于每一位面试者必须当场做出决定&lt;/li&gt;
+&lt;li&gt;问题目标变成了使得成功雇佣到最优秀的人的概率最大&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;策略观察-然后-跳转&#34;&gt;策略：观察-然后-跳转
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;这个策略将过程分为两个阶段
+&lt;ul&gt;
+&lt;li&gt;阶段一：观察期
+&lt;ul&gt;
+&lt;li&gt;我们首先确定一个数字k&lt;/li&gt;
+&lt;li&gt;对于前来面试的前k名候选人，我们只面试，但一律不雇佣&lt;/li&gt;
+&lt;li&gt;这个阶段的唯一目的是收集信息，建立一个对候选人能力水平的基准。我们会几下这k个人中能力最强的人，称之为&amp;quot;标杆&amp;quot;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;阶段二：决策期
+&lt;ul&gt;
+&lt;li&gt;从k+1人开始继续面试&lt;/li&gt;
+&lt;li&gt;一旦遇到比标杆更优秀的人，就立刻雇佣，然后停止招聘&lt;/li&gt;
+&lt;li&gt;特殊情况：如果面试到最后一个人都没有发现比标杆更优秀的，雇佣最后一个人&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;最优的k的选择为n/e，即拒绝约前37%的人&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;随机化快速排序&#34;&gt;随机化快速排序
+&lt;/h4&gt;&lt;h5 id=&#34;标准化快速排序&#34;&gt;标准化快速排序
+&lt;/h5&gt;&lt;h6 id=&#34;标准化快速排序的工作方式&#34;&gt;标准化快速排序的工作方式
+&lt;/h6&gt;&lt;ul&gt;
+&lt;li&gt;分解
+&lt;ul&gt;
+&lt;li&gt;从数组中选择一个元素作为主元。在一个确定性的实现中，我们通常会固定地选择第一个元素、最后一个元素或中间的元素&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;征服
+&lt;ul&gt;
+&lt;li&gt;重新排列数组，使得所有小于住院的元素都移动到主元的左边，所有大于主元的元素都移动到主元的右边。这个过程成为分区。分区阶数后，主元就处在它最终排序后正确的位置上&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;合并
+&lt;ul&gt;
+&lt;li&gt;因为是原地排序，当递归的子数组都排好序后，整个数组也就完成了排序，不需要额外的合并步骤&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h6 id=&#34;标准化快速排序的缺陷&#34;&gt;标准化快速排序的缺陷
+&lt;/h6&gt;&lt;ul&gt;
+&lt;li&gt;性能高度依赖于主元pivot的选择
+&lt;ul&gt;
+&lt;li&gt;最好的情况：每次分区，主元都恰好是当前子数组的中位数。这样数组被完美地平分为两半，递归树的深度是 log n，每层分区操作的总时间是 O(n)，所以总的时间复杂度是 O(n log n)。&lt;/li&gt;
+&lt;li&gt;最坏的情况：每次分区，主元都选到了当前子数组的最小值或最大值。例如，如果对一个已经排好序的数组使用“总是选择第一个元素作为主元”的策略，就会发生这种情况。
+&lt;ul&gt;
+&lt;li&gt;分区后，一个子数组是空的，另一个子数组包含了剩下 n-1 个元素。&lt;/li&gt;
+&lt;li&gt;这会导致递归树严重不平衡，深度变成 n。&lt;/li&gt;
+&lt;li&gt;总的时间复杂度退化为 O(n^2)，和效率低下的冒泡排序、插入排序一个级别。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;引入随机化修复缺陷&#34;&gt;引入随机化————修复缺陷
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;随机化快速排序的核心思想非常简单：不要让主元 pivot 的选择有固定的模式，让它变得不可预测。通过引入随机性，我们可以确保对于任何输入（即使是已经排好序的），算法都能有极高的概率表现出接近最优的性能。我们不是在赌运气，而是在用概率论来保证整体的、长期的优秀表现。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h6 id=&#34;随机化方式&#34;&gt;随机化方式
+&lt;/h6&gt;&lt;ul&gt;
+&lt;li&gt;随机选取主元
+&lt;ul&gt;
+&lt;li&gt;这是最直接的方法。在每次执行 partition 操作时，不再固定选择某个位置的元素，而是在当前待排序的子数组 A[p&amp;hellip;r] 中，随机地选择一个索引 i（其中 p ≤ i ≤ r），然后将 A[i] 与子数组的末尾元素 A[r] (或开头元素 A[p]) 交换。&lt;/li&gt;
+&lt;li&gt;之后，就按照标准的 partition 流程，使用 A[r] 作为主元进行分区。&lt;/li&gt;
+&lt;li&gt;这样，每个元素都有同等的机会被选为下一轮的主元，从而极大概率地避免了不平衡的划分。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;随机打乱整个数组
+&lt;ul&gt;
+&lt;li&gt;这是一个更高层面的随机化。在调用快速排序算法之前，先对整个输入数组进行一次随机洗牌（比如使用 Fisher-Yates shuffle 算法）。&lt;/li&gt;
+&lt;li&gt;完成洗牌后，再使用一个完全确定性的快速排序算法（比如总是选择最后一个元素作为主元）。&lt;/li&gt;
+&lt;li&gt;其效果和方法一在理论上是等价的：因为输入序列是随机的，所以你固定选择的那个主元，在原始数据中实际上是随机的。这种方法有时在理论分析上更为方便。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 </description>
         </item>

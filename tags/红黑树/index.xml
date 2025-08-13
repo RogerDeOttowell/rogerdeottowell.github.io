@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>红黑树 on Example Site</title>
+        <link>https://example.com/tags/%E7%BA%A2%E9%BB%91%E6%A0%91/</link>
+        <description>Recent content in 红黑树 on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Wed, 31 Jul 2024 10:00:00 +0800</lastBuildDate><atom:link href="https://example.com/tags/%E7%BA%A2%E9%BB%91%E6%A0%91/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>红黑树</title>
+        <link>https://example.com/p/%E7%BA%A2%E9%BB%91%E6%A0%91/</link>
+        <pubDate>Wed, 31 Jul 2024 10:00:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E7%BA%A2%E9%BB%91%E6%A0%91/</guid>
+        <description>&lt;h1 id=&#34;红黑树&#34;&gt;红黑树
+&lt;/h1&gt;&lt;h2 id=&#34;定义&#34;&gt;定义
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;红黑树是满足以下条件的二叉搜索树
+&lt;ul&gt;
+&lt;li&gt;每个节点都是红色或黑色的&lt;/li&gt;
+&lt;li&gt;根节点是黑色的&lt;/li&gt;
+&lt;li&gt;所有叶子节点都是黑色的&lt;/li&gt;
+&lt;li&gt;如果一个节点是红色的，那么它的叶子节点都是黑色的&lt;/li&gt;
+&lt;li&gt;从任意节点到任意叶节点的简单路径中都包含等数量的黑色节点&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;注：
+&lt;ul&gt;
+&lt;li&gt;在执行操作后，如果根节点为红色，可以直接更改颜色&lt;/li&gt;
+&lt;li&gt;红黑树的所有叶子节点都是空的黑色节点，记为NIL节点（与NULL不同）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;定理&#34;&gt;定理
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;定义
+&lt;ul&gt;
+&lt;li&gt;称NIL为外部节点，其余为内部节点&lt;/li&gt;
+&lt;li&gt;将从一个节点出发到达叶子节点的简单路径上的黑色节点个数称之为该节点的黑高。另外将根节点的黑高定义为树的黑高&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;定理1：一个有n个内部节点的红黑树的最大高度为$2log(n+1)$&lt;/li&gt;
+&lt;li&gt;定理2：在一个红黑树中，对任意一个节点X，在其所有到达叶子节点的简单路径中，最长的一条至多是最短的一条的两倍&lt;/li&gt;
+&lt;li&gt;意义：可以通过这两条定理得知，红黑树是一个近似平衡的二叉树，黑色节点是绝对的平衡因素，红色节点则是有限的不平衡因素，即控制了不平衡因素的影响。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;红黑树的插入&#34;&gt;红黑树的插入
+&lt;/h2&gt;&lt;h3 id=&#34;基本原则&#34;&gt;基本原则
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;插入的节点都是红色节点&lt;/li&gt;
+&lt;li&gt;意义：不破坏黑高平衡&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;插入情况&#34;&gt;插入情况
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;情况1：父节点是黑色节点
+&lt;ul&gt;
+&lt;li&gt;无需其他操作&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;情况2：父节点和父节点的兄弟节点都是红色节点
+&lt;ul&gt;
+&lt;li&gt;将父节点和父节点和兄弟节点都染黑，然后依次上推&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;情况3：插入节点的父节点是红色节点，父节点的兄弟节点是黑色节点，插入节点是父节点的左节点
+&lt;ul&gt;
+&lt;li&gt;右转并修改染色&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;情况4：插入节点的父节点是红色节点，父节点的兄弟节点是黑色节点，插入节点是父节点的右节点
+&lt;ul&gt;
+&lt;li&gt;先左转，再右转，然后染色&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;插入的时间复杂度&#34;&gt;插入的时间复杂度
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;时间复杂度：$O(log n)$&lt;/li&gt;
+&lt;li&gt;时间复杂度计算&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;红黑树的删除&#34;&gt;红黑树的删除
+&lt;/h2&gt;&lt;h3 id=&#34;基本原则-1&#34;&gt;基本原则
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;BST删除原则
+&lt;ul&gt;
+&lt;li&gt;如果目标节点有0或1个子节点：直接删除&lt;/li&gt;
+&lt;li&gt;如果目标节点有2个子节点：让x与左子树的最大节点，或右子树的最小节点交换，然后删除x&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;删除情况&#34;&gt;删除情况
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;情况1：删除虹色叶子节点
+&lt;ul&gt;
+&lt;li&gt;直接删除&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;情况2：删除黑色叶子节点
+&lt;ul&gt;
+&lt;li&gt;直接删除，兄弟节点着红色，问题上移&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;情况3：删除有两个子节点的节点
+&lt;ul&gt;
+&lt;li&gt;删除中序后继节点并替换值，然后执行修复&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;修复&#34;&gt;修复
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;修复只在删除黑色节点后触发，此时会破坏黑高平衡，产生额外的黑色，需要被吸收或重新分配&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;修复的起始状态&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;x：replacement节点（接替被删除节点位置的节点）&lt;/li&gt;
+&lt;li&gt;x有“额外的黑色”（需要被吸收或重新分配）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;修复的目标：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;目标：消除“额外的黑色”。恢复所有路径的黑高平衡&lt;/li&gt;
+&lt;li&gt;方法：
+&lt;ul&gt;
+&lt;li&gt;如果x是红色：直接着黑色&lt;/li&gt;
+&lt;li&gt;如果x是黑色：需要复杂度修复过程&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;修复过程的决策树
+graph TD
+A[&amp;ldquo;开始修复&lt;br/&gt;x有额外黑色&amp;rdquo;] &amp;ndash;&amp;gt; B{&amp;ldquo;x是红色？&amp;rdquo;}
+B &amp;ndash;&amp;gt;|是| C[&amp;ldquo;x着黑色&lt;br/&gt;修复完成&amp;rdquo;]/
+B &amp;ndash;&amp;gt;|否| D{&amp;ldquo;x是根节点？&amp;rdquo;}
+D &amp;ndash;&amp;gt;|是| E[&amp;ldquo;根节点吸收额外黑色&lt;br/&gt;修复完成&amp;rdquo;]
+D &amp;ndash;&amp;gt;|否| F[&amp;ldquo;x是黑色非根节点&amp;rdquo;]&lt;/p&gt;
+&lt;p&gt;F &amp;ndash;&amp;gt; G{&amp;ldquo;x是父节点的哪个子节点？&amp;rdquo;}
+G &amp;ndash;&amp;gt;|左子节点| H[&amp;ldquo;处理左子节点情况&amp;rdquo;]
+G &amp;ndash;&amp;gt;|右子节点| I[&amp;ldquo;处理右子节点情况&lt;br/&gt;(镜像)&amp;rdquo;]&lt;/p&gt;
+&lt;p&gt;H &amp;ndash;&amp;gt; J{&amp;ldquo;兄弟节点S的颜色？&amp;rdquo;}
+J &amp;ndash;&amp;gt;|红色| K[&amp;ldquo;情况1：兄弟是红色&lt;br/&gt;重着色+旋转&lt;br/&gt;转换问题&amp;rdquo;]
+J &amp;ndash;&amp;gt;|黑色| L[&amp;ldquo;情况2：兄弟是黑色&amp;rdquo;]&lt;/p&gt;
+&lt;p&gt;K &amp;ndash;&amp;gt; L&lt;/p&gt;
+&lt;p&gt;L &amp;ndash;&amp;gt; M{&amp;ldquo;兄弟S的子节点颜色？&amp;rdquo;}
+M &amp;ndash;&amp;gt;|都是黑色| N[&amp;ldquo;情况2.1：重着色&lt;br/&gt;问题上移&amp;rdquo;]
+M &amp;ndash;&amp;gt;|左红右黑| O[&amp;ldquo;情况2.2：旋转+重着色&lt;br/&gt;转换为2.3&amp;rdquo;]
+M &amp;ndash;&amp;gt;|右红| P[&amp;ldquo;情况2.3：旋转+重着色&lt;br/&gt;修复完成&amp;rdquo;]&lt;/p&gt;
+&lt;p&gt;N &amp;ndash;&amp;gt; Q[&amp;ldquo;x = x-&amp;gt;parent&lt;br/&gt;继续循环&amp;rdquo;]
+O &amp;ndash;&amp;gt; P
+Q &amp;ndash;&amp;gt; B&lt;/p&gt;
+&lt;p&gt;style C fill:#90EE90
+style E fill:#90EE90
+style P fill:#90EE90
+style K fill:#FFE4B5
+style N fill:#FFE4B5
+style O fill:#FFE4B5&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

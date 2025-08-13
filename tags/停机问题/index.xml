@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>停机问题 on Example Site</title>
+        <link>https://example.com/tags/%E5%81%9C%E6%9C%BA%E9%97%AE%E9%A2%98/</link>
+        <description>Recent content in 停机问题 on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Wed, 31 Jul 2024 10:00:00 +0800</lastBuildDate><atom:link href="https://example.com/tags/%E5%81%9C%E6%9C%BA%E9%97%AE%E9%A2%98/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>停机问题的不可判定性</title>
+        <link>https://example.com/p/%E5%81%9C%E6%9C%BA%E9%97%AE%E9%A2%98%E7%9A%84%E4%B8%8D%E5%8F%AF%E5%88%A4%E5%AE%9A%E6%80%A7/</link>
+        <pubDate>Wed, 31 Jul 2024 10:00:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%81%9C%E6%9C%BA%E9%97%AE%E9%A2%98%E7%9A%84%E4%B8%8D%E5%8F%AF%E5%88%A4%E5%AE%9A%E6%80%A7/</guid>
+        <description>&lt;h1 id=&#34;停机问题的不可判定性&#34;&gt;停机问题的不可判定性
+&lt;/h1&gt;&lt;h2 id=&#34;1-停机问题定义&#34;&gt;1. 停机问题定义
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;停机问题（Halting Problem）&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;给定一个程序P和输入I，判断程序P在输入I上是否会停机（终止执行）&lt;/li&gt;
+&lt;li&gt;形式化表述：是否存在算法H，对于任意程序P和输入I，H(P,I)能够判断P(I)是否停机&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;2-图灵的对角线证明&#34;&gt;2. 图灵的对角线证明
+&lt;/h2&gt;&lt;h3 id=&#34;21-证明思路&#34;&gt;2.1 证明思路
+&lt;/h3&gt;&lt;p&gt;使用&lt;strong&gt;对角线方法&lt;/strong&gt;（类似康托尔证明实数不可数）和&lt;strong&gt;反证法&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;22-证明过程&#34;&gt;2.2 证明过程
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;假设&lt;/strong&gt;：存在停机判定算法H(P,I)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果程序P在输入I上停机，则H(P,I) = 1&lt;/li&gt;
+&lt;li&gt;如果程序P在输入I上不停机，则H(P,I) = 0&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;构造矛盾程序D&lt;/strong&gt;：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;D&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;H&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;# 如果P(P)停机&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;k&#34;&gt;while&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;True&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;# 则D(P)进入无限循环&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;k&#34;&gt;pass&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;else&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;             &lt;span class=&#34;c1&#34;&gt;# 如果P(P)不停机&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt;        &lt;span class=&#34;c1&#34;&gt;# 则D(P)停机&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;分析D(D)的行为&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;情况1&lt;/strong&gt;：假设D(D)停机&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;根据D的定义，这意味着H(D,D) = 0&lt;/li&gt;
+&lt;li&gt;H(D,D) = 0 表示D(D)不停机&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;矛盾&lt;/strong&gt;！&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;情况2&lt;/strong&gt;：假设D(D)不停机&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;根据D的定义，这意味着H(D,D) = 1&lt;/li&gt;
+&lt;li&gt;H(D,D) = 1 表示D(D)停机&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;矛盾&lt;/strong&gt;！&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;结论&lt;/strong&gt;：无论哪种情况都导致矛盾，因此假设错误，停机判定算法H不存在。&lt;/p&gt;
+&lt;h2 id=&#34;3-形式化证明&#34;&gt;3. 形式化证明
+&lt;/h2&gt;&lt;h3 id=&#34;31-使用编码方法&#34;&gt;3.1 使用编码方法
+&lt;/h3&gt;&lt;p&gt;将所有程序编码为自然数，设：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;φₑ：编码为e的程序&lt;/li&gt;
+&lt;li&gt;φₑ(x)：程序φₑ在输入x上的计算&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;停机函数&lt;/strong&gt;：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;K(e,x) = {
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    1, 如果φₑ(x)停机
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    0, 如果φₑ(x)不停机
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;证明K不可计算&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;假设K可计算，构造函数f：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;f(e) = {
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    ↑ (不停机), 如果K(e,e) = 1
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    0,          如果K(e,e) = 0
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;由Church-Turing论题，f对应某个程序φd，即f = φd&lt;/p&gt;
+&lt;p&gt;分析φd(d)：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果φd(d)停机，则K(d,d) = 1，但根据f的定义，φd(d) = f(d) = ↑（不停机）&lt;/li&gt;
+&lt;li&gt;如果φd(d)不停机，则K(d,d) = 0，但根据f的定义，φd(d) = f(d) = 0（停机）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;矛盾！因此K不可计算。&lt;/p&gt;
+&lt;h2 id=&#34;4-停机问题的变形&#34;&gt;4. 停机问题的变形
+&lt;/h2&gt;&lt;h3 id=&#34;41-特殊停机问题&#34;&gt;4.1 特殊停机问题
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;空输入停机问题&lt;/strong&gt;：程序P在空输入上是否停机？&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;空白带停机问题&lt;/strong&gt;：图灵机在空白带上是否停机？&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这些变形同样不可判定。&lt;/p&gt;
+&lt;h3 id=&#34;42-rice定理&#34;&gt;4.2 Rice定理
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;Rice定理&lt;/strong&gt;：对于图灵机的任何非平凡语义性质，判定该性质是不可判定的。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;推论&lt;/strong&gt;：以下问题都不可判定：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;程序是否计算特定函数&lt;/li&gt;
+&lt;li&gt;程序是否输出特定值&lt;/li&gt;
+&lt;li&gt;程序的运行时间是否超过某个界限&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;5-归约证明其他不可判定问题&#34;&gt;5. 归约证明其他不可判定问题
+&lt;/h2&gt;&lt;h3 id=&#34;51-从停机问题归约&#34;&gt;5.1 从停机问题归约
+&lt;/h3&gt;&lt;p&gt;许多问题可以通过从停机问题归约来证明不可判定：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Post对应问题（PCP）&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;给定两个字符串序列，是否存在索引序列使得连接后的字符串相等&lt;/li&gt;
+&lt;li&gt;从停机问题归约到PCP&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;图灵机等价性问题&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;两个图灵机是否计算相同函数&lt;/li&gt;
+&lt;li&gt;不可判定&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;52-归约方法&#34;&gt;5.2 归约方法
+&lt;/h3&gt;&lt;p&gt;如果问题A归约到问题B（A ≤ B），且A不可判定，则B也不可判定。&lt;/p&gt;
+&lt;h2 id=&#34;6-实际意义和应用&#34;&gt;6. 实际意义和应用
+&lt;/h2&gt;&lt;h3 id=&#34;61-理论意义&#34;&gt;6.1 理论意义
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;计算极限&lt;/strong&gt;：揭示了计算的根本限制&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;不完备性&lt;/strong&gt;：与哥德尔不完备定理相呼应&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;复杂度理论&lt;/strong&gt;：为计算复杂度理论奠定基础&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;62-实际应用&#34;&gt;6.2 实际应用
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;程序验证&lt;/strong&gt;：完全自动的程序验证是不可能的&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;编译器优化&lt;/strong&gt;：某些优化问题等价于停机问题&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;软件测试&lt;/strong&gt;：自动生成完备测试用例是不可能的&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;7-可判定性层次&#34;&gt;7. 可判定性层次
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;递归语言 ⊂ 递归可枚举语言 ⊂ 所有语言
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;     ↑              ↑
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   可判定        半可判定
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;停机问题&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;属于递归可枚举语言（半可判定）&lt;/li&gt;
+&lt;li&gt;不属于递归语言（不可判定）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;8-相关概念&#34;&gt;8. 相关概念
+&lt;/h2&gt;&lt;h3 id=&#34;81-可计算性&#34;&gt;8.1 可计算性
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;可计算函数&lt;/strong&gt;：存在图灵机能计算的函数&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;不可计算函数&lt;/strong&gt;：不存在图灵机能计算的函数&lt;/li&gt;
+&lt;li&gt;停机函数是不可计算函数的典型例子&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;82-church-turing论题&#34;&gt;8.2 Church-Turing论题
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;直觉上可计算的函数正是图灵可计算函数&lt;/li&gt;
+&lt;li&gt;为停机问题的不可判定性提供哲学基础&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;9-现代视角&#34;&gt;9. 现代视角
+&lt;/h2&gt;&lt;h3 id=&#34;91-与复杂度理论的关系&#34;&gt;9.1 与复杂度理论的关系
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;停机问题不仅不可判定，而且不在任何递归时间复杂度类中&lt;/li&gt;
+&lt;li&gt;连接了可计算性理论和复杂度理论&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;92-实用考虑&#34;&gt;9.2 实用考虑
+&lt;/h3&gt;&lt;p&gt;虽然停机问题不可判定，但对于：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;特定程序类&lt;/strong&gt;：可能可判定&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;实际程序&lt;/strong&gt;：启发式方法often有效&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;有界资源&lt;/strong&gt;：在给定时间/空间限制下可判定&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;10-结论&#34;&gt;10. 结论
+&lt;/h2&gt;&lt;p&gt;停机问题的不可判定性是计算理论中的基石性结果，它：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;确立了计算的理论极限&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;为其他不可判定问题提供了证明模板&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;深刻影响了程序验证和软件工程&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;展示了数学和逻辑推理的力量&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;这个结果告诉我们，即使在理论上拥有无限的计算资源，仍有一些根本性的问题是无法通过算法解决的。这种限制不是技术上的，而是逻辑上的必然性。&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

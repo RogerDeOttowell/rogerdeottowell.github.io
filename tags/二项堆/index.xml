@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>二项堆 on Example Site</title>
+        <link>https://example.com/tags/%E4%BA%8C%E9%A1%B9%E5%A0%86/</link>
+        <description>Recent content in 二项堆 on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Wed, 31 Jul 2024 10:00:00 +0800</lastBuildDate><atom:link href="https://example.com/tags/%E4%BA%8C%E9%A1%B9%E5%A0%86/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>二项队列/二项堆</title>
+        <link>https://example.com/p/%E4%BA%8C%E9%A1%B9%E9%98%9F%E5%88%97/%E4%BA%8C%E9%A1%B9%E5%A0%86/</link>
+        <pubDate>Wed, 31 Jul 2024 10:00:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E4%BA%8C%E9%A1%B9%E9%98%9F%E5%88%97/%E4%BA%8C%E9%A1%B9%E5%A0%86/</guid>
+        <description>&lt;h1 id=&#34;二项队列二项堆&#34;&gt;二项队列/二项堆
+&lt;/h1&gt;&lt;h2 id=&#34;定义&#34;&gt;定义
+&lt;/h2&gt;&lt;h3 id=&#34;二项树&#34;&gt;二项树
+&lt;/h3&gt;&lt;h4 id=&#34;定义-1&#34;&gt;定义
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;二项堆是由二项树组成的，所以我们需要先了解二项树。&lt;/li&gt;
+&lt;li&gt;我们递归地定义二项树
+&lt;ul&gt;
+&lt;li&gt;二项树B&lt;del&gt;k&lt;/del&gt;是一个带阶数k地有序树&lt;/li&gt;
+&lt;li&gt;B&lt;del&gt;0&lt;/del&gt;是一个只包含一个根节点地树（阶数为0）&lt;/li&gt;
+&lt;li&gt;B&lt;del&gt;k&lt;/del&gt;是由两颗B&lt;del&gt;k-1&lt;/del&gt;连接而成的。连接时，一棵树的根成为另一棵树根的最左边的子节点&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;以下是示意图&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;graph TD;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    subgraph B_0
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        A((&amp;#34;Node&amp;#34;));
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    end
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;graph TD;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    subgraph B_1
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        A((&amp;#34;Root&amp;#34;));
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        B((&amp;#34;Child&amp;#34;));
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        A--&amp;gt;B;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    end
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;graph TD;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    subgraph B_2
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        A((&amp;#34;Root&amp;#34;));
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        B((&amp;#34;Child of Root&amp;#34;));
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        C((&amp;#34;Grandchild&amp;#34;));
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        D((&amp;#34;Child of Root&amp;#34;));
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        A--&amp;gt;B;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        A--&amp;gt;D;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        B--&amp;gt;C;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    end
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;graph TD;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    subgraph B_3
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        A((&amp;#34;Root&amp;#34;));
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        B((&amp;#34;Child&amp;#34;));
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        C((&amp;#34;Child&amp;#34;));
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        D((&amp;#34;Child&amp;#34;));
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        E((&amp;#34;Grandchild&amp;#34;));
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        F((&amp;#34;Grandchild&amp;#34;));
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        G((&amp;#34;Grandchild&amp;#34;));
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        H((&amp;#34;Great-Grandchild&amp;#34;));
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        A --&amp;gt; B;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        A --&amp;gt; C;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        A --&amp;gt; D;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        B --&amp;gt; E;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        B --&amp;gt; F;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        C --&amp;gt; G;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        E --&amp;gt; H;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    end
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h4 id=&#34;性质&#34;&gt;性质
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;二项树有如下重要性质：
+&lt;ul&gt;
+&lt;li&gt;节点数：B&lt;del&gt;k&lt;/del&gt;有2^k^个节点&lt;/li&gt;
+&lt;li&gt;高度：B_k_的高度为k&lt;/li&gt;
+&lt;li&gt;根的度数：B&lt;del&gt;k&lt;/del&gt;的根有k个子节点，这k个子节点分别是B&lt;del&gt;k-1&lt;/del&gt;，B&lt;del&gt;k-2&lt;/del&gt;，&amp;hellip;, B&lt;del&gt;0&lt;/del&gt;的根&lt;/li&gt;
+&lt;li&gt;组合数关系：在深度d处，恰好有C(k, d)个节点，数值上等于多项式中对应地多项式系数，这也是二项树这个名字的来源。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;二项堆&#34;&gt;二项堆
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;现在可以定义二项堆了，二项堆就是一个满足以下两个条件的二项树集合：
+&lt;ul&gt;
+&lt;li&gt;堆序性质：堆中每棵二项树都满足最小堆性质&lt;/li&gt;
+&lt;li&gt;唯一阶数性质：对于任意阶数k，二项堆中最多仅包含一棵B&lt;del&gt;k&lt;/del&gt;树&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;结构&#34;&gt;结构
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;二项堆与二进制有着紧密联系。对于一个有n个节点的二项堆，它的结构由n的二进制表达唯一确定。
+&lt;ul&gt;
+&lt;li&gt;如果n的二进制表达中第i位为1，那么这个堆中包含一棵B&lt;del&gt;i&lt;/del&gt;树&lt;/li&gt;
+&lt;li&gt;如果n的二进制表达中第i位为0，那么这个堆中不包含B&lt;del&gt;i&lt;/del&gt;树&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;例：对于一个包含13个节点的二项堆，由于13的二进制表达位1101，该堆包含B&lt;del&gt;0&lt;/del&gt;, B&lt;del&gt;2&lt;/del&gt;, B&lt;del&gt;3&lt;/del&gt;&lt;/li&gt;
+&lt;li&gt;在实现上，二项堆一帮由一个跟链表来表示，这个链表将堆中所有二项树的根连接起来，通常按照阶数递增排序&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;操作&#34;&gt;操作
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;与自平衡堆类似，二项堆的核心操作是归并&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;归并&#34;&gt;归并
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;二项堆的归并操作与二进制加法高度相似&lt;/li&gt;
+&lt;li&gt;按照以下逻辑进行：
+&lt;ul&gt;
+&lt;li&gt;1 + 0 = 0
+&lt;ul&gt;
+&lt;li&gt;如果一个二项堆有B&lt;del&gt;k&lt;/del&gt;，而另一个没有，且没有进位，直接将B&lt;del&gt;k&lt;/del&gt;作为归并后的B&lt;del&gt;k&lt;/del&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;1 + 1 = 10
+&lt;ul&gt;
+&lt;li&gt;如果两个二项堆都有B&lt;del&gt;k&lt;/del&gt;，没有进位，（或一个为空但有进位）那么归并后的二项堆无B&lt;del&gt;k&lt;/del&gt;，两个B&lt;del&gt;k&lt;/del&gt;组合成B&lt;del&gt;k+1&lt;/del&gt;作为进位&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;1 + 1 + 1 = 11
+&lt;ul&gt;
+&lt;li&gt;如果两个二项堆都有b&lt;del&gt;k&lt;/del&gt;，且有进位，那么归并后的二项堆有B&lt;del&gt;k&lt;/del&gt;，且有进位B&lt;del&gt;k+1&lt;/del&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="介绍倒排索引的原理、构建过程、优化技术以及在搜索引擎中的应用">
+<title>倒排索引</title>
+
+<link rel='canonical' href='https://example.com/p/%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95/'>
+
+<link rel="stylesheet" href="/scss/style.min.cfa5b1b0e78d61c00a14173992a1f3fa3b5c1b9fa34d023de959af564e7b19dd.css"><meta property='og:title' content="倒排索引">
+<meta property='og:description' content="介绍倒排索引的原理、构建过程、优化技术以及在搜索引擎中的应用">
+<meta property='og:url' content='https://example.com/p/%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='倒排索引' /><meta property='article:tag' content='搜索引擎' /><meta property='article:published_time' content='2024-07-31T10:00:00&#43;08:00'/><meta property='article:modified_time' content='2024-07-31T10:00:00&#43;08:00'/>
+<meta name="twitter:title" content="倒排索引">
+<meta name="twitter:description" content="介绍倒排索引的原理、构建过程、优化技术以及在搜索引擎中的应用">
+<link rel="stylesheet" href="/css/custom.css" />
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_f509edb42ecc0ebd.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://example.com/" selected>English</option>
+                                
+                                    <option value="https://example.com/zh-cn/" >中文</option>
+                                
+                                    <option value="https://example.com/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Dark Mode</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#搜索引擎的的检索方式">搜索引擎的的检索方式</a></li>
+    <li><a href="#倒排索引-1">倒排索引</a>
+      <ol>
+        <li><a href="#倒排索引的结构">倒排索引的结构</a></li>
+        <li><a href="#文本预处理">文本预处理</a></li>
+        <li><a href="#词项词典的访问与储存">词项词典的访问与储存</a></li>
+        <li><a href="#内存不足时的索引建构">内存不足时的索引建构</a></li>
+        <li><a href="#分布式处理">分布式处理</a></li>
+        <li><a href="#动态索引">动态索引</a></li>
+        <li><a href="#压缩">压缩</a></li>
+        <li><a href="#快速查询处理技术">快速查询处理技术</a></li>
+      </ol>
+    </li>
+    <li><a href="#搜索引擎的评价指标">搜索引擎的评价指标</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" >
+                数据结构
+            </a>
+        
+            <a href="/categories/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/" >
+                搜索引擎
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95/">倒排索引</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            介绍倒排索引的原理、构建过程、优化技术以及在搜索引擎中的应用
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jul 31, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    2 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="倒排索引">倒排索引
+</h1><h2 id="搜索引擎的的检索方式">搜索引擎的的检索方式
+</h2><p> &amp;emsp 让我们从搜索引擎开始。首先我们来思考一下搜索引擎是怎么工作的，举个例子，当我们在Goggle搜索关键字&quot;Computer Science&quot;时，发生了什么？一个简单的想法是引擎遍历所有包含的文章，再逐字查找关键字。但显而易见，这么做的开销将会是极其恐怖的，因此这个方案是不可行的。</p>
+<p> &amp;emsp 在这个基础上，我们可以尝试一种优化方案，即我们不再等到查询时再去遍历文档寻找关键字，而是提前创建索引，将文档中包含的关键字提取出来，检索时检查被提取出的关键字即可。适合这套方案的数据结构是“文档关联矩阵”。文档关联矩阵是一个以词典中的词项为行，文档集合中的文档为列，单元格值为0或1的矩阵。单元格为1代表着该词项出现在了该文档中。假设某一行为&quot;Doc1.doc&quot;，一列为&quot;Computer&quot;，单元格值为1，这就代表着词&quot;Computer&quot;出现在了文档Doc1.doc中。反之则代表未出现。但是我们同样可以显然地发现，这个矩阵应当是极其稀疏的，并且规模可以极其巨大，这是显然不实用的。</p>
+<p> &amp;emsp 那么是否有进一步的优化方案呢？答案是肯定的。我们可以尝试颠倒一下思路，上面建立的“文档 -&gt; 词项”映射存在低效率的问题，那么我们可以改成建立“词项 -&gt; 文档”的映射，这就是<strong>倒排索引(Inverted File Index)</strong></p>
+<h2 id="倒排索引-1">倒排索引
+</h2><h3 id="倒排索引的结构">倒排索引的结构
+</h3><ul>
+<li>倒排索引由两个核心部分组成：
+<ul>
+<li>词项词典：一个包含所有唯一词项（经过规范化处理，如小写）的集合。它是访问记录表的“钥匙”。</li>
+<li>记录表：对于词典中的每个词项，对应一个记录表。记录表是一个列表，其中每个条目（称为Posting）包含：
+<ul>
+<li>
+<p>文档ID (Document ID): 标识包含该词项的文档。</p>
+</li>
+<li>
+<p>（可选）其他信息: 如词项在该文档中出现的次数（TF - Term Frequency）、出现的位置（用于短语查询或邻近查询）、权重等。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>关系：词典中的每个词项T指向其最近的记录表L。L中按顺序（通常是DoclD升序）存储了所有包含T的文档的ID。</li>
+<li>索引构建伪代码</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">Index</span> <span class="n">Generator</span>
+</span></span><span class="line"><span class="cl"><span class="nf">while</span> <span class="p">(</span> <span class="n">read</span> <span class="n">a</span> <span class="n">document</span> <span class="n">D</span> <span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span> <span class="n">read</span> <span class="n">a</span> <span class="n">term</span> <span class="n">T</span> <span class="n">in</span> <span class="n">D</span> <span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span> <span class="nf">Find</span><span class="p">(</span> <span class="n">Dictionary</span><span class="p">,</span> <span class="n">T</span> <span class="p">)</span> <span class="o">==</span> <span class="nb">false</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">Insert</span><span class="p">(</span> <span class="n">Dictionary</span><span class="p">,</span> <span class="n">T</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Get</span> <span class="n">T</span><span class="err">’</span><span class="n">s</span> <span class="n">posting</span> <span class="n">list</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Insert</span> <span class="n">a</span> <span class="nf">node</span> <span class="p">(</span><span class="n">with</span> <span class="n">docID</span> <span class="n">D</span><span class="p">)</span> <span class="n">to</span> <span class="n">T</span><span class="err">’</span><span class="n">s</span> <span class="n">posting</span> <span class="n">list</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">Write</span> <span class="n">the</span> <span class="n">inverted</span> <span class="n">index</span> <span class="n">to</span> <span class="n">disk</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="文本预处理">文本预处理
+</h3><ul>
+<li>可以想见的是，如果仅按上面的方式处理，那么索引仍然是很大的，并且远远不能达到与实际搜索引擎相近的结果，为了进一步优化，我们需要文本预处理。文本预处理的方式主要有两种：
+<ul>
+<li>词干提取：
+<ul>
+<li>停用词将单词的不同形态（如“running”, “runner”, “runs”）还原为其基本形式（词干/词根）“run”。这可以减少词典大小，并让查询“run”也能匹配包含其变体的文档。常用算法如Porter Stemmer。</li>
+</ul>
+</li>
+<li>停用词:
+<ul>
+<li>指那些在语言中极其常见但对区分文档内容几乎没有意义的词（如英文的“a”, “the”, “it”, “and”, “of”）。几乎每个文档都包含它们，索引它们会显著增大索引体积且对相关性排序帮助甚微。通常在预处理阶段直接移除。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>处理时机：这些处理发生在分词之后，将词项T插入词典或记录表之前</li>
+</ul>
+<h3 id="词项词典的访问与储存">词项词典的访问与储存
+</h3><ul>
+<li>方案1：搜索树 (Search Trees): 如B树、B+树、字典树(Tries)。这些数据结构保持词项有序。
+<ul>
+<li>优点： 支持范围查询（如查找以“comput”开头的所有词项）、前缀查询；易于处理更新；磁盘友好（B/B+树）。</li>
+<li>缺点： 查找单个词项的平均时间复杂度通常是O(log n)，略慢于哈希；实现相对复杂。</li>
+</ul>
+</li>
+<li>方案2：哈希 (Hashing): 使用哈希表存储词项到记录表指针的映射。
+<ul>
+<li>优点： 查找单个词项的平均时间复杂度是O(1)，非常快；实现相对简单。</li>
+<li>缺点： 不支持范围查询或前缀查询；哈希冲突需要处理；扩容可能较复杂；对部分匹配不友好。</li>
+</ul>
+</li>
+</ul>
+<h3 id="内存不足时的索引建构">内存不足时的索引建构
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">BlockCnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="p">(</span> <span class="n">read</span> <span class="n">a</span> <span class="n">document</span> <span class="n">D</span> <span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span> <span class="n">read</span> <span class="n">a</span> <span class="n">term</span> <span class="n">T</span> <span class="n">in</span> <span class="n">D</span> <span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span> <span class="n">out</span> <span class="n">of</span> <span class="n">memory</span> <span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Write</span> <span class="n">BlockIndex</span><span class="p">[</span><span class="n">BlockCnt</span><span class="p">]</span> <span class="n">to</span> <span class="n">disk</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">BlockCnt</span> <span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">FreeMemory</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span> <span class="nf">Find</span><span class="p">(</span> <span class="n">Dictionary</span><span class="p">,</span> <span class="n">T</span> <span class="p">)</span> <span class="o">==</span> <span class="nb">false</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">Insert</span><span class="p">(</span> <span class="n">Dictionary</span><span class="p">,</span> <span class="n">T</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Get</span> <span class="n">T</span><span class="err">’</span><span class="n">s</span> <span class="n">posting</span> <span class="n">list</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Insert</span> <span class="n">a</span> <span class="n">node</span> <span class="n">to</span> <span class="n">T</span><span class="err">’</span><span class="n">s</span> <span class="n">posting</span> <span class="n">list</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="p">(</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">BlockCnt</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">Merge</span><span class="p">(</span> <span class="n">InvertedIndex</span><span class="p">,</span> <span class="n">BlockIndex</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">Sorted</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<p>基础构建算法假设整个词典和记录表能放入内存。对于海量数据，这是不现实的。这里描述了基于块的排序索引 (Blocked Sort-Based Indexing or BSBI) 算法：</p>
+<ul>
+<li>初始化块计数器 BlockCnt=0。</li>
+<li>逐文档、逐词项处理（包含分词、词干提取、停用词移除）。</li>
+<li>当内存不足时：
+<ul>
+<li>将当前在内存中构建的部分索引（BlockIndex[BlockCnt]，它包含部分词项及其在这些已处理文档中的记录表）作为一个块(Block) 写入磁盘。</li>
+<li>块计数器 BlockCnt 增加。</li>
+<li>释放内存（清空当前内存中的部分索引结构）。</li>
+<li>继续处理后续文档和词项，重复步骤3直到所有文档处理完。最后内存中可能还有一个未写满的块。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>关键步骤 - 归并 (Merge): 将写入磁盘的BlockCnt个块（每个块内部词项有序）和内存中最后的块，通过多路归并的方式合并成一个完整的、全局有序（Sorted）的倒排索引 InvertedIndex。</p>
+</li>
+<li>
+<p>核心思想： “分而治之”。将大数据集分割成能在内存中处理的小块，分别构建部分索引，最后合并。</p>
+</li>
+</ul>
+<h3 id="分布式处理">分布式处理
+</h3><ul>
+<li>在上面讨论过了文本预处理和BSBI等针对web搜索庞大的数据量的优化方案后，可能仍会有质疑：这样数据规模仍然可以很大，能够储存吗？事实上确实不可以，所以这里要用到分布式的存储和处理。</li>
+<li>词项分区索引：将词项词典划分到不同的节点。例如节点1存储A-F所有的词项词典，节点2存储G-J所有的词项词典。一个词项T的所有记录表都存储在T所在的节点
+<ul>
+<li>优点：处理单个词项查询很快</li>
+<li>缺点：处理多个词项查询时可能涉及跨节点通信；新增节点或词项频率不均匀时可能出现负载不均衡</li>
+</ul>
+</li>
+<li>文档分区索引：将文档集合分布到不同的节点，每个节点存储它那一部分文档的的完整倒排索引。查询时将结果广播到所有节点，每个节点在自己的文档上查询并返回部分结果，由一个协调节点汇总。
+<ul>
+<li>优点：易于扩展，新增文档时只要新增加节点即可</li>
+<li>缺点：查询每个词项都需要访问所有节点；节点需要存储完整词典副本。</li>
+</ul>
+</li>
+</ul>
+<h3 id="动态索引">动态索引
+</h3><ul>
+<li>上面的分布式处理部分中提到了有关新增文档的问题。这同样是值得思考的问题。每次新增文档，或文档新增内容后，我们是否需要从头创建索引？答案是否定的，这样会造成巨大的资源浪费。为了解决这个问题，我们需要动态索引。</li>
+<li>动态索引技术要解决主要是新增的删除的问题，可以通过使用主索引(Main Index)+辅助索引(Auxiliary Index)
+<ul>
+<li>主索引：磁盘上的主要、相对稳定的大索引</li>
+<li>辅助索引：内存中的小索引，用于缓存新增文档</li>
+</ul>
+</li>
+<li>新增文档流程：
+<ul>
+<li>新文档被添加到辅助索引</li>
+<li>当辅助索引达到一定大小，或经过一定时间间隔，将辅助索引合并到主索引，操作类似BSBI中的归并操作</li>
+</ul>
+</li>
+<li>删除文档操作：
+<ul>
+<li>在主索引将待删除文档标记为已删除，执行查询时跳过被标记为已删除的文档。在下一次执行归并时物理移除被标记为已删除的文档ID。</li>
+</ul>
+</li>
+</ul>
+<h3 id="压缩">压缩
+</h3><ul>
+<li>此外，我们可以通过压缩进一步减小倒排索引体积规模。涉及到如下技术
+<ul>
+<li>记录表压缩：记录表的核心是文档ID列表，记录表通常按ID升序排序，且文档ID可能本身较大。压缩利用两个特性：
+<ul>
+<li>差值编码（间隙编码）：用ID之间的差值代替ID值存储</li>
+<li>变长编码：对小整数使用更少位数编码</li>
+</ul>
+</li>
+<li>词项词典压缩：词项本身（字符串）也可压缩（如前缀/后缀压缩、块存储）。</li>
+<li>阈值化：有时为了提供速度或减小索引，会设定阈值，如
+<ul>
+<li>只存储词频大于某个阈值的词项（过滤低频噪音词）。</li>
+<li>在记录表中，只存储词频最高的前K个文档ID（牺牲召回率换取速度和空间）。这通常在查询处理阶段应用（见下页），而非索引构建时。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="快速查询处理技术">快速查询处理技术
+</h3><ul>
+<li>以下介绍了两种加速查询处理（特别是复杂查询或排序查询）的技术，但会牺牲一定的准确率（召回率）：
+<ul>
+<li>方案1：文档截断 (Index Pruning / Document Thresholding): 对于排序查询 (Ranked Queries)（如BM25, TF-IDF），不计算所有匹配文档的得分，而是对每个词项，预先在其记录表中根据某种权重 (weight)（如词项在文档中的重要性，TF-IDF本身或变体）进行排序或只保留权重最高的 x 个文档ID。查询时，只在这些被截断的、高权重的记录表上进行操作（如交集、计算得分）。目标是快速找到最相关的 x 个文档。</li>
+<li>方案2：查询词项截断 (Query Term Thresholding):对查询中的词项，按它们在整个文档集中的频率（或文档频率 - DF）升序排序。低频词项通常更具区分度。只使用原始查询词项中的一部分（如前K个，或频率最低的某个百分比）进行搜索。例如，查询“computer science department”，按DF升序排序可能是“department”(低频)、“science”(中频)、“computer”(高频)。只使用“department”和“science”进行检索。</li>
+<li>缺点:Not feasible for Boolean queries：这些优化主要针对排序检索模型 (Ranked Retrieval Model)。对于严格的布尔查询 (Boolean Queries)（要求精确匹配所有词项AND/OR/NOT），截断可能导致漏掉本应匹配的文档（违反布尔条件）。</li>
+<li>Can miss some relevant documents due to truncation：两种截断方法都可能导致丢失相关文档（False Negative），降低召回率 (Recall)。这是用精度（通常是速度）换取召回率的权衡。</li>
+</ul>
+</li>
+</ul>
+<h2 id="搜索引擎的评价指标">搜索引擎的评价指标
+</h2><ul>
+<li>最后我们来看一下使用的对搜索引擎的评价指标，其中可以分为性能评估和相关性评估
+<ul>
+<li>性能评估：
+<ul>
+<li>索引速度 (Indexing Speed): 每小时能处理多少文档 (Number of documents/hour)。影响索引更新频率。</li>
+<li>查询速度 (Search Speed / Query Latency): 用户提交查询到收到结果的时间 (Response time)。查询延迟 (Latency) 会随着索引大小 (index size) 增长而增加，设计需考虑可扩展性。</li>
+<li>查询语言表达能力 (Expressiveness of query language): 支持用户表达复杂信息需求的能力（如布尔操作符、短语查询、通配符、字段搜索、过滤器等）。同时也要考虑执行复杂查询的速度 (Speed on complex queries)。</li>
+<li>用户满意度 (User happiness): 最核心但最难量化。用户觉得结果有用、相关、体验好。</li>
+</ul>
+</li>
+<li>相关性评估
+<ul>
+<li>准确率 (Precision - P): 返回结果中相关的文档所占的比例。衡量“准不准”。
+<ul>
+<li>P = RR / (RR + IR)</li>
+<li>RR (Relevant Retrieved): 检索到的相关文档数。</li>
+<li>IR (Irrelevant Retrieved): 检索到的不相关文档数。</li>
+<li>关注的是结果的质量。</li>
+</ul>
+</li>
+<li>召回率 (Recall - R): 所有相关文档中被检索到的比例。衡量“全不全”。
+<ul>
+<li>R = RR / (RR + RN)</li>
+<li>RR (Relevant Retrieved): 检索到的相关文档数。</li>
+<li>RN (Relevant Not Retrieved): 相关但未被检索到的文档数。</li>
+<li>关注的是系统的覆盖能力。</li>
+</ul>
+</li>
+<li>P-R 曲线 (Precision-Recall Curve): 幻灯片上的 1 0 1 Recall Precision 图示描绘了一个典型的P-R曲线。横轴是召回率(R)，纵轴是准确率(P)。曲线通常呈下降趋势（召回率越高，准确率往往越低）。曲线下的面积(AUC)或特定召回率点（如R=0.5）的准确率是常用汇总指标。F1值（2_P_R/(P+R)）是P和R的调和平均，也是一个常用单值指标。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95/">倒排索引</a>
+        
+            <a href="/tags/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/">搜索引擎</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/b-%E6%A0%91/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">B&#43;树</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E4%BA%8C%E9%A1%B9%E9%98%9F%E5%88%97/%E4%BA%8C%E9%A1%B9%E5%A0%86/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">二项队列/二项堆</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%B7%A6%E5%BC%8F%E5%A0%86%E4%B8%8E%E6%96%9C%E5%A0%86/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">左式堆与斜堆</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%B7%A6%E5%BC%8F%E5%A0%86%E4%B8%8E%E6%96%9C%E5%A0%86/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">左式堆与斜堆</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E7%BA%A2%E9%BB%91%E6%A0%91/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">红黑树</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Example Person
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

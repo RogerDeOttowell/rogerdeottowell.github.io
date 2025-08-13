@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="通过经典的雇佣问题（离线与在线）和随机化快速排序，介绍随机算法的基本思想、应用和性能分析。">
+<title>随机算法</title>
+
+<link rel='canonical' href='https://example.com/p/%E9%9A%8F%E6%9C%BA%E7%AE%97%E6%B3%95/'>
+
+<link rel="stylesheet" href="/scss/style.min.cfa5b1b0e78d61c00a14173992a1f3fa3b5c1b9fa34d023de959af564e7b19dd.css"><meta property='og:title' content="随机算法">
+<meta property='og:description' content="通过经典的雇佣问题（离线与在线）和随机化快速排序，介绍随机算法的基本思想、应用和性能分析。">
+<meta property='og:url' content='https://example.com/p/%E9%9A%8F%E6%9C%BA%E7%AE%97%E6%B3%95/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='随机算法' /><meta property='article:tag' content='概率分析' /><meta property='article:published_time' content='2024-07-31T10:00:00&#43;08:00'/><meta property='article:modified_time' content='2024-07-31T10:00:00&#43;08:00'/>
+<meta name="twitter:title" content="随机算法">
+<meta name="twitter:description" content="通过经典的雇佣问题（离线与在线）和随机化快速排序，介绍随机算法的基本思想、应用和性能分析。">
+<link rel="stylesheet" href="/css/custom.css" />
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_f509edb42ecc0ebd.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://example.com/" selected>English</option>
+                                
+                                    <option value="https://example.com/zh-cn/" >中文</option>
+                                
+                                    <option value="https://example.com/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Dark Mode</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#经典问题">经典问题</a>
+      <ol>
+        <li><a href="#离线雇佣问题">（离线）雇佣问题</a>
+          <ol>
+            <li><a href="#问题描述">问题描述</a></li>
+            <li><a href="#最坏情况分析确定性算法">最坏情况分析（确定性算法）</a></li>
+            <li><a href="#引入随机算法">引入随机算法</a></li>
+            <li><a href="#随机化后的期望分析">随机化后的期望分析</a></li>
+          </ol>
+        </li>
+        <li><a href="#在线雇佣问题">在线雇佣问题</a>
+          <ol>
+            <li><a href="#问题描述-1">问题描述</a></li>
+            <li><a href="#策略观察-然后-跳转">策略：观察-然后-跳转</a></li>
+            <li><a href="#随机化快速排序">随机化快速排序</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E7%AE%97%E6%B3%95/" >
+                算法
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E9%9A%8F%E6%9C%BA%E7%AE%97%E6%B3%95/">随机算法</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            通过经典的雇佣问题（离线与在线）和随机化快速排序，介绍随机算法的基本思想、应用和性能分析。
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jul 31, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    1 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="随机算法">随机算法
+</h1><h2 id="经典问题">经典问题
+</h2><h3 id="离线雇佣问题">（离线）雇佣问题
+</h3><h4 id="问题描述">问题描述
+</h4><h5 id="基本数据">基本数据
+</h5><ul>
+<li>假设你需要招聘一名新的助理。你委托了一家职业介绍所，这家机构在 n 天内，每天会向你推荐一名候选人。你的招聘流程如下：
+<ul>
+<li>面试当天的候选人。</li>
+<li>如果这位候选人比你当前雇佣的助理更优秀，你就会解雇当前的助理，然后雇佣这位新的候选人。</li>
+<li>为了简化问题，我们假设你第一天总会雇佣第一位候选人。</li>
+</ul>
+</li>
+</ul>
+<h5 id="成本分析">成本分析
+</h5><ul>
+<li>面试每个候选人有一个固定的，较低的成本，我们记为c_i</li>
+<li>每雇佣一次新人，都有一个较高的成本，我们称之为c_h</li>
+<li>在n天里，会共面试n个人，所以总的面试成本是固定的 n*c_i。我们真正关心的是哪个不确定的、可能很高的总雇佣成本。假设我们总共雇佣了m次，那么总成本就是：
+<ul>
+<li>总成本 = n<em>c_i + m</em>c_h</li>
+</ul>
+</li>
+<li>由于n*c_i是固定的，我们的目标是分析并设法降低m，即总的雇佣次数</li>
+</ul>
+<h4 id="最坏情况分析确定性算法">最坏情况分析（确定性算法）
+</h4><ul>
+<li>在没有任何随机化的情况下，最坏的情况是职业介绍所每天推荐来的候选人能力都是严格递增的。在这种情况下，每次面试都会触发一次雇佣。总的雇佣次数 m = n。此时总成本将是 n * c_i + n*c_h。即可能的最大成本</li>
+</ul>
+<h4 id="引入随机算法">引入随机算法
+</h4><ul>
+<li>我们无法控制候选人到来的自然顺序，但是可以控制面试的顺序。</li>
+<li>核心思想：不按照职业介绍所给的顺序面试，而是先拿到n个候选人的名单，然后将这个名单打乱（随机排列），再按照这个新的随机顺序去逐一面试</li>
+<li>通过这个随机化步骤，把问题从分析一个特定输入序列的性能转换为了分析所有可能输入序列的平均性能。这样无需再害怕某个特定的最坏序列。</li>
+</ul>
+<h4 id="随机化后的期望分析">随机化后的期望分析
+</h4><h5 id="指示器随机变量">指示器随机变量
+</h5><ul>
+<li>为了计算随机排列后，期望的雇佣次数，我们引入一个数学工具：指示器随机变量(Indicator Random Variables)
+<ul>
+<li>我们定义一个变量x_i，它对应&quot;第i个被面试的候选人是否被雇佣这个事件&quot;，如果第i个被面试的候选人被雇佣了，则x_i = 1，反之则有x_i = 0</li>
+</ul>
+</li>
+<li>总的雇佣次数m就是所有x_i的总和</li>
+<li>根据期望的线性性质可知总雇佣次数的期望即为每个x_i期望的和</li>
+<li>对于一个指示器随机变量，它的期望值就等于它所指示的事件发生的概率，即E[X_i] = P。</li>
+<li>那么，第i个候选人被雇佣的概率是多少？
+<ul>
+<li>当且仅当第i个候选人比前面面试过的i-1个人都优秀时才会被雇佣。由于当前的队列是完全随机化的。i个人中的每一个都有同等的概率是最优秀的那个。即第i个候选人被雇佣的概率是1/i</li>
+</ul>
+</li>
+<li>故P(第i个候选人被雇佣) = 1/i，即E[x_i] = 1/i。</li>
+<li>E[m] = 1 + 1/2 + 1/3 + &hellip; + 1/n，构成了一个调和级数，它约等于ln(n)。</li>
+<li>结论：随机化下期望雇佣次数为ln(n)次</li>
+</ul>
+<h3 id="在线雇佣问题">在线雇佣问题
+</h3><h4 id="问题描述-1">问题描述
+</h4><ul>
+<li>与离线雇佣问题的区别：
+<ul>
+<li>在在线雇佣问题中，我们不能提前拿到所有人的名单，候选人按照无法控制的顺序注意到来</li>
+<li>对于每一位面试者必须当场做出决定</li>
+<li>问题目标变成了使得成功雇佣到最优秀的人的概率最大</li>
+</ul>
+</li>
+</ul>
+<h4 id="策略观察-然后-跳转">策略：观察-然后-跳转
+</h4><ul>
+<li>这个策略将过程分为两个阶段
+<ul>
+<li>阶段一：观察期
+<ul>
+<li>我们首先确定一个数字k</li>
+<li>对于前来面试的前k名候选人，我们只面试，但一律不雇佣</li>
+<li>这个阶段的唯一目的是收集信息，建立一个对候选人能力水平的基准。我们会几下这k个人中能力最强的人，称之为&quot;标杆&quot;</li>
+</ul>
+</li>
+<li>阶段二：决策期
+<ul>
+<li>从k+1人开始继续面试</li>
+<li>一旦遇到比标杆更优秀的人，就立刻雇佣，然后停止招聘</li>
+<li>特殊情况：如果面试到最后一个人都没有发现比标杆更优秀的，雇佣最后一个人</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>最优的k的选择为n/e，即拒绝约前37%的人</li>
+</ul>
+<h4 id="随机化快速排序">随机化快速排序
+</h4><h5 id="标准化快速排序">标准化快速排序
+</h5><h6 id="标准化快速排序的工作方式">标准化快速排序的工作方式
+</h6><ul>
+<li>分解
+<ul>
+<li>从数组中选择一个元素作为主元。在一个确定性的实现中，我们通常会固定地选择第一个元素、最后一个元素或中间的元素</li>
+</ul>
+</li>
+<li>征服
+<ul>
+<li>重新排列数组，使得所有小于住院的元素都移动到主元的左边，所有大于主元的元素都移动到主元的右边。这个过程成为分区。分区阶数后，主元就处在它最终排序后正确的位置上</li>
+</ul>
+</li>
+<li>合并
+<ul>
+<li>因为是原地排序，当递归的子数组都排好序后，整个数组也就完成了排序，不需要额外的合并步骤</li>
+</ul>
+</li>
+</ul>
+<h6 id="标准化快速排序的缺陷">标准化快速排序的缺陷
+</h6><ul>
+<li>性能高度依赖于主元pivot的选择
+<ul>
+<li>最好的情况：每次分区，主元都恰好是当前子数组的中位数。这样数组被完美地平分为两半，递归树的深度是 log n，每层分区操作的总时间是 O(n)，所以总的时间复杂度是 O(n log n)。</li>
+<li>最坏的情况：每次分区，主元都选到了当前子数组的最小值或最大值。例如，如果对一个已经排好序的数组使用“总是选择第一个元素作为主元”的策略，就会发生这种情况。
+<ul>
+<li>分区后，一个子数组是空的，另一个子数组包含了剩下 n-1 个元素。</li>
+<li>这会导致递归树严重不平衡，深度变成 n。</li>
+<li>总的时间复杂度退化为 O(n^2)，和效率低下的冒泡排序、插入排序一个级别。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="引入随机化修复缺陷">引入随机化————修复缺陷
+</h5><ul>
+<li>随机化快速排序的核心思想非常简单：不要让主元 pivot 的选择有固定的模式，让它变得不可预测。通过引入随机性，我们可以确保对于任何输入（即使是已经排好序的），算法都能有极高的概率表现出接近最优的性能。我们不是在赌运气，而是在用概率论来保证整体的、长期的优秀表现。</li>
+</ul>
+<h6 id="随机化方式">随机化方式
+</h6><ul>
+<li>随机选取主元
+<ul>
+<li>这是最直接的方法。在每次执行 partition 操作时，不再固定选择某个位置的元素，而是在当前待排序的子数组 A[p&hellip;r] 中，随机地选择一个索引 i（其中 p ≤ i ≤ r），然后将 A[i] 与子数组的末尾元素 A[r] (或开头元素 A[p]) 交换。</li>
+<li>之后，就按照标准的 partition 流程，使用 A[r] 作为主元进行分区。</li>
+<li>这样，每个元素都有同等的机会被选为下一轮的主元，从而极大概率地避免了不平衡的划分。</li>
+</ul>
+</li>
+<li>随机打乱整个数组
+<ul>
+<li>这是一个更高层面的随机化。在调用快速排序算法之前，先对整个输入数组进行一次随机洗牌（比如使用 Fisher-Yates shuffle 算法）。</li>
+<li>完成洗牌后，再使用一个完全确定性的快速排序算法（比如总是选择最后一个元素作为主元）。</li>
+<li>其效果和方法一在理论上是等价的：因为输入序列是随机的，所以你固定选择的那个主元，在原始数据中实际上是随机的。这种方法有时在理论分析上更为方便。</li>
+</ul>
+</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E9%9A%8F%E6%9C%BA%E7%AE%97%E6%B3%95/">随机算法</a>
+        
+            <a href="/tags/%E6%A6%82%E7%8E%87%E5%88%86%E6%9E%90/">概率分析</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/%E4%BC%B0%E7%AE%97%E6%B3%95/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">估算法</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%88%86%E6%B2%BB%E6%B3%95/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">分治法</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">动态规划</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%A4%96%E9%83%A8%E6%8E%92%E5%BA%8F/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">外部排序</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%AE%8C%E5%85%A8%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98%E8%AF%A6%E8%A7%A3/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">完全背包问题详解</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Example Person
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
