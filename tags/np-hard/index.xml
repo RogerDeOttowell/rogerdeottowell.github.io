@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>NP-Hard on Example Site</title>
+        <title>NP-Hard on 演示站点</title>
         <link>https://example.com/tags/np-hard/</link>
-        <description>Recent content in NP-Hard on Example Site</description>
+        <description>Recent content in NP-Hard on 演示站点</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en</language>
-        <copyright>Example Person</copyright>
+        <language>zh-cn</language>
+        <copyright>© 2025 My Tech Blog</copyright>
         <lastBuildDate>Wed, 13 Aug 2025 10:00:00 +0800</lastBuildDate><atom:link href="https://example.com/tags/np-hard/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>估算法</title>
         <link>https://example.com/p/%E4%BC%B0%E7%AE%97%E6%B3%95/</link>

@@ -1,40 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>Categories on Example Site</title>
+        <title>Categories on 演示站点</title>
         <link>https://example.com/categories/</link>
-        <description>Recent content in Categories on Example Site</description>
+        <description>Recent content in Categories on 演示站点</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en</language>
-        <copyright>Example Person</copyright>
-        <lastBuildDate>Wed, 13 Aug 2025 10:00:00 +0800</lastBuildDate><atom:link href="https://example.com/categories/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>搜索引擎</title>
-        <link>https://example.com/categories/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/</link>
-        <pubDate>Wed, 13 Aug 2025 10:00:00 +0800</pubDate>
+        <language>zh-cn</language>
+        <copyright>© 2025 My Tech Blog</copyright>
+        <lastBuildDate>Wed, 13 Aug 2025 21:40:00 +0800</lastBuildDate><atom:link href="https://example.com/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>操作系统</title>
+        <link>https://example.com/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</link>
+        <pubDate>Wed, 13 Aug 2025 21:40:00 +0800</pubDate>
         
-        <guid>https://example.com/categories/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>数据结构</title>
-        <link>https://example.com/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</link>
-        <pubDate>Wed, 13 Aug 2025 10:00:00 +0800</pubDate>
-        
-        <guid>https://example.com/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>算法</title>
-        <link>https://example.com/categories/%E7%AE%97%E6%B3%95/</link>
-        <pubDate>Wed, 13 Aug 2025 10:00:00 +0800</pubDate>
-        
-        <guid>https://example.com/categories/%E7%AE%97%E6%B3%95/</guid>
+        <guid>https://example.com/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</guid>
         <description></description>
         </item>
         <item>
         <title>计算机体系结构</title>
         <link>https://example.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/</link>
-        <pubDate>Wed, 13 Aug 2025 10:00:00 +0800</pubDate>
+        <pubDate>Wed, 13 Aug 2025 21:40:00 +0800</pubDate>
         
         <guid>https://example.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/</guid>
         <description></description>
@@ -48,11 +32,27 @@
         <description></description>
         </item>
         <item>
-        <title>操作系统</title>
-        <link>https://example.com/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</link>
-        <pubDate>Fri, 01 Aug 2025 21:50:00 +0800</pubDate>
+        <title>数据结构</title>
+        <link>https://example.com/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</link>
+        <pubDate>Wed, 13 Aug 2025 10:00:00 +0800</pubDate>
         
-        <guid>https://example.com/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</guid>
+        <guid>https://example.com/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>搜索引擎</title>
+        <link>https://example.com/categories/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/</link>
+        <pubDate>Wed, 13 Aug 2025 10:00:00 +0800</pubDate>
+        
+        <guid>https://example.com/categories/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>算法</title>
+        <link>https://example.com/categories/%E7%AE%97%E6%B3%95/</link>
+        <pubDate>Wed, 13 Aug 2025 10:00:00 +0800</pubDate>
+        
+        <guid>https://example.com/categories/%E7%AE%97%E6%B3%95/</guid>
         <description></description>
         </item>
         <item>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>斜堆 on Example Site</title>
+        <title>斜堆 on 演示站点</title>
         <link>https://example.com/tags/%E6%96%9C%E5%A0%86/</link>
-        <description>Recent content in 斜堆 on Example Site</description>
+        <description>Recent content in 斜堆 on 演示站点</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en</language>
-        <copyright>Example Person</copyright>
+        <language>zh-cn</language>
+        <copyright>© 2025 My Tech Blog</copyright>
         <lastBuildDate>Tue, 12 Aug 2025 10:58:00 +0800</lastBuildDate><atom:link href="https://example.com/tags/%E6%96%9C%E5%A0%86/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>左式堆与斜堆</title>
         <link>https://example.com/p/%E5%B7%A6%E5%BC%8F%E5%A0%86%E4%B8%8E%E6%96%9C%E5%A0%86/</link>
